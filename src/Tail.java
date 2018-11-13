@@ -45,25 +45,16 @@ public class Tail extends Circle
     
     public void updateFrame()
     {
-        //compare x,y of currentMove to x,y of nextMove
+        if(nextMove.peek() != null) {
+            
+            //compare x,y of currentMove to x,y of nextMove
+            //if they match x and y, currentMove is assigned nextMove and nextMove is removed from Queue
+            if(currentMove.getX() == nextMove.peek().getX() &&
+               currentMove.getY() == nextMove.peek().getY()) {
+                currentMove = nextMove.remove();
+            }
         
-        //if they match x and y, set direction of nextMove to currentMove
-        
-        // if nextMoves is not empty, pop into nextMove
-        // else, set nextMove to null?
-        
-        // update x, y of piece
-        /*
-        if(currentMove.getDirection() == Direction.UP) {
-            currentMove.setY(currentMove.getY() - 1);
-        } else if(currentMove.getDirection() == Direction.DOWN) {
-            currentMove.setY(currentMove.getY() + 1);
-        } else if(currentMove.getDirection() == Direction.LEFT) {
-            currentMove.setX(currentMove.getX() - 1);
-        } else if(currentMove.getDirection() == Direction.RIGHT) {
-            currentMove.setX(currentMove.getX() + 1);
         }
-        */
         
         // update position of piece
         setCenterX(currentMove.getX() * 20 + 10);
