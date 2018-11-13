@@ -67,6 +67,9 @@ public class Snake
         
         currentMove.setDirection(direction);
         
+        for(int i = 0; i < tail.size(); i++) {
+            tail.get(i).addNextMove(currentMove);
+        }
         
         previousMove = currentMove.copy();
         
