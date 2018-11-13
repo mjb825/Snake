@@ -6,8 +6,7 @@ import java.util.Queue;
 public class Tail extends Circle
 {
 
-    private Queue<Move> nextMoves; //stores all of the moves the head makes
-    private Move nextMove; //the next move this tail is going to make
+    private Queue<Move> nextMove; //the next move this tail is going to make
     private Move currentMove; //contains current x, y, and direction of piece
     
     public Tail()
@@ -16,14 +15,14 @@ public class Tail extends Circle
     
     public Tail(Move currentMove)
     {
+        
         super(8);
         setStyle("-fx-stroke: black; -fx-fill: green; -fx-stroke-width: 2;");
         this.currentMove = currentMove;
     }
 
-    public Tail(Queue<Move> nextMoves, Move nextMove, Move currentMove)
+    public Tail(Queue<Move> nextMove, Move currentMove)
     {
-        this.nextMoves = nextMoves;
         this.nextMove = nextMove;
         this.currentMove = currentMove;
     }
@@ -36,6 +35,11 @@ public class Tail extends Circle
     public void setCurrentMove(Move currentMove)
     {
         this.currentMove = currentMove;
+    }
+    
+    public void addNextMove(Move nextMove)
+    {
+        
     }
     
     public void updateFrame()
@@ -67,6 +71,6 @@ public class Tail extends Circle
     
     public Tail copy()
     {   
-        return new Tail(this.nextMoves, this.nextMove, this.currentMove);
+        return new Tail(this.nextMove, this.currentMove);
     }
 }
