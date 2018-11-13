@@ -27,7 +27,12 @@
     public GameField()
     {
         player = new Snake(20, 15);
-        getChildren().add(player.getHead());
+        player.add(20, 16);
+        player.add(20, 17);
+        player.add(20, 18);
+        
+        for(int i = 0; i < player.getTail().size(); i++)
+            getChildren().add(player.getTail().get(i));
         
         frameTimer = new Timeline(new KeyFrame(Duration.seconds(1.0/8.0),
             e->updateFrame()));

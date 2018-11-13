@@ -22,6 +22,16 @@ public class Snake
         tail.add(new Tail(currentMove));
     }
     
+    public void add(int x, int y)
+    {
+        tail.add(new Tail(new Move(x, y, Direction.UP)));
+    }
+    
+    public ArrayList<Tail> getTail()
+    {
+        return tail;
+    }
+    
     public void updateFrame(int rangeX, int rangeY)
     {
         //update position of head of snake
