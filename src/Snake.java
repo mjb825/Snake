@@ -54,8 +54,8 @@ public class Snake
     
     public void changeDirection(Direction direction)
     {
-        //head.setDirection(direction);
         
+        // stop player from going in opposite direction or changing to the current direction
         if((currentMove.getDirection() == direction) ||
            (previousMove.getX() == currentMove.getX() && previousMove.getY() == currentMove.getY()) ||
            (currentMove.getDirection() == Direction.UP && direction == Direction.DOWN) ||
@@ -67,6 +67,7 @@ public class Snake
         
         currentMove.setDirection(direction);
         
+        // add move to queue of all tail pieces
         for(int i = 0; i < tail.size(); i++) {
             tail.get(i).addNextMove(currentMove);
         }

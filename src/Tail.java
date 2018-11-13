@@ -56,6 +56,17 @@ public class Tail extends Circle
         
         }
         
+        // update x, y of piece
+        if(currentMove.getDirection() == Direction.UP) {
+            currentMove.setY(currentMove.getY() - 1);
+        } else if(currentMove.getDirection() == Direction.DOWN) {
+            currentMove.setY(currentMove.getY() + 1);
+        } else if(currentMove.getDirection() == Direction.LEFT) {
+            currentMove.setX(currentMove.getX() - 1);
+        } else if(currentMove.getDirection() == Direction.RIGHT) {
+            currentMove.setX(currentMove.getX() + 1);
+        }
+        
         // update position of piece
         setCenterX(currentMove.getX() * 20 + 10);
         setCenterY(currentMove.getY() * 20 + 10);
