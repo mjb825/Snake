@@ -8,10 +8,7 @@ import java.util.Set;
  */
 public class Snake
 {
-    private Head head;
     private ArrayList<Tail> tail;
-    private int previousX;
-    private int previousY;
     private Move currentMove;
     private Move previousMove;
     
@@ -20,9 +17,8 @@ public class Snake
     public Snake(int x, int y)
     {
         tail = new ArrayList<>();
-        head = new Head(x, y);
         currentMove = new Move(x, y, Direction.UP);
-        previousMove = (Move)currentMove.clone();
+        previousMove = currentMove.clone();
         tail.add(new Tail(currentMove));
     }
     
@@ -70,7 +66,7 @@ public class Snake
         currentMove.setDirection(direction);
         
         
-        previousMove = (Move)currentMove.clone();
+        previousMove = currentMove.clone();
         
         /*
         previousX = x;
