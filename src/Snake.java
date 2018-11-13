@@ -19,6 +19,10 @@ public class Snake
         tail = new ArrayList<>();
         currentMove = new Move(x, y, Direction.UP);
         previousMove = currentMove.copy();
+        
+        // THIS IS WHY ONLY THE FIRST PIECE MOVES!
+        // THIS CLASS UPDATES CURRENTMOVE AND THE FIRST PIECE HAS A DIRECT REFERENCE!!!!!!
+        // AS TO WHY THE OTHER PIECES ARE PICKED UP WHEN THIS ONE PASSES BY... IDK?
         tail.add(new Tail(currentMove));
     }
     
@@ -37,6 +41,8 @@ public class Snake
         //update position of head of snake
         //temporary to test movement
         // - GameField will handle what happens when the head hits the border (i.e., game over)
+        
+        //THIS CHANGES THE POSITION OF THE PIECE???!!!?!?!?!!?!?!!!!!!
         if(currentMove.getDirection() == Direction.UP && currentMove.getY() > 0) {
             currentMove.setY(currentMove.getY() - 1);
         } else if(currentMove.getDirection() == Direction.DOWN && currentMove.getY() < (rangeY - 1)) {
@@ -47,7 +53,6 @@ public class Snake
             currentMove.setX(currentMove.getX() + 1);
         }
         
-        System.out.println("x: " + currentMove.getX() + " y: " + currentMove.getY());
         
         //list.get(0).updateFrame(0,0)
         //setCenterX(x * 20 + 10);
@@ -55,9 +60,14 @@ public class Snake
         
         //head.updateFrame(rangeX, rangeY);
         
+        //[debugging]
+        //System.out.println("x: " + currentMove.getX() + " y: " + currentMove.getY());
+        
         //tail.get(0).setCurrentMove(currentMove);
-        for(int i = 0; i < tail.size(); i++)
+        for(int i = 0; i < tail.size(); i++) {
+            System.out.println("tail " + i);
             tail.get(i).updateFrame();
+        }
     }
     
     public Tail getHead()
