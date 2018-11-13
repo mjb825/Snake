@@ -44,13 +44,13 @@
     public void handleKey(KeyEvent ke)
     {
         if(ke.getCode() == KeyCode.UP)
-            player.setDirection(Direction.UP);
+            player.changeDirection(Direction.UP);
         else if(ke.getCode() == KeyCode.DOWN)
-            player.setDirection(Direction.DOWN);
+            player.changeDirection(Direction.DOWN);
         else if(ke.getCode() == KeyCode.LEFT)
-            player.setDirection(Direction.LEFT);
+            player.changeDirection(Direction.LEFT);
         else if(ke.getCode() == KeyCode.RIGHT)
-            player.setDirection(Direction.RIGHT);
+            player.changeDirection(Direction.RIGHT);
     }
     
     public void play()

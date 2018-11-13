@@ -50,7 +50,7 @@ public class Snake
         return tail.get(0);
     }
     
-    public void setDirection(Direction direction)
+    public void changeDirection(Direction direction)
     {
         //head.setDirection(direction);
         
