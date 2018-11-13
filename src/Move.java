@@ -51,8 +51,10 @@ public class Move implements Cloneable
         this.direction = direction;
     }
     
-    public Object clone()
+    @Override
+    public Object clone() throws CloneNotSupportedException
     {
-        return new Move(this.getX(), this.getY(), this.getDirection());
+        return super.clone();
+        //return new Move(this.getX(), this.getY(), this.getDirection());
     }
 }
