@@ -55,6 +55,5 @@ public class Move implements Cloneable
     public Object clone() throws CloneNotSupportedException
     {
         return super.clone();
-        //return new Move(this.getX(), this.getY(), this.getDirection());
     }
 }
