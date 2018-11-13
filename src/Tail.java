@@ -1,5 +1,6 @@
 import javafx.scene.shape.Circle;
 import java.util.Queue;
+import java.util.LinkedList;
 /**
  * The tail of the snake that follows the head
  */
@@ -15,9 +16,9 @@ public class Tail extends Circle
     
     public Tail(Move currentMove)
     {
-        
         super(8);
         setStyle("-fx-stroke: black; -fx-fill: green; -fx-stroke-width: 2;");
+        nextMove = new LinkedList<>();
         this.currentMove = currentMove;
     }
 
