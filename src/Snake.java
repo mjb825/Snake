@@ -25,6 +25,8 @@ public class Snake
     public void updateFrame(int rangeX, int rangeY)
     {
         //update position of head of snake
+        //temporary to test movement
+        // - GameField will handle what happens when the head hits the border (i.e., game over)
         if(currentMove.getDirection() == Direction.UP && currentMove.getY() > 0) {
             currentMove.setY(currentMove.getY() - 1);
         } else if(currentMove.getDirection() == Direction.DOWN && currentMove.getY() < (rangeY - 1)) {

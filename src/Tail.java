@@ -40,7 +40,7 @@ public class Tail extends Circle
     
     public void addNextMove(Move nextMove)
     {
-        
+        this.nextMove.add(nextMove);
     }
     
     public void updateFrame()
