@@ -1,6 +1,6 @@
 
 /**
- * Direction and X, Y coordinates where move was made
+ * Direction and X, Y coordinates
  */
 public class Move
 {
@@ -51,9 +51,8 @@ public class Move
         this.direction = direction;
     }
     
-    @Override
-    public Object clone() throws CloneNotSupportedException
+    public Move clone()
     {
-        return super.clone();
+        return new Move(this.getX(), this.getY(), this.getDirection());
     }
 }
