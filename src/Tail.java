@@ -20,6 +20,7 @@ public class Tail extends Circle
         setStyle("-fx-stroke: black; -fx-fill: green; -fx-stroke-width: 2;");
         nextMove = new LinkedList<>();
         this.currentMove = currentMove;
+        nextMove.add(new Move(20, 8, Direction.RIGHT));
     }
 
     public Tail(Queue<Move> nextMove, Move currentMove)
@@ -66,6 +67,7 @@ public class Tail extends Circle
         } else if(currentMove.getDirection() == Direction.RIGHT) {
             currentMove.setX(currentMove.getX() + 1);
         }
+
         
         // update position of piece
         setCenterX(currentMove.getX() * 20 + 10);

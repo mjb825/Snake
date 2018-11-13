@@ -37,13 +37,15 @@ public class Snake
             currentMove.setX(currentMove.getX() + 1);
         }
         
+        System.out.println("x: " + currentMove.getX() + " y: " + currentMove.getY());
+        
         //list.get(0).updateFrame(0,0)
         //setCenterX(x * 20 + 10);
         //setCenterY(y * 20 + 10);
         
         //head.updateFrame(rangeX, rangeY);
         
-        tail.get(0).setCurrentMove(currentMove);
+        //tail.get(0).setCurrentMove(currentMove);
         tail.get(0).updateFrame();
     }
     
