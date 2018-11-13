@@ -51,8 +51,8 @@ public class Move
         this.direction = direction;
     }
     
-    public Move clone()
+    public Move copy()
     {
-        return new Move(this.getX(), this.getY(), this.getDirection());
+        return new Move(this.x, this.y, this.direction);
     }
 }

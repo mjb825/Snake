@@ -18,7 +18,7 @@ public class Snake
     {
         tail = new ArrayList<>();
         currentMove = new Move(x, y, Direction.UP);
-        previousMove = currentMove.clone();
+        previousMove = currentMove.copy();
         tail.add(new Tail(currentMove));
     }
     
@@ -66,7 +66,7 @@ public class Snake
         currentMove.setDirection(direction);
         
         
-        previousMove = currentMove.clone();
+        previousMove = currentMove.copy();
         
         /*
         previousX = x;

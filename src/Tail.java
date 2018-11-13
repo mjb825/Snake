@@ -21,6 +21,13 @@ public class Tail extends Circle
         this.currentMove = currentMove;
     }
 
+    public Tail(Queue<Move> nextMoves, Move nextMove, Move currentMove)
+    {
+        this.nextMoves = nextMoves;
+        this.nextMove = nextMove;
+        this.currentMove = currentMove;
+    }
+    
     public Move getCurrentMove()
     {
         return currentMove;
@@ -33,7 +40,7 @@ public class Tail extends Circle
     
     public void updateFrame()
     {
-        //compare currentMove to nextMove
+        //compare x,y of currentMove to x,y of nextMove
         
         //if they match x and y, set direction of nextMove to currentMove
         
@@ -56,5 +63,10 @@ public class Tail extends Circle
         // update position of piece
         setCenterX(currentMove.getX() * 20 + 10);
         setCenterY(currentMove.getY() * 20 + 10);
+    }
+    
+    public Tail copy()
+    {   
+        return new Tail(this.nextMoves, this.nextMove, this.currentMove);
     }
 }
