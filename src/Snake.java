@@ -59,7 +59,7 @@ public class Snake
         //head.setDirection(direction);
         
         if((currentMove.getDirection() == direction) ||
-           (previousX == currentMove.getX() && previousY == currentMove.getY()) ||
+           (previousMove.getX() == currentMove.getX() && previousMove.getY() == currentMove.getY()) ||
            (currentMove.getDirection() == Direction.UP && direction == Direction.DOWN) ||
            (currentMove.getDirection() == Direction.DOWN && direction == Direction.UP) ||
            (currentMove.getDirection() == Direction.LEFT && direction == Direction.RIGHT) ||
