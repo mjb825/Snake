@@ -31,6 +31,8 @@
         player.add(20, 17);
         player.add(20, 18);
         
+        System.out.println(player.getTail().size());
+        
         for(int i = 0; i < player.getTail().size(); i++)
             getChildren().add(player.getTail().get(i));
         

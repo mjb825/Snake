@@ -56,7 +56,8 @@ public class Snake
         //head.updateFrame(rangeX, rangeY);
         
         //tail.get(0).setCurrentMove(currentMove);
-        tail.get(0).updateFrame();
+        for(int i = 0; i < tail.size(); i++)
+            tail.get(i).updateFrame();
     }
     
     public Tail getHead()
