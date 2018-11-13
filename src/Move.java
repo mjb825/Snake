@@ -2,7 +2,7 @@
 /**
  * Direction and X, Y coordinates where move was made
  */
-public class Move
+public class Move implements Cloneable
 {
     private Direction direction;
     private int x;
@@ -44,5 +44,15 @@ public class Move
     public Direction getDirection()
     {
         return direction;
+    }
+    
+    public void setDirection(Direction direction)
+    {
+        this.direction = direction;
+    }
+    
+    public Object clone()
+    {
+        return new Move(this.getX(), this.getY(), this.getDirection());
     }
 }

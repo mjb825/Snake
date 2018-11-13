@@ -21,6 +21,16 @@ public class Tail extends Circle
         this.currentMove = currentMove;
     }
 
+    public Move getCurrentMove()
+    {
+        return currentMove;
+    }
+    
+    public void setCurrentMove(Move currentMove)
+    {
+        this.currentMove = currentMove;
+    }
+    
     public void updateFrame()
     {
         //compare currentMove to nextMove
@@ -31,6 +41,7 @@ public class Tail extends Circle
         // else, set nextMove to null?
         
         // update x, y of piece
+        /*
         if(currentMove.getDirection() == Direction.UP) {
             currentMove.setY(currentMove.getY() - 1);
         } else if(currentMove.getDirection() == Direction.DOWN) {
@@ -40,6 +51,7 @@ public class Tail extends Circle
         } else if(currentMove.getDirection() == Direction.RIGHT) {
             currentMove.setX(currentMove.getX() + 1);
         }
+        */
         
         // update position of piece
         setCenterX(currentMove.getX() * 20 + 10);
