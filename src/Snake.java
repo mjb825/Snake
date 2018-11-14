@@ -23,7 +23,7 @@ public class Snake
         // THIS IS WHY ONLY THE FIRST PIECE MOVES!
         // THIS CLASS UPDATES CURRENTMOVE AND THE FIRST PIECE HAS A DIRECT REFERENCE!!!!!!
         // AS TO WHY THE OTHER PIECES ARE PICKED UP WHEN THIS ONE PASSES BY... IDK?
-        tail.add(new Tail(currentMove));
+        tail.add(new Tail(currentMove.copy()));
     }
     
     public void add(int x, int y)

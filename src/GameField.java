@@ -28,8 +28,8 @@
     {
         player = new Snake(20, 15);
         player.add(20, 16);
-        //player.add(20, 17);
-        //player.add(20, 18);
+        player.add(20, 17);
+        player.add(20, 18);
         
         
         for(int i = 0; i < player.getTail().size(); i++)
