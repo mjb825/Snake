@@ -24,31 +24,32 @@ public class Snake
         tail.add(new Tail(currentMove.copy()));
     }
     
-    public void add(int x, int y)
+    public void add(int x, int y, Direction direction)
     {
-        tail.add(new Tail(new Move(x, y, Direction.UP)));
+        // SETTING THIS TO DIRECTION.UP CAUSED THE BUG!!!
+        tail.add(new Tail(new Move(x, y, direction)));
     }
     
-    public Tail add()
+    public void add()
     {
         Tail lastPiece = tail.get(tail.size() - 1).copy();
         Move move = lastPiece.getCurrentMove();
         Direction direction = move.getDirection();
         if(direction == Direction.UP)
-            move.setY(move.getY() + 0); 
+            move.setY(move.getY() + 1); 
         else if(direction == Direction.DOWN)
-            move.setY(move.getY() - 0);
+            move.setY(move.getY() - 1);
         else if(direction == Direction.LEFT)
-            move.setX(move.getX() + 0);
+            move.setX(move.getX() + 1);
         else if(direction == Direction.RIGHT)
-            move.setX(move.getX() - 0);
+            move.setX(move.getX() - 1);
         
         
     
             
         tail.add(lastPiece);
         
-        return lastPiece;
+        //return lastPiece;
     }
     
     public ArrayList<Tail> getTail()

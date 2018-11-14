@@ -70,30 +70,46 @@
     
     public void addPiece()
     {
+        /*
         ArrayList<Tail> tail = player.getTail();
         Tail lastPiece = tail.get(tail.size() - 1).copy();
         Move move = lastPiece.getCurrentMove();
         Direction direction = move.getDirection();
-        
+        // THIS DOESN'T WORK IF HEAD PIECE IS IN A DIFFERENT DIRECTION THAN THE TAIL
+        // PIECE NEEDS TO DUPLICATE THE LAST PIECE'S QUEUE
+        // PASS ONLY DIRECTION TO CONSTRUCTOR, maybe not even that, just have constructor do work
         if(direction == Direction.UP)
-            player.add(move.getX(), move.getY() + 1);
+            player.add(move.getX(), move.getY() + 1, direction);
             //move.setY(move.getY() + 0); 
         else if(direction == Direction.DOWN)
-            player.add(move.getX(), move.getY() - 1);
+            player.add(move.getX(), move.getY() - 1, direction);
             //move.setY(move.getY() - 0);
         else if(direction == Direction.LEFT)
-            player.add(move.getX() + 1, move.getY());
+            player.add(move.getX() + 1, move.getY(), direction);
             //move.setX(move.getX() + 0);
         else if(direction == Direction.RIGHT)
-            player.add(move.getX() - 1, move.getY());
+            player.add(move.getX() - 1, move.getY(), direction);
             //move.setX(move.getX() - 0);
         
         
         getChildren().add(tail.get(tail.size() - 1));
+        */
+        
+        /*
+        player.add();
+        ArrayList<Tail> tail = player.getTail();
+        Tail lastPiece = tail.get(tail.size() - 1);
+        getChildren().add(lastPiece);
+        */
     }
     
     public void updateFrame()
     {
+        Tail head = player.getTail().get(0);
+        Move move = head.getCurrentMove();
+        Direction direction = move.getDirection();
+        if(move.getX() == 19 && move.getY() == 15)
+            addPiece();
         player.updateFrame(40, 30);
         //System.out.println("x: " + player.getX() + " y: " + player.getY());
     }
