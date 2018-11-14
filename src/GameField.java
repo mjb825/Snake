@@ -70,7 +70,7 @@
     
     public void addPiece()
     {
-        /*
+        
         ArrayList<Tail> tail = player.getTail();
         Tail lastPiece = tail.get(tail.size() - 1).copy();
         Move move = lastPiece.getCurrentMove();
@@ -93,7 +93,7 @@
         
         
         getChildren().add(tail.get(tail.size() - 1));
-        */
+        
         
         /*
         player.add();
