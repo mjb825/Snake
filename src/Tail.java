@@ -61,22 +61,21 @@ public class Tail extends Circle
                 System.out.println("---------------------------------------");
                 System.out.println("currentMove equals nextMove coordinates");
                 System.out.printf("currentX: %d currentY: %d\n", currentMove.getX(), currentMove.getY());
-                // update x, y of piece
-                /*
-                if(currentMove.getDirection() == Direction.UP) {
-                    currentMove.setY(currentMove.getY() - 1);
-                } else if(currentMove.getDirection() == Direction.DOWN) {
-                    currentMove.setY(currentMove.getY() + 1);
-                } else if(currentMove.getDirection() == Direction.LEFT) {
-                    currentMove.setX(currentMove.getX() - 1);
-                } else if(currentMove.getDirection() == Direction.RIGHT) {
-                    currentMove.setX(currentMove.getX() + 1);
-                }
-*/
             }
         
         }
         
+        // update x, y of piece        
+        if(currentMove.getDirection() == Direction.UP) {
+            currentMove.setY(currentMove.getY() - 1);
+        } else if(currentMove.getDirection() == Direction.DOWN) {
+            currentMove.setY(currentMove.getY() + 1);
+        } else if(currentMove.getDirection() == Direction.LEFT) {
+            currentMove.setX(currentMove.getX() - 1);
+        } else if(currentMove.getDirection() == Direction.RIGHT) {
+            currentMove.setX(currentMove.getX() + 1);
+        }
+
         System.out.println("---------------------------------------");
         System.out.println("move piece to currentMove");
         System.out.printf("currentX: %d currentY: %d\n", currentMove.getX(), currentMove.getY());
