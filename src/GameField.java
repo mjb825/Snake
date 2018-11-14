@@ -51,7 +51,25 @@
         
         
         
+        for(int i = 0; i < player.getTail().size(); i++)
+            getChildren().add(player.getTail().get(i));
         
+        
+        //addPiece();
+        
+        
+        //getChildren().add(player.add());
+
+        
+        
+        frameTimer = new Timeline(new KeyFrame(Duration.seconds(1.0/8.0),
+            e->updateFrame()));
+            
+        frameTimer.setCycleCount(Animation.INDEFINITE);
+    }
+    
+    public void addPiece()
+    {
         ArrayList<Tail> tail = player.getTail();
         Tail lastPiece = tail.get(tail.size() - 1).copy();
         Move move = lastPiece.getCurrentMove();
@@ -70,17 +88,8 @@
             player.add(move.getX() - 1, move.getY());
             //move.setX(move.getX() - 0);
         
-        for(int i = 0; i < player.getTail().size(); i++)
-            getChildren().add(player.getTail().get(i));
         
-        //getChildren().add(player.add());
-
-        
-        
-        frameTimer = new Timeline(new KeyFrame(Duration.seconds(1.0/8.0),
-            e->updateFrame()));
-            
-        frameTimer.setCycleCount(Animation.INDEFINITE);
+        getChildren().add(tail.get(tail.size() - 1));
     }
     
     public void updateFrame()
@@ -99,6 +108,8 @@
             player.changeDirection(Direction.LEFT);
         else if(ke.getCode() == KeyCode.RIGHT)
             player.changeDirection(Direction.RIGHT);
+        else if(ke.getCode() == KeyCode.SPACE)
+            addPiece();
     }
     
     public void play()
