@@ -1,6 +1,4 @@
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
 /**
  * container class for SnakeBody pieces
  * - keep track of position of each piece
@@ -29,6 +27,28 @@ public class Snake
     public void add(int x, int y)
     {
         tail.add(new Tail(new Move(x, y, Direction.UP)));
+    }
+    
+    public Tail add()
+    {
+        Tail lastPiece = tail.get(tail.size() - 1).copy();
+        Move move = lastPiece.getCurrentMove();
+        Direction direction = move.getDirection();
+        if(direction == Direction.UP)
+            move.setY(move.getY() + 0); 
+        else if(direction == Direction.DOWN)
+            move.setY(move.getY() - 0);
+        else if(direction == Direction.LEFT)
+            move.setX(move.getX() + 0);
+        else if(direction == Direction.RIGHT)
+            move.setX(move.getX() - 0);
+        
+        
+    
+            
+        tail.add(lastPiece);
+        
+        return lastPiece;
     }
     
     public ArrayList<Tail> getTail()

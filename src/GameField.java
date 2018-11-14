@@ -18,6 +18,7 @@
     import javafx.animation.Animation;
     import javafx.scene.input.KeyCode;
     import javafx.scene.input.KeyEvent;
+    import java.util.ArrayList;
     
     public class GameField extends Pane
     {    
@@ -27,6 +28,7 @@
     public GameField()
     {
         player = new Snake(20, 15);
+        /*
         player.add(20, 16);
         player.add(20, 17);
         player.add(20, 18);
@@ -45,10 +47,35 @@
         player.add(20, 31);
         player.add(20, 32);
         player.add(20, 33);
+*/
         
+        
+        
+        
+        ArrayList<Tail> tail = player.getTail();
+        Tail lastPiece = tail.get(tail.size() - 1).copy();
+        Move move = lastPiece.getCurrentMove();
+        Direction direction = move.getDirection();
+        
+        if(direction == Direction.UP)
+            player.add(move.getX(), move.getY() + 1);
+            //move.setY(move.getY() + 0); 
+        else if(direction == Direction.DOWN)
+            player.add(move.getX(), move.getY() - 1);
+            //move.setY(move.getY() - 0);
+        else if(direction == Direction.LEFT)
+            player.add(move.getX() + 1, move.getY());
+            //move.setX(move.getX() + 0);
+        else if(direction == Direction.RIGHT)
+            player.add(move.getX() - 1, move.getY());
+            //move.setX(move.getX() - 0);
         
         for(int i = 0; i < player.getTail().size(); i++)
             getChildren().add(player.getTail().get(i));
+        
+        //getChildren().add(player.add());
+
+        
         
         frameTimer = new Timeline(new KeyFrame(Duration.seconds(1.0/8.0),
             e->updateFrame()));
