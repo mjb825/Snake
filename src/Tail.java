@@ -88,4 +88,14 @@ public class Tail extends Circle
     {   
         return new Tail(this.nextMove, this.currentMove);
     }
+    
+    public void setNextMove(Queue<Move> nextMove)
+    {
+        this.nextMove = nextMove;
+    }
+    
+    public Queue<Move> getNextMove()
+    {
+        return nextMove;
+    }
 }

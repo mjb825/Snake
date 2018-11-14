@@ -1,4 +1,6 @@
 import java.util.ArrayList;
+import java.util.Queue;
+import java.util.LinkedList;
 /**
  * container class for SnakeBody pieces
  * - keep track of position of each piece
@@ -27,7 +29,13 @@ public class Snake
     public void add(int x, int y, Direction direction)
     {
         // SETTING THIS TO DIRECTION.UP CAUSED THE BUG!!!
-        tail.add(new Tail(new Move(x, y, direction)));
+        Tail piece = new Tail(new Move(x, y, direction));
+        Queue next = tail.get(tail.size() - 1).getNextMove();
+        piece.setNextMove(new LinkedList<>(next));
+        //piece.setNextMove(next);
+        if(piece.getNextMove().peek() != null)
+            piece.setCurrentMove(piece.getNextMove().remove());
+        tail.add(piece);
     }
     
     public void add()
