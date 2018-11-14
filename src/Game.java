@@ -26,4 +26,9 @@ public class Game extends Application
         
         game.play();
     }
+    
+    public static void main(String[] args)
+    {
+        launch(args);
+    }
 }

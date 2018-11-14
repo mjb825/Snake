@@ -58,6 +58,9 @@ public class Tail extends Circle
             if(currentMove.getX() == nextMove.peek().getX() &&
                currentMove.getY() == nextMove.peek().getY()) {
                 currentMove = nextMove.remove();
+                // NOT SURE IF THIS HAD ANY EFFECT
+                // WILL BE OBSOLETE IF WE JUST MAKE A DEEP COPY OF QUEUE WHEN COPYING
+                //currentMove = new Move(nextMove.remove());
                 
                 //System.out.println("---------------------------------------");
                 //System.out.println("currentMove equals nextMove coordinates");

@@ -32,6 +32,9 @@ public class Snake
         Tail piece = new Tail(new Move(x, y, direction));
         Queue next = tail.get(tail.size() - 1).getNextMove();
         piece.setNextMove(new LinkedList<>(next));
+        System.out.println(next.size());
+        //while(next.peek() != null)
+            //next.remove();
         //piece.setNextMove(next);
         if(piece.getNextMove().peek() != null)
             piece.setCurrentMove(piece.getNextMove().remove());

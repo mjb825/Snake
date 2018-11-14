@@ -21,6 +21,13 @@ public class Move
         this.direction = direction;
     }
     
+    public Move(Move move)
+    {
+        this.x = move.x;
+        this.y = move.y;
+        this.direction = move.direction;
+    }
+    
     public int getX()
     {
         return x;
