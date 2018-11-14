@@ -94,7 +94,7 @@ public class Snake
         
         //tail.get(0).setCurrentMove(currentMove);
         for(int i = 0; i < tail.size(); i++) {
-            System.out.println("tail " + i);
+            //System.out.println("tail " + i);
             tail.get(i).updateFrame();
         }
     }
@@ -119,6 +119,7 @@ public class Snake
         
         currentMove.setDirection(direction);
         
+        /*
         System.out.println("##############################################################################");
         System.out.println("##############################################################################");
         System.out.println("##############################################################################");
@@ -144,6 +145,7 @@ public class Snake
         System.out.println("##############################################################################");
         System.out.println("##############################################################################");
         System.out.println("##############################################################################");
+        */
         
         // add move to queue of all tail pieces
         for(int i = 0; i < tail.size(); i++) {

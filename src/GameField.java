@@ -51,6 +51,9 @@ public class GameField extends Pane
         player.add(20, 33);
 */
 
+        food = new Food();
+        generateFood();
+        getChildren().add(food);
 
 
         for(int i = 0; i < player.getTail().size(); i++)
@@ -62,9 +65,6 @@ public class GameField extends Pane
 
         //getChildren().add(player.add());
         
-        food = new Food();
-        generateFood();
-        getChildren().add(food);
 
         frameTimer = new Timeline(new KeyFrame(Duration.seconds(1.0/8.0),
             e->updateFrame()));
