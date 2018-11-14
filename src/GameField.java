@@ -30,6 +30,21 @@
         player.add(20, 16);
         player.add(20, 17);
         player.add(20, 18);
+        player.add(20, 19);
+        player.add(20, 20);
+        player.add(20, 21);
+        player.add(20, 22);
+        player.add(20, 23);
+        player.add(20, 24);
+        player.add(20, 25);
+        player.add(20, 26);
+        player.add(20, 27);
+        player.add(20, 28);
+        player.add(20, 29);
+        player.add(20, 30);
+        player.add(20, 31);
+        player.add(20, 32);
+        player.add(20, 33);
         
         
         for(int i = 0; i < player.getTail().size(); i++)
