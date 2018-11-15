@@ -30,21 +30,23 @@ public class Snake
     {
         // SETTING THIS TO DIRECTION.UP CAUSED THE BUG!!!
         Tail piece = new Tail(new Move(x, y, direction));
+        // THIS SOLVED THE INFAMOUSE MOVEMENT BUG
+        if(piece.getNextMove().peek() != null)
+            piece.setCurrentMove(piece.getNextMove().remove());
         Queue next = tail.get(tail.size() - 1).getNextMove();
         piece.setNextMove(new LinkedList<>(next));
         System.out.println(next.size());
+        System.out.println(tail.get(tail.size() - 1));
         //while(next.peek() != null)
             //next.remove();
         //piece.setNextMove(next);
-        if(piece.getNextMove().peek() != null)
-            piece.setCurrentMove(piece.getNextMove().remove());
         tail.add(piece);
     }
     
     public void add()
     {
         Tail lastPiece = tail.get(tail.size() - 1).copy();
-        Move move = lastPiece.getCurrentMove();
+        Move move = new Move(lastPiece.x, lastPiece.y, lastPiece.direction);
         Direction direction = move.getDirection();
         if(direction == Direction.UP)
             move.setY(move.getY() + 1); 

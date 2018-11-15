@@ -77,7 +77,7 @@ public class GameField extends Pane
 
         ArrayList<Tail> tail = player.getTail();
         Tail lastPiece = tail.get(tail.size() - 1).copy();
-        Move move = lastPiece.getCurrentMove();
+        Move move = new Move(lastPiece.x, lastPiece.y, lastPiece.direction);
         Direction direction = move.getDirection();
         // THIS DOESN'T WORK IF HEAD PIECE IS IN A DIFFERENT DIRECTION THAN THE TAIL
         // PIECE NEEDS TO DUPLICATE THE LAST PIECE'S QUEUE
@@ -123,10 +123,10 @@ public class GameField extends Pane
             y = (int)(Math.random() * 30);
             
             for (Tail piece : tail) {
-                if(x == piece.getCurrentMove().getX()) {
+                if(x == piece.x) {
                     found = true;
                     break;
-                } else if(y == piece.getCurrentMove().getY()) {
+                } else if(y == piece.y) {
                     found = true;
                     break;
                 } else {
@@ -141,15 +141,19 @@ public class GameField extends Pane
         food.setCenterX(x * 20 + 10);
         food.setCenterY(y * 20 + 10);
 
-
+        System.out.println("food:\nx: " + x + " y: " + y);
     }
 
     public void updateFrame()
     {
         Tail head = player.getTail().get(0);
-        Move move = head.getCurrentMove();
+        Move move = new Move(head.x, head.y, head.direction);
         Direction direction = move.getDirection();
-        if(move.getX() == food.getX() && move.getY() == food.getY()) {
+        //if(move.getX() == food.getX() && move.getY() == food.getY()) {
+            //addPiece();
+          //  generateFood();
+        //}
+        if(head.x == food.getX() && head.y == food.getY()) {
             addPiece();
             generateFood();
         }
