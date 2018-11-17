@@ -26,6 +26,8 @@ public class Tail extends Circle
         x = currentMove.getX();
         y = currentMove.getY();
         direction = currentMove.getDirection();
+        
+        //[remove] or alter constructor so it accepts Queue of last piece
         nextMove = new LinkedList<>();
     }
     
