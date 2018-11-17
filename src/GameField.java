@@ -20,55 +20,33 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import java.util.ArrayList;
 
+import javafx.scene.paint.*;
+import javafx.scene.layout.*;
+import javafx.geometry.Insets;
+
 public class GameField extends Pane
 {    
-    private Snake player; // will be class Snake in future
+    private Snake player;
     private Timeline frameTimer;
     private Food food;
 
     public GameField()
     {
         // start player in center of field
-        player = new Snake(20, 15);
-        /*
-        player.add(20, 16);
-        player.add(20, 17);
-        player.add(20, 18);
-        player.add(20, 19);
-        player.add(20, 20);
-        player.add(20, 21);
-        player.add(20, 22);
-        player.add(20, 23);
-        player.add(20, 24);
-        player.add(20, 25);
-        player.add(20, 26);
-        player.add(20, 27);
-        player.add(20, 28);
-        player.add(20, 29);
-        player.add(20, 30);
-        player.add(20, 31);
-        player.add(20, 32);
-        player.add(20, 33);
-*/
+        player = new Snake(0, 6);
 
         food = new Food();
         generateFood();
         getChildren().add(food);
 
-
+        setBackground(new Background(new BackgroundFill(new Color(.95,.95,.95,1), new CornerRadii(0), new Insets(0))));
+        
+        // add player to field
         for(int i = 0; i < player.getTail().size(); i++)
             getChildren().add(player.getTail().get(i));
-
-
-        //addPiece();
-
-
-        //getChildren().add(player.add());
         
-
-        frameTimer = new Timeline(new KeyFrame(Duration.seconds(1.0/8.0),
+        frameTimer = new Timeline(new KeyFrame(Duration.seconds(1.0/6.0),
             e->updateFrame()));
-
         frameTimer.setCycleCount(Animation.INDEFINITE);
     }
 
@@ -76,7 +54,10 @@ public class GameField extends Pane
     {
 
         ArrayList<Tail> tail = player.getTail();
+        //[add] getLastPiece and getFirstPiece methods to Snake class
+        //[remove] what is lastPiece even being used for????
         Tail lastPiece = tail.get(tail.size() - 1).copy();
+        //[change] is move even that necessary???
         Move move = new Move(lastPiece.x, lastPiece.y, lastPiece.direction);
         Direction direction = move.getDirection();
         // THIS DOESN'T WORK IF HEAD PIECE IS IN A DIFFERENT DIRECTION THAN THE TAIL
@@ -114,24 +95,40 @@ public class GameField extends Pane
         int x = 40;
         int y = 30;
         
+        int used = 1;
+        
         // food generation restrictions based off of snake pieces coordinates
         ArrayList<Tail> tail = player.getTail();
 
+            
         while(found)
         {
-            x = (int)(Math.random() * 40);
-            y = (int)(Math.random() * 30);
+            used++;
+            
+            if(used >= (2*6)) {
+                found = false;
+                System.out.println("YOU WON!!!!");
+                break;
+            }
+            
+            x = (int)(Math.random() * 6);
+            y = (int)(Math.random() * 2);
+            
+            // don't think it's possible, but just in case
+            if(x >= 40 || y >= 30) {
+                used--;
+                break;
+            }
             
             for (Tail piece : tail) {
-                if(x == piece.x) {
-                    found = true;
-                    break;
-                } else if(y == piece.y) {
+                
+                if(x == piece.x && y == piece.y) {
                     found = true;
                     break;
                 } else {
                     found = false;
                 }
+                
             }
         }
         
@@ -146,6 +143,8 @@ public class GameField extends Pane
 
     public void updateFrame()
     {
+        //[add] logic for running into edges, running into self
+        //[add] logic when the game is over
         Tail head = player.getTail().get(0);
         Move move = new Move(head.x, head.y, head.direction);
         Direction direction = move.getDirection();
@@ -154,7 +153,10 @@ public class GameField extends Pane
           //  generateFood();
         //}
         if(head.x == food.getX() && head.y == food.getY()) {
-            addPiece();
+            //addPiece();
+            //for(int i = 0; i < 2000; i++)
+                addPiece();
+            //[add] if player.getLength() == (width / 20) * (height / 20) YOU WIN! EXIT SOMEHOW   
             generateFood();
         }
         player.updateFrame(40, 30);

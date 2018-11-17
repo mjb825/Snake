@@ -20,10 +20,8 @@ public class Snake
         currentMove = new Move(x, y, Direction.UP);
         previousMove = currentMove.copy();
         
-        // THIS IS WHY ONLY THE FIRST PIECE MOVES!
-        // THIS CLASS UPDATES CURRENTMOVE AND THE FIRST PIECE HAS A DIRECT REFERENCE!!!!!!
-        // AS TO WHY THE OTHER PIECES ARE PICKED UP WHEN THIS ONE PASSES BY... IDK?
-        tail.add(new Tail(currentMove.copy()));
+
+        tail.add(new Tail(currentMove.copy(), "red"));
     }
     
     public void add(int x, int y, Direction direction)
@@ -31,8 +29,9 @@ public class Snake
         // SETTING THIS TO DIRECTION.UP CAUSED THE BUG!!!
         Tail piece = new Tail(new Move(x, y, direction));
         // THIS SOLVED THE INFAMOUSE MOVEMENT BUG
-        if(piece.getNextMove().peek() != null)
-            piece.setCurrentMove(piece.getNextMove().remove());
+        //[REMOVE] this wasn't even needed!!!
+        //if(piece.getNextMove().peek() != null)
+        //    piece.setCurrentMove(piece.getNextMove().remove());
         Queue next = tail.get(tail.size() - 1).getNextMove();
         piece.setNextMove(new LinkedList<>(next));
         System.out.println(next.size());
@@ -76,6 +75,7 @@ public class Snake
         //temporary to test movement
         // - GameField will handle what happens when the head hits the border (i.e., game over)
         
+        /*
         //THIS CHANGES THE POSITION OF THE PIECE???!!!?!?!?!!?!?!!!!!!
         if(currentMove.getDirection() == Direction.UP && currentMove.getY() > 0) {
             currentMove.setY(currentMove.getY() - 1);
@@ -86,27 +86,22 @@ public class Snake
         } else if(currentMove.getDirection() == Direction.RIGHT && currentMove.getX() < (rangeX - 1)){
             currentMove.setX(currentMove.getX() + 1);
         }
-        
-        
-        //list.get(0).updateFrame(0,0)
-        //setCenterX(x * 20 + 10);
-        //setCenterY(y * 20 + 10);
-        
-        //head.updateFrame(rangeX, rangeY);
-        
-        //[debugging]
-        //System.out.println("x: " + currentMove.getX() + " y: " + currentMove.getY());
+        */
+        //THIS CHANGES THE POSITION OF THE PIECE???!!!?!?!?!!?!?!!!!!!
+        if(currentMove.getDirection() == Direction.UP) {
+            currentMove.setY(currentMove.getY() - 1);
+        } else if(currentMove.getDirection() == Direction.DOWN) {
+            currentMove.setY(currentMove.getY() + 1);
+        } else if(currentMove.getDirection() == Direction.LEFT) {
+            currentMove.setX(currentMove.getX() - 1);
+        } else if(currentMove.getDirection() == Direction.RIGHT){
+            currentMove.setX(currentMove.getX() + 1);
+        }
         
         //tail.get(0).setCurrentMove(currentMove);
         for(int i = 0; i < tail.size(); i++) {
-            //System.out.println("tail " + i);
             tail.get(i).updateFrame();
         }
-    }
-    
-    public Tail getHead()
-    {
-        return tail.get(0);
     }
     
     public void changeDirection(Direction direction)
@@ -122,48 +117,14 @@ public class Snake
                return;  
         }
         
+        // update current and previous move of snake
         currentMove.setDirection(direction);
-        
-        /*
-        System.out.println("##############################################################################");
-        System.out.println("##############################################################################");
-        System.out.println("##############################################################################");
-        System.out.println("##############################################################################");
-        System.out.println("##############################################################################");
-        System.out.println("##############################################################################");
-        System.out.println("##############################################################################");
-        System.out.println("##############################################################################");
-        System.out.println("##############################################################################");
-        System.out.println("##############################################################################");
-        System.out.println("##############################################################################");
-        System.out.println("##############################################################################");
-        System.out.println("##############################################################################");
-        System.out.println("##############################################################################");
-        System.out.println("##############################################################################");
-        System.out.println("##############################################################################");
-        System.out.println("##############################################################################");
-        System.out.println("##############################################################################");
-        System.out.println("##############################################################################");
-        System.out.println("##############################################################################");
-        System.out.println("##############################################################################");
-        System.out.println("##############################################################################");
-        System.out.println("##############################################################################");
-        System.out.println("##############################################################################");
-        System.out.println("##############################################################################");
-        */
+        previousMove = currentMove.copy();
         
         // add move to queue of all tail pieces
         for(int i = 0; i < tail.size(); i++) {
             tail.get(i).addNextMove(currentMove.copy());
         }
-        
-        previousMove = currentMove.copy();
-        
-        /*
-        previousX = x;
-        previousY = y;
-        currentDirection = direction;
-*/
-        
+
     }
 }

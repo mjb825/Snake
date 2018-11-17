@@ -17,7 +17,7 @@ public class Game extends Application
     {
         GameField game = new GameField();
         
-        Scene scene = new Scene(game, 800, 600);
+        Scene scene = new Scene(game, 480, 360);
         scene.setOnKeyPressed(ke->game.handleKey(ke));
         
         stage.setScene(scene);
