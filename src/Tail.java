@@ -50,10 +50,15 @@ public class Tail extends Circle
 
     public Tail(Queue<Move> nextMove, int x, int y, Direction direction)
     {
-        this.nextMove = nextMove;
+        // circle properties
+        super(8);
+        setStyle("-fx-stroke: black; -fx-fill: blue; -fx-stroke-width: 2;");
+        
+        // piece properties
         this.x = x;
         this.y = y;
         this.direction = direction;
+        this.nextMove = new LinkedList<>(nextMove);
     }
     
     // set current x, y, and direction of piece
@@ -93,13 +98,16 @@ public class Tail extends Circle
         }
         
         // update x, y of piece        
-        if(direction == Direction.UP) {
+        if(direction == Direction.N) {
             y--;
-        } else if(direction == Direction.DOWN) {
+        }
+        else if(direction == Direction.S) {
             y++;
-        } else if(direction == Direction.LEFT) {
+        }
+        else if(direction == Direction.E) {
             x--;
-        } else if(direction == Direction.RIGHT) {
+        } 
+        else if(direction == Direction.W) {
             x++;
         }
 
@@ -110,9 +118,10 @@ public class Tail extends Circle
     
     // return copy of piece
     //[remove] this isn't necessary imo, just have getDirection, getX, getY, getNextMove
+    //[change] is new LinkedList necessary
     public Tail copy()
     {   
-        return new Tail(this.nextMove, x, y, direction);
+        return new Tail(nextMove, x, y, direction);
     }
     
     // set nextMove Queue of piece
@@ -127,4 +136,33 @@ public class Tail extends Circle
         return nextMove;
     }
     
+    public int getX()
+    {
+        return x;
+    }
+    
+    public void setX(int x)
+    {
+        this.x = x;
+    }
+    
+    public int getY()
+    {
+        return y;
+    }
+    
+    public void setY(int y)
+    {
+        this.y = y;
+    }
+    
+    public Direction getDirection()
+    {
+        return direction;
+    }
+    
+    public void setDirection(Direction direction)
+    {
+        this.direction = direction;
+    }
 }

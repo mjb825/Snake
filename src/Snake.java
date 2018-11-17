@@ -17,7 +17,7 @@ public class Snake
     public Snake(int x, int y)
     {
         tail = new ArrayList<>();
-        currentMove = new Move(x, y, Direction.UP);
+        currentMove = new Move(x, y, Direction.N);
         previousMove = currentMove.copy();
         
 
@@ -26,19 +26,16 @@ public class Snake
     
     public void add(int x, int y, Direction direction)
     {
-        // SETTING THIS TO DIRECTION.UP CAUSED THE BUG!!!
+        
         Tail piece = new Tail(new Move(x, y, direction));
-        // THIS SOLVED THE INFAMOUSE MOVEMENT BUG
-        //[REMOVE] this wasn't even needed!!!
-        //if(piece.getNextMove().peek() != null)
-        //    piece.setCurrentMove(piece.getNextMove().remove());
         Queue next = tail.get(tail.size() - 1).getNextMove();
         piece.setNextMove(new LinkedList<>(next));
-        System.out.println(next.size());
-        System.out.println(tail.get(tail.size() - 1));
-        //while(next.peek() != null)
-            //next.remove();
-        //piece.setNextMove(next);
+        
+        tail.add(piece);
+    }
+    
+    public void add(Tail piece)
+    {
         tail.add(piece);
     }
     
@@ -47,13 +44,13 @@ public class Snake
         Tail lastPiece = tail.get(tail.size() - 1).copy();
         Move move = new Move(lastPiece.x, lastPiece.y, lastPiece.direction);
         Direction direction = move.getDirection();
-        if(direction == Direction.UP)
+        if(direction == Direction.N)
             move.setY(move.getY() + 1); 
-        else if(direction == Direction.DOWN)
+        else if(direction == Direction.S)
             move.setY(move.getY() - 1);
-        else if(direction == Direction.LEFT)
+        else if(direction == Direction.E)
             move.setX(move.getX() + 1);
-        else if(direction == Direction.RIGHT)
+        else if(direction == Direction.W)
             move.setX(move.getX() - 1);
         
         
@@ -69,7 +66,7 @@ public class Snake
         return tail;
     }
     
-    public void updateFrame(int rangeX, int rangeY)
+    public void updateFrame()
     {
         //update position of head of snake
         //temporary to test movement
@@ -88,17 +85,20 @@ public class Snake
         }
         */
         //THIS CHANGES THE POSITION OF THE PIECE???!!!?!?!?!!?!?!!!!!!
-        if(currentMove.getDirection() == Direction.UP) {
+        if(currentMove.getDirection() == Direction.N) {
             currentMove.setY(currentMove.getY() - 1);
-        } else if(currentMove.getDirection() == Direction.DOWN) {
+        }
+        else if(currentMove.getDirection() == Direction.S) {
             currentMove.setY(currentMove.getY() + 1);
-        } else if(currentMove.getDirection() == Direction.LEFT) {
+        }
+        else if(currentMove.getDirection() == Direction.E) {
             currentMove.setX(currentMove.getX() - 1);
-        } else if(currentMove.getDirection() == Direction.RIGHT){
+        }
+        else if(currentMove.getDirection() == Direction.W){
             currentMove.setX(currentMove.getX() + 1);
         }
         
-        //tail.get(0).setCurrentMove(currentMove);
+        // update each piece of snake
         for(int i = 0; i < tail.size(); i++) {
             tail.get(i).updateFrame();
         }
@@ -110,10 +110,10 @@ public class Snake
         // stop player from going in opposite direction or changing to the current direction
         if((currentMove.getDirection() == direction) ||
            (previousMove.getX() == currentMove.getX() && previousMove.getY() == currentMove.getY()) ||
-           (currentMove.getDirection() == Direction.UP && direction == Direction.DOWN) ||
-           (currentMove.getDirection() == Direction.DOWN && direction == Direction.UP) ||
-           (currentMove.getDirection() == Direction.LEFT && direction == Direction.RIGHT) ||
-           (currentMove.getDirection() == Direction.RIGHT && direction == Direction.LEFT)) {
+           (currentMove.getDirection() == Direction.N && direction == Direction.S) ||
+           (currentMove.getDirection() == Direction.S && direction == Direction.N) ||
+           (currentMove.getDirection() == Direction.E && direction == Direction.W) ||
+           (currentMove.getDirection() == Direction.W && direction == Direction.E)) {
                return;  
         }
         
@@ -126,5 +126,15 @@ public class Snake
             tail.get(i).addNextMove(currentMove.copy());
         }
 
+    }
+    
+    public Tail getFirst()
+    {
+        return tail.get(0);
+    }
+    
+    public Tail getLast()
+    {
+        return tail.get(tail.size() - 1);
     }
 }
