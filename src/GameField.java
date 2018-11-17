@@ -127,9 +127,30 @@ public class GameField extends Pane
 
     public void updateFrame()
     {
-        //[add] logic for running into edges, running into self
-        //[add] logic when the game is over
+        // get first piece from snake
         Tail head = player.getFirst();
+        
+        // get tail from snake
+        ArrayList<Tail> tail = player.getTail();
+        
+        // pause game when running into edges, running into self
+        if(head.getX() < 0 || head.getX() >= 24 || head.getY() < 0 || head.getY() >= 18) {
+            pause();
+            return;
+        }
+        
+        // pause game when first piece runs into tail of snake
+        for(int i = 1; i < tail.size(); i++) {
+            
+            if(head.getX() == tail.get(i).getX() && head.getY() == tail.get(i).getY()) {
+                pause();
+                return;
+            }
+            
+        }
+        
+        
+        //[add] logic when the game is over
         if(head.getX() == food.getX() && head.getY() == food.getY()) {
             addPiece();
             //[add] if player.getLength() == (width / 20) * (height / 20) YOU WIN! EXIT SOMEHOW   
@@ -148,12 +169,17 @@ public class GameField extends Pane
             player.changeDirection(Direction.E);
         else if(ke.getCode() == KeyCode.RIGHT)
             player.changeDirection(Direction.W);
-        else if(ke.getCode() == KeyCode.SPACE) {
-            addPiece();player.updateFrame();}
+        else if(ke.getCode() == KeyCode.SPACE)// {
+            addPiece();//player.updateFrame();}
     }
 
     public void play()
     {
         frameTimer.play();
+    }
+    
+    public void pause()
+    {
+        frameTimer.pause();
     }
 }
