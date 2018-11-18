@@ -17,11 +17,12 @@ public class Game extends Application
     {
         GameField game = new GameField();
         
-        Scene scene = new Scene(game, 480, 360);
+        Scene scene = new Scene(game, 470, 350);
         scene.setOnKeyPressed(ke->game.handleKey(ke));
         
         stage.setScene(scene);
         stage.setTitle("Snake");
+        stage.setResizable(false);
         stage.show();
         
         game.play();
@@ -31,4 +32,5 @@ public class Game extends Application
     {
         launch(args);
     }
+    
 }

@@ -29,9 +29,31 @@ public class GameField extends Pane
     private Snake player;
     private Timeline frameTimer;
     private Food food;
+    private Game game;
 
     public GameField()
     {
+        // start player in center of field
+        player = new Snake(12, 9);
+
+        food = new Food();
+        generateFood();
+        getChildren().add(food);
+
+        setBackground(new Background(new BackgroundFill(new Color(.95,.95,.95,1), new CornerRadii(0), new Insets(0))));
+        
+        // add player to field
+        getChildren().add(player.getFirst());
+        
+        frameTimer = new Timeline(new KeyFrame(Duration.seconds(1.0/8.0),
+            e->updateFrame()));
+        frameTimer.setCycleCount(Animation.INDEFINITE);
+    }
+
+    public GameField(Game game)
+    {
+        this.game = game;
+        
         // start player in center of field
         player = new Snake(12, 9);
 
@@ -74,11 +96,10 @@ public class GameField extends Pane
     public void generateFood()
     {
         boolean found = true;
+        
         // coordinates for food (upper limit = 23, 17) (n * 20 + 10) (480x360)
         int x = 24;
         int y = 18;
-        
-        int tried = 1;
         
         // food generation restrictions based off of snake pieces coordinates
         ArrayList<Tail> tail = player.getTail();
@@ -86,21 +107,13 @@ public class GameField extends Pane
             
         while(found)
         {
-            // keep track of how many spaces the food has tried generating in
-            tried++;
-            
-            //if(tried >= (24 * 18)) {
-            //    System.out.println("YOU WON!!!!");
-            //    break;
-            //}
             
             // generate random coordinates for food
-            x = (int)(Math.random() * 24);
+            x = (int)(.5 * 24);
             y = (int)(Math.random() * 18);
             
             // don't think it's possible, but just in case
             if(x >= 24 || y >= 18) {
-                tried--;
                 break;
             }
             
@@ -130,35 +143,58 @@ public class GameField extends Pane
         // get first piece from snake
         Tail head = player.getFirst();
         
-        // get tail from snake
-        ArrayList<Tail> tail = player.getTail();
-        
-        // pause game when running into edges, running into self
-        if(head.getX() < 0 || head.getX() >= 24 || head.getY() < 0 || head.getY() >= 18) {
+        // pause game if game over
+        if(isGameOver()) {
             pause();
             return;
         }
         
-        // pause game when first piece runs into tail of snake
+        // perfom actions when snake runs into food
+        if(head.getX() == food.getX() && head.getY() == food.getY()) {
+            
+            // add piece to player then update player
+            addPiece();
+            player.updateFrame();
+            
+            // pause game if game over, else generate food
+            if(isGameOver()) {
+                pause();
+            } else {
+                generateFood();
+            }
+            
+        } else {
+            
+            player.updateFrame();
+            
+        }
+    }
+
+    public boolean isGameOver()
+    {
+        // get first piece from snake
+        Tail head = player.getFirst();
+        
+        // get tail from snake
+        ArrayList<Tail> tail = player.getTail();
+        
+        // return true when running into edges
+        if(head.getX() < 0 || head.getX() > 23 || head.getY() < 0 || head.getY() > 17) {
+            return true;
+        }
+        
+        // return true when running into self
         for(int i = 1; i < tail.size(); i++) {
             
             if(head.getX() == tail.get(i).getX() && head.getY() == tail.get(i).getY()) {
-                pause();
-                return;
+                return true;
             }
             
         }
         
-        
-        //[add] logic when the game is over
-        if(head.getX() == food.getX() && head.getY() == food.getY()) {
-            addPiece();
-            //[add] if player.getLength() == (width / 20) * (height / 20) YOU WIN! EXIT SOMEHOW   
-            generateFood();
-        }
-        player.updateFrame();
+        return false;
     }
-
+    
     public void handleKey(KeyEvent ke)
     {
         if(ke.getCode() == KeyCode.UP)
@@ -177,6 +213,8 @@ public class GameField extends Pane
     {
         frameTimer.play();
     }
+    
+    
     
     public void pause()
     {
