@@ -58,15 +58,18 @@ public class GameField extends Pane
         
         // start player in center of field
         player = new Snake(12, 9);
-
+        
+        // add player to field
+        getChildren().add(player.getFirst());
+ 
+        // generate and add food
         food = new Food();
         generateFood();
         getChildren().add(food);
 
+        // change background color
         setBackground(new Background(new BackgroundFill(new Color(.95,.95,.95,1), new CornerRadii(0), new Insets(0))));
         
-        // add player to field
-        getChildren().add(player.getFirst());
         
         frameTimer = new Timeline(new KeyFrame(Duration.seconds(1.0/8.0),
             e->updateFrame()));
@@ -137,7 +140,6 @@ public class GameField extends Pane
         
         food.setCenterX(x * 20 + 10);
         food.setCenterY(y * 20 + 10);
-
     }
 
     public void updateFrame()
@@ -166,9 +168,7 @@ public class GameField extends Pane
             }
             
         } else {
-            
             player.updateFrame();
-            
         }
     }
 
@@ -207,16 +207,12 @@ public class GameField extends Pane
             player.changeDirection(Direction.E);
         else if(ke.getCode() == KeyCode.RIGHT)
             player.changeDirection(Direction.W);
-        else if(ke.getCode() == KeyCode.SPACE)// {
-            addPiece();//player.updateFrame();}
     }
 
     public void play()
     {
         frameTimer.play();
     }
-    
-    
     
     public void pause()
     {

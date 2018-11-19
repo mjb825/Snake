@@ -1,4 +1,3 @@
-
 /**
  * Enumeration class Direction - compass directions which the snake can go
  *

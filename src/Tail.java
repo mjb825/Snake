@@ -1,13 +1,13 @@
 import javafx.scene.shape.Circle;
 import java.util.Queue;
 import java.util.LinkedList;
+
 /**
  * The pieces that make up the Snake
  * @author Matthew Below
  */
 public class Tail extends Circle
 {
-
     public int x;
     public int y;
     public Direction direction;
@@ -27,8 +27,6 @@ public class Tail extends Circle
         x = currentMove.getX();
         y = currentMove.getY();
         direction = currentMove.getDirection();
-        
-        //[remove] or alter constructor so it accepts Queue of last piece
         nextMove = new LinkedList<>();
     }
     
@@ -118,8 +116,6 @@ public class Tail extends Circle
     }
     
     // return copy of piece
-    //[remove] this isn't necessary imo, just have getDirection, getX, getY, getNextMove
-    //[change] is new LinkedList necessary
     public Tail copy()
     {   
         return new Tail(nextMove, x, y, direction);

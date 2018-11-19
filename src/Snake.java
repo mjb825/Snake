@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.Queue;
 import java.util.LinkedList;
+
 /**
  * container class for pieces of Snake
  * - keep track of position of each piece
@@ -13,7 +14,9 @@ public class Snake
     private Move currentMove;
     private Move previousMove;
     
-    public Snake(){}
+    public Snake()
+    {
+    }
     
     public Snake(int x, int y)
     {
@@ -21,47 +24,16 @@ public class Snake
         currentMove = new Move(x, y, Direction.N);
         previousMove = currentMove.copy();
         
+        // add initial head piece to snake
+        Tail head = new Tail(currentMove.copy(), "red");
+        tail.add(head);
+    }
 
-        tail.add(new Tail(currentMove.copy(), "red"));
-    }
-    
-    public void add(int x, int y, Direction direction)
-    {
-        
-        Tail piece = new Tail(new Move(x, y, direction));
-        Queue next = tail.get(tail.size() - 1).getNextMove();
-        piece.setNextMove(new LinkedList<>(next));
-        
-        tail.add(piece);
-    }
-    
     public void add(Tail piece)
     {
         tail.add(piece);
     }
-    
-    public void add()
-    {
-        Tail lastPiece = tail.get(tail.size() - 1).copy();
-        Move move = new Move(lastPiece.x, lastPiece.y, lastPiece.direction);
-        Direction direction = move.getDirection();
-        if(direction == Direction.N)
-            move.setY(move.getY() + 1); 
-        else if(direction == Direction.S)
-            move.setY(move.getY() - 1);
-        else if(direction == Direction.E)
-            move.setX(move.getX() + 1);
-        else if(direction == Direction.W)
-            move.setX(move.getX() - 1);
-        
-        
-    
-            
-        tail.add(lastPiece);
-        
-        //return lastPiece;
-    }
-    
+
     public ArrayList<Tail> getTail()
     {
         return tail;
@@ -69,23 +41,7 @@ public class Snake
     
     public void updateFrame()
     {
-        //update position of head of snake
-        //temporary to test movement
-        // - GameField will handle what happens when the head hits the border (i.e., game over)
-        
-        /*
-        //THIS CHANGES THE POSITION OF THE PIECE???!!!?!?!?!!?!?!!!!!!
-        if(currentMove.getDirection() == Direction.UP && currentMove.getY() > 0) {
-            currentMove.setY(currentMove.getY() - 1);
-        } else if(currentMove.getDirection() == Direction.DOWN && currentMove.getY() < (rangeY - 1)) {
-            currentMove.setY(currentMove.getY() + 1);
-        } else if(currentMove.getDirection() == Direction.LEFT && currentMove.getX() > 0) {
-            currentMove.setX(currentMove.getX() - 1);
-        } else if(currentMove.getDirection() == Direction.RIGHT && currentMove.getX() < (rangeX - 1)){
-            currentMove.setX(currentMove.getX() + 1);
-        }
-        */
-        //THIS CHANGES THE POSITION OF THE PIECE???!!!?!?!?!!?!?!!!!!!
+        // update position of snake, which the head and tail of snake follow
         if(currentMove.getDirection() == Direction.N) {
             currentMove.setY(currentMove.getY() - 1);
         }
@@ -107,7 +63,6 @@ public class Snake
     
     public void changeDirection(Direction direction)
     {
-        
         // stop player from going in opposite direction or changing to the current direction
         if((currentMove.getDirection() == direction) ||
            (previousMove.getX() == currentMove.getX() && previousMove.getY() == currentMove.getY()) ||
@@ -126,7 +81,6 @@ public class Snake
         for(int i = 0; i < tail.size(); i++) {
             tail.get(i).addNextMove(currentMove.copy());
         }
-
     }
     
     public Tail getFirst()
