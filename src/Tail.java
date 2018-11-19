@@ -3,6 +3,7 @@ import java.util.Queue;
 import java.util.LinkedList;
 /**
  * The pieces that make up the Snake
+ * @author Matthew Below
  */
 public class Tail extends Circle
 {

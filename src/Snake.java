@@ -2,9 +2,10 @@ import java.util.ArrayList;
 import java.util.Queue;
 import java.util.LinkedList;
 /**
- * container class for SnakeBody pieces
+ * container class for pieces of Snake
  * - keep track of position of each piece
  * - used for if you collide into yourself
+ * @author Matthew Below
  */
 public class Snake
 {

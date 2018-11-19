@@ -1,5 +1,3 @@
-
-
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -24,6 +22,10 @@ import javafx.scene.paint.*;
 import javafx.scene.layout.*;
 import javafx.geometry.Insets;
 
+/**
+ * Pane that displays all assets for Snake game
+ * @author Matthew Below
+ */
 public class GameField extends Pane
 {    
     private Snake player;
@@ -109,7 +111,7 @@ public class GameField extends Pane
         {
             
             // generate random coordinates for food
-            x = (int)(.5 * 24);
+            x = (int)(Math.random() * 24);
             y = (int)(Math.random() * 18);
             
             // don't think it's possible, but just in case

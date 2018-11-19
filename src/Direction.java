@@ -1,11 +1,10 @@
 
 /**
- * Enumeration class Direction - write a description of the enum class here
+ * Enumeration class Direction - compass directions which the snake can go
  *
- * @author (your name here)
- * @version (version number or date here)
+ * @author Matthew Below
  */
 public enum Direction
 {
-    N, S, E, W
+    N, S, E, W, NE, NW, SE, SW
 }

@@ -1,5 +1,3 @@
-
-
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -10,6 +8,10 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
+/**
+ * Application class for the Snake game
+ * @author Matthew Below
+ */
 public class Game extends Application
 {
     @Override

@@ -1,6 +1,6 @@
-
 /**
- * Direction and X, Y coordinates
+ * Move for Snake pieces that holds Direction and x,y coordinates
+ * @author Matthew Below
  */
 public class Move
 {
