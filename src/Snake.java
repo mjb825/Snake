@@ -18,7 +18,7 @@ public class Snake
     {
     }
     
-    public Snake(int x, int y, Direction direction)
+    public Snake(double x, double y, Direction direction)
     {
         tail = new ArrayList<>();
         currentMove = new Move(x, y, direction);
@@ -39,7 +39,7 @@ public class Snake
         return tail;
     }
     
-    public void updateFrame(int movement)
+    public void updateFrame(double movement)
     {
         // update position of snake, which the head and tail of snake follow
         if(currentMove.getDirection() == Direction.N) {

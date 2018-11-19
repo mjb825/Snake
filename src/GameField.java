@@ -34,12 +34,15 @@ public class GameField extends Pane
     private Game game;
     private boolean diagonal;
     
-    private final int movement;
+    private final double movement;
 
     public GameField(boolean diagonal, boolean reverse)
     {
-        
-        if(reverse)
+        if(diagonal && reverse)
+            movement = -.5;
+        else if(diagonal)
+            movement = .5;
+        else if(reverse)
             movement = -1;
         else
             movement = 1;
@@ -62,7 +65,7 @@ public class GameField extends Pane
         // add player to field
         getChildren().add(player.getFirst());
         
-        frameTimer = new Timeline(new KeyFrame(Duration.seconds(1.0/4.0),
+        frameTimer = new Timeline(new KeyFrame(Duration.seconds(1.0/8.0),
             e->updateFrame()));
         frameTimer.setCycleCount(Animation.INDEFINITE);
     }
@@ -152,7 +155,7 @@ public class GameField extends Pane
             y = (int)(Math.random() * 19);
             
             // generate food only where snake can go if snake is moving diagonally
-            if(diagonal) {
+            if(!diagonal) {
                 if(y % 2 == 0) {
                     if(x % 2 == 0) {
                         continue;

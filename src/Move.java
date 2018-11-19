@@ -5,14 +5,14 @@
 public class Move
 {
     private Direction direction;
-    private int x;
-    private int y;
+    private double x;
+    private double y;
 
     public Move()
     {  
     }
     
-    public Move(int x, int y, Direction direction)
+    public Move(double x, double y, Direction direction)
     {
         this.x = x;
         this.y = y;
@@ -26,22 +26,22 @@ public class Move
         this.direction = move.direction;
     }
     
-    public int getX()
+    public double getX()
     {
         return x;
     }
     
-    public void setX(int x)
+    public void setX(double x)
     {
         this.x = x;
     }
     
-    public int getY()
+    public double getY()
     {
         return y;
     }
     
-    public void setY(int y)
+    public void setY(double y)
     {
         this.y = y;
     }

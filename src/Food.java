@@ -6,8 +6,8 @@ import javafx.scene.shape.Circle;
  */
 public class Food extends Circle
 {
-    private int x;
-    private int y;
+    private double x;
+    private double y;
     
     public Food()
     {
@@ -15,7 +15,7 @@ public class Food extends Circle
         setStyle("-fx-stroke: black; -fx-fill: orange; -fx-stroke-width: 2;");
     }
     
-    public Food(int x, int y)
+    public Food(double x, double y)
     {
         super(8);
         setStyle("-fx-stroke: black; -fx-fill: orange; -fx-stroke-width: 2;");
@@ -23,22 +23,22 @@ public class Food extends Circle
         this.y = y;
     }
     
-    public int getX()
+    public double getX()
     {
         return x;
     }
     
-    public void setX(int x)
+    public void setX(double x)
     {
         this.x = x;
     }
     
-    public int getY()
+    public double getY()
     {
         return y;
     }
     
-    public void setY(int y)
+    public void setY(double y)
     {
         this.y = y;
     }
