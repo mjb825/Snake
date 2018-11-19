@@ -39,42 +39,42 @@ public class Snake
         return tail;
     }
     
-    public void updateFrame()
+    public void updateFrame(int movement)
     {
         // update position of snake, which the head and tail of snake follow
         if(currentMove.getDirection() == Direction.N) {
-            currentMove.setY(currentMove.getY() - 1);
+            currentMove.setY(currentMove.getY() - movement);
         }
         else if(currentMove.getDirection() == Direction.S) {
-            currentMove.setY(currentMove.getY() + 1);
+            currentMove.setY(currentMove.getY() + movement);
         }
         else if(currentMove.getDirection() == Direction.E) {
-            currentMove.setX(currentMove.getX() - 1);
+            currentMove.setX(currentMove.getX() - movement);
         }
         else if(currentMove.getDirection() == Direction.W){
-            currentMove.setX(currentMove.getX() + 1);
+            currentMove.setX(currentMove.getX() + movement);
         }
         else if(currentMove.getDirection() == Direction.NE){
-            currentMove.setY(currentMove.getY() - 1);
-            currentMove.setX(currentMove.getX() - 1);
+            currentMove.setY(currentMove.getY() - movement);
+            currentMove.setX(currentMove.getX() - movement);
         }
         else if(currentMove.getDirection() == Direction.NW){
-            currentMove.setY(currentMove.getY() - 1);
-            currentMove.setX(currentMove.getX() + 1);
+            currentMove.setY(currentMove.getY() - movement);
+            currentMove.setX(currentMove.getX() + movement);
         }
         else if(currentMove.getDirection() == Direction.SE){
-            currentMove.setY(currentMove.getY() + 1);
-            currentMove.setX(currentMove.getX() - 1);
+            currentMove.setY(currentMove.getY() + movement);
+            currentMove.setX(currentMove.getX() - movement);
         }
         else if(currentMove.getDirection() == Direction.SW){
-            currentMove.setY(currentMove.getY() + 1);
-            currentMove.setX(currentMove.getX() + 1);
+            currentMove.setY(currentMove.getY() + movement);
+            currentMove.setX(currentMove.getX() + movement);
         }
         
         
         // update each piece of snake
         for(int i = 0; i < tail.size(); i++) {
-            tail.get(i).updateFrame();
+            tail.get(i).updateFrame(movement);
         }
     }
     

@@ -33,9 +33,17 @@ public class GameField extends Pane
     private Food food;
     private Game game;
     private boolean diagonal;
+    
+    private final int movement;
 
-    public GameField(boolean diagonal)
+    public GameField(boolean diagonal, boolean reverse)
     {
+        
+        if(reverse)
+            movement = -1;
+        else
+            movement = 1;
+        
         // set movement of snake (diagonal or perpendicular)
         this.diagonal = diagonal;
         
@@ -61,6 +69,7 @@ public class GameField extends Pane
 
     public GameField(Game game)
     {
+        movement = 1;
         this.game = game;
         
         // start player in center of field
@@ -91,28 +100,28 @@ public class GameField extends Pane
         // set new piece position according to direction copied from last piece
         // (e.g., if last piece is going left, set new piece 1 space to the right)
         if(piece.getDirection() == Direction.N)
-            piece.setY(piece.getY() + 1);
+            piece.setY(piece.getY() + movement);
         else if(piece.getDirection() == Direction.S)
-            piece.setY(piece.getY() - 1);
+            piece.setY(piece.getY() - movement);
         else if(piece.getDirection() == Direction.E)
-            piece.setX(piece.getX() + 1);
+            piece.setX(piece.getX() + movement);
         else if(piece.getDirection() == Direction.W)
-            piece.setX(piece.getX() - 1);
+            piece.setX(piece.getX() - movement);
         else if(piece.getDirection() == Direction.NE) {
-            piece.setY(piece.getY() + 1);
-            piece.setX(piece.getX() + 1);
+            piece.setY(piece.getY() + movement);
+            piece.setX(piece.getX() + movement);
         }
         else if(piece.getDirection() == Direction.NW) {
-            piece.setY(piece.getY() + 1);
-            piece.setX(piece.getX() - 1);
+            piece.setY(piece.getY() + movement);
+            piece.setX(piece.getX() - movement);
         }
         else if(piece.getDirection() == Direction.SE) {
-            piece.setY(piece.getY() - 1);
-            piece.setX(piece.getX() + 1);
+            piece.setY(piece.getY() - movement);
+            piece.setX(piece.getX() + movement);
         }
         else if(piece.getDirection() == Direction.SW) {
-            piece.setY(piece.getY() - 1);
-            piece.setX(piece.getX() - 1);
+            piece.setY(piece.getY() - movement);
+            piece.setX(piece.getX() - movement);
         }
         
         
@@ -199,7 +208,7 @@ public class GameField extends Pane
             
             // add piece to player then update player
             addPiece();
-            player.updateFrame();
+            player.updateFrame(movement);
             
             // pause game if game over, else generate food
             if(isGameOver()) {
@@ -209,7 +218,7 @@ public class GameField extends Pane
             }
             
         } else {
-            player.updateFrame();
+            player.updateFrame(movement);
         }
     }
 
@@ -271,4 +280,5 @@ public class GameField extends Pane
     {
         frameTimer.pause();
     }
+    
 }

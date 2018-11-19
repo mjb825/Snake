@@ -83,7 +83,7 @@ public class Tail extends Circle
         return "x: "+ x + " y: " + y + " direction: " + direction;
     }
     
-    public void updateFrame()
+    public void updateFrame(int movement)
     {
         
         if(nextMove.peek() != null) {
@@ -98,32 +98,32 @@ public class Tail extends Circle
         
         // update x, y of piece        
         if(direction == Direction.N) {
-            y--;
+            y = y - movement;
         }
         else if(direction == Direction.S) {
-            y++;
+            y = y + movement;
         }
         else if(direction == Direction.E) {
-            x--;
+            x = x - movement;
         } 
         else if(direction == Direction.W) {
-            x++;
+            x = x + movement;
         }
         else if(direction == Direction.NE) {
-            y--;
-            x--;
+            y = y - movement;
+            x = x - movement;
         }
         else if(direction == Direction.NW) {
-            y--;
-            x++;
+            y = y - movement;
+            x = x + movement;
         }
         else if(direction == Direction.SE) {
-            y++;
-            x--;
+            y = y + movement;
+            x = x - movement;
         }
         else if(direction == Direction.SW) {
-            y++;
-            x++;
+            y = y + movement;
+            x = x + movement;
         }
 
         // update position of piece
