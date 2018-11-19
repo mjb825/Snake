@@ -32,11 +32,18 @@ public class GameField extends Pane
     private Timeline frameTimer;
     private Food food;
     private Game game;
+    private boolean diagonal;
 
-    public GameField()
+    public GameField(boolean diagonal)
     {
+        // set movement of snake (diagonal or perpendicular)
+        this.diagonal = diagonal;
+        
         // start player in center of field
-        player = new Snake(12, 9);
+        if(diagonal)
+            player = new Snake(12, 9, Direction.NW);
+        else
+            player = new Snake(12, 9, Direction.N);
 
         food = new Food();
         generateFood();
@@ -47,7 +54,7 @@ public class GameField extends Pane
         // add player to field
         getChildren().add(player.getFirst());
         
-        frameTimer = new Timeline(new KeyFrame(Duration.seconds(1.0/8.0),
+        frameTimer = new Timeline(new KeyFrame(Duration.seconds(1.0/4.0),
             e->updateFrame()));
         frameTimer.setCycleCount(Animation.INDEFINITE);
     }
@@ -57,7 +64,7 @@ public class GameField extends Pane
         this.game = game;
         
         // start player in center of field
-        player = new Snake(12, 9);
+        player = new Snake(12, 9, Direction.N);
         
         // add player to field
         getChildren().add(player.getFirst());
@@ -82,6 +89,7 @@ public class GameField extends Pane
         Tail piece = player.getLast().copy();
         
         // set new piece position according to direction copied from last piece
+        // (e.g., if last piece is going left, set new piece 1 space to the right)
         if(piece.getDirection() == Direction.N)
             piece.setY(piece.getY() + 1);
         else if(piece.getDirection() == Direction.S)
@@ -90,6 +98,23 @@ public class GameField extends Pane
             piece.setX(piece.getX() + 1);
         else if(piece.getDirection() == Direction.W)
             piece.setX(piece.getX() - 1);
+        else if(piece.getDirection() == Direction.NE) {
+            piece.setY(piece.getY() + 1);
+            piece.setX(piece.getX() + 1);
+        }
+        else if(piece.getDirection() == Direction.NW) {
+            piece.setY(piece.getY() + 1);
+            piece.setX(piece.getX() - 1);
+        }
+        else if(piece.getDirection() == Direction.SE) {
+            piece.setY(piece.getY() - 1);
+            piece.setX(piece.getX() + 1);
+        }
+        else if(piece.getDirection() == Direction.SW) {
+            piece.setY(piece.getY() - 1);
+            piece.setX(piece.getX() - 1);
+        }
+        
         
         // add piece to player
         player.add(piece);
@@ -102,9 +127,9 @@ public class GameField extends Pane
     {
         boolean found = true;
         
-        // coordinates for food (upper limit = 23, 17) (n * 20 + 10) (480x360)
-        int x = 24;
-        int y = 18;
+        // coordinates for food (upper limit = 24, 18) (n * 20 + 10) (500x380)
+        int x = 25;
+        int y = 19;
         
         // food generation restrictions based off of snake pieces coordinates
         ArrayList<Tail> tail = player.getTail();
@@ -114,11 +139,25 @@ public class GameField extends Pane
         {
             
             // generate random coordinates for food
-            x = (int)(Math.random() * 24);
-            y = (int)(Math.random() * 18);
+            x = (int)(Math.random() * 25);
+            y = (int)(Math.random() * 19);
+            
+            // generate food only where snake can go if snake is moving diagonally
+            if(diagonal) {
+                if(y % 2 == 0) {
+                    if(x % 2 == 0) {
+                        continue;
+                    }
+                }
+                else {
+                    if(x % 2 == 1) {
+                        continue;
+                    }
+                }
+            }
             
             // don't think it's possible, but just in case
-            if(x >= 24 || y >= 18) {
+            if(x >= 25 || y >= 19) {
                 break;
             }
             
@@ -146,6 +185,8 @@ public class GameField extends Pane
     {
         // get first piece from snake
         Tail head = player.getFirst();
+        
+        //[add] if direction undefined, get input from user then head.setDirection()
         
         // pause game if game over
         if(isGameOver()) {
@@ -181,7 +222,7 @@ public class GameField extends Pane
         ArrayList<Tail> tail = player.getTail();
         
         // return true when running into edges
-        if(head.getX() < 0 || head.getX() > 23 || head.getY() < 0 || head.getY() > 17) {
+        if(head.getX() < 0 || head.getX() > 24 || head.getY() < 0 || head.getY() > 18) {
             return true;
         }
         
@@ -199,14 +240,26 @@ public class GameField extends Pane
     
     public void handleKey(KeyEvent ke)
     {
-        if(ke.getCode() == KeyCode.UP)
-            player.changeDirection(Direction.N);
-        else if(ke.getCode() == KeyCode.DOWN)
-            player.changeDirection(Direction.S);
-        else if(ke.getCode() == KeyCode.LEFT)
-            player.changeDirection(Direction.E);
-        else if(ke.getCode() == KeyCode.RIGHT)
-            player.changeDirection(Direction.W);
+        if(diagonal) {
+            if(ke.getCode() == KeyCode.NUMPAD4)
+                player.changeDirection(Direction.NE);
+            else if(ke.getCode() == KeyCode.NUMPAD5)
+                player.changeDirection(Direction.NW);
+            else if(ke.getCode() == KeyCode.NUMPAD1)
+                player.changeDirection(Direction.SE);
+            else if(ke.getCode() == KeyCode.NUMPAD2)
+                player.changeDirection(Direction.SW);
+        }
+        else {
+            if(ke.getCode() == KeyCode.UP)
+                player.changeDirection(Direction.N);
+            else if(ke.getCode() == KeyCode.DOWN)
+                player.changeDirection(Direction.S);
+            else if(ke.getCode() == KeyCode.LEFT)
+                player.changeDirection(Direction.E);
+            else if(ke.getCode() == KeyCode.RIGHT)
+                player.changeDirection(Direction.W);
+        }
     }
 
     public void play()

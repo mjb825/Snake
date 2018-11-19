@@ -109,6 +109,22 @@ public class Tail extends Circle
         else if(direction == Direction.W) {
             x++;
         }
+        else if(direction == Direction.NE) {
+            y--;
+            x--;
+        }
+        else if(direction == Direction.NW) {
+            y--;
+            x++;
+        }
+        else if(direction == Direction.SE) {
+            y++;
+            x--;
+        }
+        else if(direction == Direction.SW) {
+            y++;
+            x++;
+        }
 
         // update position of piece
         setCenterX(x * 20 + 10);

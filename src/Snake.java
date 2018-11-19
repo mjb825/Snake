@@ -18,10 +18,10 @@ public class Snake
     {
     }
     
-    public Snake(int x, int y)
+    public Snake(int x, int y, Direction direction)
     {
         tail = new ArrayList<>();
-        currentMove = new Move(x, y, Direction.N);
+        currentMove = new Move(x, y, direction);
         previousMove = currentMove.copy();
         
         // add initial head piece to snake
@@ -54,6 +54,23 @@ public class Snake
         else if(currentMove.getDirection() == Direction.W){
             currentMove.setX(currentMove.getX() + 1);
         }
+        else if(currentMove.getDirection() == Direction.NE){
+            currentMove.setY(currentMove.getY() - 1);
+            currentMove.setX(currentMove.getX() - 1);
+        }
+        else if(currentMove.getDirection() == Direction.NW){
+            currentMove.setY(currentMove.getY() - 1);
+            currentMove.setX(currentMove.getX() + 1);
+        }
+        else if(currentMove.getDirection() == Direction.SE){
+            currentMove.setY(currentMove.getY() + 1);
+            currentMove.setX(currentMove.getX() - 1);
+        }
+        else if(currentMove.getDirection() == Direction.SW){
+            currentMove.setY(currentMove.getY() + 1);
+            currentMove.setX(currentMove.getX() + 1);
+        }
+        
         
         // update each piece of snake
         for(int i = 0; i < tail.size(); i++) {
@@ -69,7 +86,11 @@ public class Snake
            (currentMove.getDirection() == Direction.N && direction == Direction.S) ||
            (currentMove.getDirection() == Direction.S && direction == Direction.N) ||
            (currentMove.getDirection() == Direction.E && direction == Direction.W) ||
-           (currentMove.getDirection() == Direction.W && direction == Direction.E)) {
+           (currentMove.getDirection() == Direction.W && direction == Direction.E) ||
+           (currentMove.getDirection() == Direction.NE && direction == Direction.SW) ||
+           (currentMove.getDirection() == Direction.NW && direction == Direction.SE) ||
+           (currentMove.getDirection() == Direction.SE && direction == Direction.NW) ||
+           (currentMove.getDirection() == Direction.SW && direction == Direction.NE)) {
                return;  
         }
         
