@@ -33,7 +33,7 @@ public class Tail extends Circle
     public Tail(Move currentMove, String color)
     {
         // circle properties
-        super(8);
+        super(6);
         setStyle("-fx-stroke: black; -fx-fill: " + color + "; -fx-stroke-width: 2;");
         
         // piece properties
@@ -50,7 +50,9 @@ public class Tail extends Circle
     public Tail(Queue<Move> nextMove, double x, double y, Direction direction)
     {
         // circle properties
-        super(8);
+        super(6);
+        //[change] fun times
+        //super(((int)(Math.random()*8)) + 4);
         setStyle("-fx-stroke: black; -fx-fill: blue; -fx-stroke-width: 2;");
         
         // piece properties

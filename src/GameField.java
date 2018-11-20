@@ -154,8 +154,15 @@ public class GameField extends Pane
             x = (int)(Math.random() * 25);
             y = (int)(Math.random() * 19);
             
-            // generate food only where snake can go if snake is moving diagonally
-            if(!diagonal) {
+            if(diagonal) {
+                //prevent food from generating in corners in snake is moving diagonally
+                if((x == 0 && y == 0) || (x == 24 && y == 0) || (x == 0 && y == 18) || (x == 24 && y == 18))
+                    continue;
+                
+                // generate food only where snake can go if snake is moving diagonally
+                // (obosolete) since now snake moving diagonally moves half the distance
+                //     of the snake moving perpendicularly allowing it to go everywhere
+                /*
                 if(y % 2 == 0) {
                     if(x % 2 == 0) {
                         continue;
@@ -166,6 +173,7 @@ public class GameField extends Pane
                         continue;
                     }
                 }
+                */
             }
             
             // don't think it's possible, but just in case
