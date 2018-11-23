@@ -17,12 +17,14 @@ public class Game extends Application
     @Override
     public void start(Stage stage) throws Exception
     {
-        GameField game = new GameField(false, true); 
+        GameField game = new GameField(false, false); 
+        MainMenu menu = new MainMenu();
         
         // 480, 360 -> 470, 350
         // 500, 380 -> 490, 370
-        Scene scene = new Scene(game, 490, 370);
-        scene.setOnKeyPressed(ke->game.handleKey(ke));
+        //Scene scene = new Scene(game, 490, 370);
+        //scene.setOnKeyPressed(ke->game.handleKey(ke));
+        Scene scene = new Scene(menu, 490, 370);
         
         stage.setScene(scene);
         stage.setTitle("Snake");
