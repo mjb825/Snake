@@ -1,6 +1,4 @@
 import java.util.ArrayList;
-import java.util.Queue;
-import java.util.LinkedList;
 
 /**
  * container class for pieces of Snake
@@ -71,10 +69,12 @@ public class Snake
             currentMove.setX(currentMove.getX() + movement);
         }
         
+        getFirst().updateFrame(currentMove);
+        //getFirst().updateFrame(movement, currentMove.getDirection());
         
         // update each piece of snake
-        for(int i = 0; i < tail.size(); i++) {
-            tail.get(i).updateFrame(movement);
+        for(int i = 1; i < tail.size(); i++) {
+            tail.get(i).updateFrame(tail.get(i - 1));
         }
     }
     
@@ -97,11 +97,6 @@ public class Snake
         // update current and previous move of snake
         currentMove.setDirection(direction);
         previousMove = currentMove.copy();
-        
-        // add move to queue of all tail pieces
-        for(int i = 0; i < tail.size(); i++) {
-            tail.get(i).addNextMove(currentMove.copy());
-        }
     }
     
     public Tail getFirst()

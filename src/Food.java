@@ -11,13 +11,13 @@ public class Food extends Circle
     
     public Food()
     {
-        super(8);
+        super(6);
         setStyle("-fx-stroke: black; -fx-fill: orange; -fx-stroke-width: 2;");
     }
     
     public Food(double x, double y)
     {
-        super(8);
+        super(6);
         setStyle("-fx-stroke: black; -fx-fill: orange; -fx-stroke-width: 2;");
         this.x = x;
         this.y = y;

@@ -1,6 +1,4 @@
 import javafx.scene.shape.Circle;
-import java.util.Queue;
-import java.util.LinkedList;
 
 /**
  * The pieces that make up the Snake
@@ -8,10 +6,8 @@ import java.util.LinkedList;
  */
 public class Tail extends Circle
 {
-    public double x;
-    public double y;
-    public Direction direction;
-    private Queue<Move> nextMove; //the next moves this tail is going to make
+    private Move currentMove;
+    private Move previousMove;
     
     public Tail()
     {
@@ -20,14 +16,13 @@ public class Tail extends Circle
     public Tail(Move currentMove)
     {
         // circle properties
-        super(8);
-        setStyle("-fx-stroke: black; -fx-fill: none; -fx-stroke-width: 2;");
+        super(6);
+        //[change] fun times
+        //super(((int)(Math.random()*8)) + 4);
+        setStyle("-fx-stroke: black; -fx-fill: blue; -fx-stroke-width: 2;");
         
         // piece properties
-        x = currentMove.getX();
-        y = currentMove.getY();
-        direction = currentMove.getDirection();
-        nextMove = new LinkedList<>();
+        this.currentMove = currentMove;
     }
     
     public Tail(Move currentMove, String color)
@@ -37,147 +32,49 @@ public class Tail extends Circle
         setStyle("-fx-stroke: black; -fx-fill: " + color + "; -fx-stroke-width: 2;");
         
         // piece properties
-        x = currentMove.getX();
-        y = currentMove.getY();
-        direction = currentMove.getDirection();
-        nextMove = new LinkedList<>();
+        //[change] does it need to be currentMove.copy()
+        this.currentMove = currentMove;
         
         // set initial position of piece
-        setCenterX(x * 20 + 10);
-        setCenterY(y * 20 + 10);
-    }
-
-    public Tail(Queue<Move> nextMove, double x, double y, Direction direction)
-    {
-        // circle properties
-        super(6);
-        //[change] fun times
-        //super(((int)(Math.random()*8)) + 4);
-        setStyle("-fx-stroke: black; -fx-fill: blue; -fx-stroke-width: 2;");
-        
-        // piece properties
-        this.x = x;
-        this.y = y;
-        this.direction = direction;
-        this.nextMove = new LinkedList<>(nextMove);
+        setCenterX(this.currentMove.getX() * 20 + 10);
+        setCenterY(this.currentMove.getY() * 20 + 10);
     }
     
-    // set current x, y, and direction of piece
-    public void setCurrentMove(Move currentMove)
+    public void updateFrame(Tail prev)
     {
-        x = currentMove.getX();
-        y = currentMove.getY();
-        direction = currentMove.getDirection();
-    }
-    
-    // add a move to nextMove Queue
-    public void addNextMove(Move nextMove)
-    {
-        this.nextMove.add(nextMove);
-    }
-    
-    // return stats of piece for debugging purposes
-    public String toString()
-    {
-        if(nextMove.peek() != null)
-            return "x: "+ x + " y: " + y + " direction: " + direction +
-                "\n nextX: " + nextMove.peek().getX() + " nextY: " + nextMove.peek().getY() + " nextDirection: " + nextMove.peek().getDirection();
-        return "x: "+ x + " y: " + y + " direction: " + direction;
-    }
-    
-    public void updateFrame(double movement)
-    {
+        previousMove = currentMove.copy();
         
-        if(nextMove.peek() != null) {
-            
-            //compare x,y of currentMove to x,y of nextMove
-            //if they match x and y, currentMove is assigned nextMove and nextMove is removed from Queue
-            if(x == nextMove.peek().getX() && y == nextMove.peek().getY()) {
-                setCurrentMove(nextMove.remove());
-            }
+        currentMove = prev.getPreviousMove().copy();
         
-        }
-        
-        // update x, y of piece        
-        if(direction == Direction.N) {
-            y = y - movement;
-        }
-        else if(direction == Direction.S) {
-            y = y + movement;
-        }
-        else if(direction == Direction.E) {
-            x = x - movement;
-        } 
-        else if(direction == Direction.W) {
-            x = x + movement;
-        }
-        else if(direction == Direction.NE) {
-            y = y - movement;
-            x = x - movement;
-        }
-        else if(direction == Direction.NW) {
-            y = y - movement;
-            x = x + movement;
-        }
-        else if(direction == Direction.SE) {
-            y = y + movement;
-            x = x - movement;
-        }
-        else if(direction == Direction.SW) {
-            y = y + movement;
-            x = x + movement;
-        }
-
         // update position of piece
-        setCenterX(x * 20 + 10);
-        setCenterY(y * 20 + 10);
+        setCenterX(currentMove.getX() * 20 + 10);
+        setCenterY(currentMove.getY() * 20 + 10);
+    }
+    
+    public void updateFrame(Move currentMove)
+    {
+        previousMove = this.currentMove.copy();
+        
+        this.currentMove = currentMove.copy();
+        
+        // update position of piece
+        setCenterX(this.currentMove.getX() * 20 + 10);
+        setCenterY(this.currentMove.getY() * 20 + 10);
     }
     
     // return copy of piece
     public Tail copy()
     {   
-        return new Tail(nextMove, x, y, direction);
+        return new Tail(currentMove.copy());
     }
     
-    // set nextMove Queue of piece
-    public void setNextMove(Queue<Move> nextMove)
+    public Move getCurrentMove()
     {
-        this.nextMove = nextMove;
+        return currentMove;
     }
     
-    // get nextMove Queue of piece
-    public Queue<Move> getNextMove()
+    public Move getPreviousMove()
     {
-        return nextMove;
-    }
-    
-    public double getX()
-    {
-        return x;
-    }
-    
-    public void setX(double x)
-    {
-        this.x = x;
-    }
-    
-    public double getY()
-    {
-        return y;
-    }
-    
-    public void setY(double y)
-    {
-        this.y = y;
-    }
-    
-    public Direction getDirection()
-    {
-        return direction;
-    }
-    
-    public void setDirection(Direction direction)
-    {
-        this.direction = direction;
+        return previousMove;
     }
 }

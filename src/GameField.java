@@ -31,9 +31,7 @@ public class GameField extends Pane
     private Snake player;
     private Timeline frameTimer;
     private Food food;
-    private Game game;
     private boolean diagonal;
-    
     private final double movement;
 
     public GameField(boolean diagonal, boolean reverse)
@@ -70,61 +68,37 @@ public class GameField extends Pane
         frameTimer.setCycleCount(Animation.INDEFINITE);
     }
 
-    public GameField(Game game)
-    {
-        movement = 1;
-        this.game = game;
-        
-        // start player in center of field
-        player = new Snake(12, 9, Direction.N);
-        
-        // add player to field
-        getChildren().add(player.getFirst());
- 
-        // generate and add food
-        food = new Food();
-        generateFood();
-        getChildren().add(food);
-
-        // change background color
-        setBackground(new Background(new BackgroundFill(new Color(.95,.95,.95,1), new CornerRadii(0), new Insets(0))));
-        
-        
-        frameTimer = new Timeline(new KeyFrame(Duration.seconds(1.0/8.0),
-            e->updateFrame()));
-        frameTimer.setCycleCount(Animation.INDEFINITE);
-    }
-
     public void addPiece()
     {
         // create a copy of last piece
         Tail piece = player.getLast().copy();
+        Move move = piece.getCurrentMove();
         
         // set new piece position according to direction copied from last piece
         // (e.g., if last piece is going left, set new piece 1 space to the right)
-        if(piece.getDirection() == Direction.N)
-            piece.setY(piece.getY() + movement);
-        else if(piece.getDirection() == Direction.S)
-            piece.setY(piece.getY() - movement);
-        else if(piece.getDirection() == Direction.E)
-            piece.setX(piece.getX() + movement);
-        else if(piece.getDirection() == Direction.W)
-            piece.setX(piece.getX() - movement);
-        else if(piece.getDirection() == Direction.NE) {
-            piece.setY(piece.getY() + movement);
-            piece.setX(piece.getX() + movement);
+        if(move.getDirection() == Direction.N)
+            move.setY(move.getY() + movement);
+        else if(move.getDirection() == Direction.S)
+            move.setY(move.getY() - movement);
+        else if(move.getDirection() == Direction.E)
+            move.setX(move.getX() + movement);
+        else if(move.getDirection() == Direction.W)
+            move.setX(move.getX() - movement);
+        else if(move.getDirection() == Direction.NE) {
+            move.setY(move.getY() + movement);
+            move.setX(move.getX() + movement);
         }
-        else if(piece.getDirection() == Direction.NW) {
-            piece.setY(piece.getY() + movement);
-            piece.setX(piece.getX() - movement);
+        else if(move.getDirection() == Direction.NW) {
+            move.setY(move.getY() + movement);
+            move.setX(move.getX() - movement);
         }
-        else if(piece.getDirection() == Direction.SE) {
-            piece.setY(piece.getY() - movement);
-            piece.setX(piece.getX() + movement);
+        else if(move.getDirection() == Direction.SE) {
+            move.setY(move.getY() - movement);
+            move.setX(move.getX() + movement);
         }
-        else if(piece.getDirection() == Direction.SW) {
-            piece.setY(piece.getY() - movement);
-            piece.setX(piece.getX() - movement);
+        else if(move.getDirection() == Direction.SW) {
+            move.setY(move.getY() - movement);
+            move.setX(move.getX() - movement);
         }
         
         
@@ -155,25 +129,9 @@ public class GameField extends Pane
             y = (int)(Math.random() * 19);
             
             if(diagonal) {
-                //prevent food from generating in corners in snake is moving diagonally
+                //prevent food from generating in corners if snake is moving diagonally
                 if((x == 0 && y == 0) || (x == 24 && y == 0) || (x == 0 && y == 18) || (x == 24 && y == 18))
                     continue;
-                
-                // generate food only where snake can go if snake is moving diagonally
-                // (obosolete) since now snake moving diagonally moves half the distance
-                //     of the snake moving perpendicularly allowing it to go everywhere
-                /*
-                if(y % 2 == 0) {
-                    if(x % 2 == 0) {
-                        continue;
-                    }
-                }
-                else {
-                    if(x % 2 == 1) {
-                        continue;
-                    }
-                }
-                */
             }
             
             // don't think it's possible, but just in case
@@ -184,7 +142,7 @@ public class GameField extends Pane
             // prevent generating food in space occupied by snake
             for (Tail piece : tail) {
                 
-                if(x == piece.getX() && y == piece.getY()) {
+                if(x == piece.getCurrentMove().getX() && y == piece.getCurrentMove().getY()) {
                     found = true;
                     break;
                 } else {
@@ -215,7 +173,7 @@ public class GameField extends Pane
         }
         
         // perfom actions when snake runs into food
-        if(head.getX() == food.getX() && head.getY() == food.getY()) {
+        if(head.getCurrentMove().getX() == food.getX() && head.getCurrentMove().getY() == food.getY()) {
             
             // add piece to player then update player
             addPiece();
@@ -242,14 +200,14 @@ public class GameField extends Pane
         ArrayList<Tail> tail = player.getTail();
         
         // return true when running into edges
-        if(head.getX() < 0 || head.getX() > 24 || head.getY() < 0 || head.getY() > 18) {
+        if(head.getCurrentMove().getX() < 0 || head.getCurrentMove().getX() > 24 || head.getCurrentMove().getY() < 0 || head.getCurrentMove().getY() > 18) {
             return true;
         }
         
         // return true when running into self
         for(int i = 1; i < tail.size(); i++) {
             
-            if(head.getX() == tail.get(i).getX() && head.getY() == tail.get(i).getY()) {
+            if(head.getCurrentMove().getX() == tail.get(i).getCurrentMove().getX() && head.getCurrentMove().getY() == tail.get(i).getCurrentMove().getY()) {
                 return true;
             }
             

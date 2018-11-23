@@ -17,7 +17,7 @@ public class Game extends Application
     @Override
     public void start(Stage stage) throws Exception
     {
-        GameField game = new GameField(true, false); 
+        GameField game = new GameField(false, true); 
         
         // 480, 360 -> 470, 350
         // 500, 380 -> 490, 370
