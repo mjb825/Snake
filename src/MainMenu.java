@@ -18,6 +18,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
+import javafx.scene.input.KeyCode;
 
 
 /**
@@ -26,23 +27,94 @@ import javafx.scene.control.Label;
  */
 public class MainMenu extends VBox {
     
-    public MainMenu()
+    public MainMenu(Stage stage)
     {
+        // logo
         Image image = new Image("logo.png");
-        ImageView imageView = new ImageView(image);
+        ImageView logo = new ImageView(image);
         
+        // checkbox options
+        HBox options = new HBox();
+        CheckBox diagonal = new CheckBox("Diagonal");
+        CheckBox reverse = new CheckBox("Reverse");
+        
+//        diagonal.setOnAction(e->
+//        {
+//            stage.setTitle(diagonal.isSelected() + " " + reverse.isSelected());
+//        });
+//        
+//        reverse.setOnAction(e->
+//        {
+//            stage.setTitle(diagonal.isSelected() + " " + reverse.isSelected());
+//        });
+        
+        // add to options and set properties
+        options.getChildren().addAll(diagonal, reverse);
+        options.setAlignment(Pos.CENTER);
+        options.setSpacing(20);
+        
+        // start label
         Label start = new Label("PRESS ENTER BUTTON");
         //start.setStyle("-fx-underline: true;");
         
-        getChildren().add(imageView);
-        getChildren().add(new Options());
+        getChildren().add(logo);
+        getChildren().add(options);
         getChildren().add(start);
         setAlignment(Pos.CENTER);
         
         setSpacing(40);
+        
+        
+        setOnKeyPressed(ke->
+        {
+            if(ke.getCode() == KeyCode.NUMPAD4) {
+                GameField game = new GameField(diagonal.isSelected(), reverse.isSelected());
+                Scene scene = new Scene(game, 500, 380);
+                scene.setOnKeyPressed(kke->game.handleKey(kke));
+                stage.setScene(scene);
+                game.play();
+                //stage.setTitle(diagonal.isSelected() + " " + reverse.isSelected());
+            }
+        });
+        
+        /*
+        //GameField game = new GameField(false, false); 
+        MainMenu menu = new MainMenu(stage);
+        
+        // 480, 360 -> 470, 350
+        // 500, 380 -> 490, 370
+        //Scene scene = new Scene(game, 490, 370);
+        //scene.setOnKeyPressed(ke->game.handleKey(ke));
+        Scene scene = new Scene(menu, 490, 370);
+        
+        stage.setScene(scene);
+        //stage.setTitle("Snake");
+        stage.setResizable(false);
+        stage.show();
+        
+        //game.play();
+        */
     }
-    
-
+    /*
+    public void startGame()
+    {
+        //GameField game = new GameField(false, false); 
+        MainMenu menu = new MainMenu(stage);
+        
+        // 480, 360 -> 470, 350
+        // 500, 380 -> 490, 370
+        //Scene scene = new Scene(game, 490, 370);
+        //scene.setOnKeyPressed(ke->game.handleKey(ke));
+        Scene scene = new Scene(menu, 490, 370);
+        
+        stage.setScene(scene);
+        //stage.setTitle("Snake");
+        stage.setResizable(false);
+        stage.show();
+        
+        //game.play();
+    }
+*/
     
     class Logo extends StackPane
     {
