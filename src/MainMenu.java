@@ -68,12 +68,11 @@ public class MainMenu extends VBox {
         setOnKeyPressed(ke->
         {
             if(ke.getCode() == KeyCode.NUMPAD4) {
-                GameField game = new GameField(diagonal.isSelected(), reverse.isSelected());
+                GameField game = new GameField(diagonal.isSelected(), reverse.isSelected(), stage);
                 Scene scene = new Scene(game, 500, 380);
                 scene.setOnKeyPressed(kke->game.handleKey(kke));
                 stage.setScene(scene);
                 game.play();
-                //stage.setTitle(diagonal.isSelected() + " " + reverse.isSelected());
             }
         });
         

@@ -33,9 +33,12 @@ public class GameField extends Pane
     private Food food;
     private boolean diagonal;
     private final double movement;
+    private Stage stage;
 
-    public GameField(boolean diagonal, boolean reverse)
+    public GameField(boolean diagonal, boolean reverse, Stage stage)
     {
+        this.stage = stage;
+        
         if(diagonal && reverse)
             movement = -.5;
         else if(diagonal)
@@ -177,6 +180,7 @@ public class GameField extends Pane
             
             // add piece to player then update player
             addPiece();
+            stage.setTitle("Snake (" + player.getTail().size() + ")");
             player.updateFrame(movement);
             
             // pause game if game over, else generate food
@@ -248,6 +252,11 @@ public class GameField extends Pane
     public void pause()
     {
         frameTimer.pause();
+        MainMenu menu = new MainMenu(stage);
+        
+
+        Scene scene = new Scene(menu, 500, 380);
+        stage.setScene(scene);
     }
     
 }
