@@ -49,8 +49,8 @@ public class MainMenu extends VBox {
         options.setSpacing(20);
         
         // start label
-        Label start = new Label("PRESS ENTER BUTTON");
-        //start.setStyle("-fx-underline: true;");
+        Label start = new Label("PRESS ESCAPE BUTTON");
+        start.setStyle("-fx-underline: true;");
         
         getChildren().add(logo);
         getChildren().add(options);
