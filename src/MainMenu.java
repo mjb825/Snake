@@ -19,6 +19,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 
 
 /**
@@ -37,16 +38,10 @@ public class MainMenu extends VBox {
         HBox options = new HBox();
         CheckBox diagonal = new CheckBox("Diagonal");
         CheckBox reverse = new CheckBox("Reverse");
-        
-//        diagonal.setOnAction(e->
-//        {
-//            stage.setTitle(diagonal.isSelected() + " " + reverse.isSelected());
-//        });
 //        
-//        reverse.setOnAction(e->
-//        {
-//            stage.setTitle(diagonal.isSelected() + " " + reverse.isSelected());
-//        });
+//        diagonal.setOnKeyPressed(ke-> startGame(ke, diagonal, reverse, stage));
+//        
+//        reverse.setOnKeyPressed(ke-> startGame(ke, diagonal, reverse, stage));
         
         // add to options and set properties
         options.getChildren().addAll(diagonal, reverse);
@@ -65,16 +60,7 @@ public class MainMenu extends VBox {
         setSpacing(40);
         
         
-        setOnKeyPressed(ke->
-        {
-            if(ke.getCode() == KeyCode.NUMPAD4) {
-                GameField game = new GameField(diagonal.isSelected(), reverse.isSelected(), stage);
-                Scene scene = new Scene(game, 500, 380);
-                scene.setOnKeyPressed(kke->game.handleKey(kke));
-                stage.setScene(scene);
-                game.play();
-            }
-        });
+        setOnKeyPressed(ke-> startGame(ke, diagonal, reverse, stage));
         
         /*
         //GameField game = new GameField(false, false); 
@@ -93,6 +79,17 @@ public class MainMenu extends VBox {
         
         //game.play();
         */
+    }
+    
+    public void startGame(KeyEvent ke, CheckBox diagonal, CheckBox reverse, Stage stage)
+    {
+        if(ke.getCode() == KeyCode.ESCAPE) {
+            GameField game = new GameField(diagonal.isSelected(), reverse.isSelected(), stage);
+            Scene scene = new Scene(game, 500, 380);
+            scene.setOnKeyPressed(kke->game.handleKey(kke));
+            stage.setScene(scene);
+            game.play();
+        }
     }
     /*
     public void startGame()

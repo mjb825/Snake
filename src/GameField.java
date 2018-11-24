@@ -48,6 +48,13 @@ public class GameField extends Pane
         else
             movement = 1;
         
+        // increase fps for diagonal since the snake moves half the distance
+        double fps;
+        if(diagonal)
+            fps = 10.0;
+        else
+            fps = 8.0;
+        
         // set movement of snake (diagonal or perpendicular)
         this.diagonal = diagonal;
         
@@ -66,7 +73,7 @@ public class GameField extends Pane
         // add player to field
         getChildren().add(player.getFirst());
         
-        frameTimer = new Timeline(new KeyFrame(Duration.seconds(1.0/8.0),
+        frameTimer = new Timeline(new KeyFrame(Duration.seconds(1.0/fps),
             e->updateFrame()));
         frameTimer.setCycleCount(Animation.INDEFINITE);
     }
