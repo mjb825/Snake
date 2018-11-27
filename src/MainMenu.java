@@ -28,7 +28,7 @@ import javafx.scene.input.KeyEvent;
  */
 public class MainMenu extends VBox {
     
-    public MainMenu(Stage stage)
+    public MainMenu(Stage stage, boolean isDiagonal, boolean isReverse)
     {
         // logo
         Image image = new Image("logo.png");
@@ -38,6 +38,8 @@ public class MainMenu extends VBox {
         HBox options = new HBox();
         CheckBox diagonal = new CheckBox("Diagonal");
         CheckBox reverse = new CheckBox("Reverse");
+        diagonal.setSelected(isDiagonal);
+        reverse.setSelected(isReverse);
 //        
 //        diagonal.setOnKeyPressed(ke-> startGame(ke, diagonal, reverse, stage));
 //        

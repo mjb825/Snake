@@ -32,12 +32,15 @@ public class GameField extends Pane
     private Timeline frameTimer;
     private Food food;
     private boolean diagonal;
+    private boolean reverse;
     private final double movement;
     private Stage stage;
 
     public GameField(boolean diagonal, boolean reverse, Stage stage)
     {
         this.stage = stage;
+        this.diagonal = diagonal;
+        this.reverse = reverse;
         
         if(diagonal && reverse)
             movement = -.5;
@@ -259,7 +262,7 @@ public class GameField extends Pane
     public void pause()
     {
         frameTimer.pause();
-        MainMenu menu = new MainMenu(stage);
+        MainMenu menu = new MainMenu(stage, diagonal, reverse);
         
 
         Scene scene = new Scene(menu, 500, 380);

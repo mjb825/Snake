@@ -18,7 +18,7 @@ public class Game extends Application
     public void start(Stage stage) throws Exception
     {
         //GameField game = new GameField(false, false); 
-        MainMenu menu = new MainMenu(stage);
+        MainMenu menu = new MainMenu(stage, false, false);
         
         // 480, 360 -> 470, 350
         // 500, 380 -> 490, 370
