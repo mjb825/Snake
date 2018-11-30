@@ -90,13 +90,7 @@ public class GameField extends Pane
         
         // create Timeline for field
         frameTimer = new Timeline(new KeyFrame(Duration.seconds(1.0/fps),
-            e->{
-            try {
-                updateFrame();
-            } catch (IOException ex) {
-                Logger.getLogger(GameField.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }));
+            e->updateFrame()));
         frameTimer.setCycleCount(Animation.INDEFINITE);
     }
 
@@ -191,7 +185,7 @@ public class GameField extends Pane
         food.setCenterY(y * 20 + 10);
     }
 
-    public void updateFrame() throws IOException
+    public void updateFrame()
     {
         // get first piece from snake
         Tail head = player.getFirst();
@@ -279,9 +273,11 @@ public class GameField extends Pane
     }
     
     // end game and go back to main menu
-    public void pause() throws IOException
+    public void pause()
     {
         frameTimer.pause();
+        
+        // create new main menu
         MainMenu menu = new MainMenu(stage, diagonal, reverse);
         
         // set high scores for new menu

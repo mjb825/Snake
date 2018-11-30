@@ -61,8 +61,9 @@ public class MainMenu extends VBox {
         return highScore;
     }
     
-    public void setHighScores() throws IOException
+    public void setHighScores()
     {
+        try {
         try (
             FileInputStream file = new FileInputStream("scores.dat");
             DataInputStream input = new DataInputStream(file);
@@ -73,11 +74,12 @@ public class MainMenu extends VBox {
             highScore[2]=(input.readInt());
             highScore[3]=(input.readInt());
         }
-        
+        } catch (IOException e) {}
     }
     
-    public void writeHighScores() throws IOException
+    public void writeHighScores()
     {
+        try {
         try (
             FileOutputStream file = new FileOutputStream(data, false);
             DataOutputStream output = new DataOutputStream(file);
@@ -87,14 +89,18 @@ public class MainMenu extends VBox {
             output.writeInt(highScore[2]);
             output.writeInt(highScore[3]);
         }
+        } catch(IOException e) {}
     }
     
-    public MainMenu(Stage stage, boolean isDiagonal, boolean isReverse) throws IOException
+    public MainMenu(){}
+    
+    public MainMenu(Stage stage, boolean isDiagonal, boolean isReverse)
     {
         // file for storing high scores
         data = new File("scores.dat");
         
         // if highscore file doesn't exist, make a new one with 1 as high score for all categories
+        try {
         if(!data.exists())
         {
             try (
@@ -107,6 +113,7 @@ public class MainMenu extends VBox {
                 output.writeInt(1);
             }
         }
+        } catch (IOException e) {}
         
         // update array for storing high scores from file
         highScore = new int[4];
