@@ -17,8 +17,6 @@ public class Tail extends Circle
     {
         // circle properties
         super(6);
-        //[change] fun times
-        //super(((int)(Math.random()*8)) + 4);
         setStyle("-fx-stroke: black; -fx-fill: blue; -fx-stroke-width: 2;");
         
         // piece properties
@@ -32,7 +30,6 @@ public class Tail extends Circle
         setStyle("-fx-stroke: black; -fx-fill: " + color + "; -fx-stroke-width: 2;");
         
         // piece properties
-        //[change] does it need to be currentMove.copy()
         this.currentMove = currentMove;
         
         // set initial position of piece
@@ -42,8 +39,8 @@ public class Tail extends Circle
     
     public void updateFrame(Tail prev)
     {
+        // update piece properties
         previousMove = currentMove.copy();
-        
         currentMove = prev.getPreviousMove().copy();
         
         // update position of piece
@@ -53,8 +50,8 @@ public class Tail extends Circle
     
     public void updateFrame(Move currentMove)
     {
+        // update piece properties
         previousMove = this.currentMove.copy();
-        
         this.currentMove = currentMove.copy();
         
         // update position of piece

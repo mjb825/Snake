@@ -40,6 +40,7 @@ public class GameField extends Pane
     private Stage stage;
     private int score;
     private MainMenu menu;
+    private int highScore;
 
     public GameField(boolean diagonal, boolean reverse, Stage stage, MainMenu menu)
     {
@@ -48,7 +49,9 @@ public class GameField extends Pane
         this.reverse = reverse;
         this.menu = menu;
         score = 1;
+        highScore = this.menu.getHighScore(diagonal, reverse);
         
+        // set movement of snake (based on diagonal and reverse)
         if(diagonal && reverse)
             movement = -.5;
         else if(diagonal)
@@ -63,10 +66,7 @@ public class GameField extends Pane
         if(diagonal)
             fps = 10.0;
         else
-            fps = 8.0;
-        
-        // set movement of snake (diagonal or perpendicular)
-        this.diagonal = diagonal;
+            fps = 8.0;        
         
         // start player in center of field
         if(diagonal)
@@ -74,15 +74,21 @@ public class GameField extends Pane
         else
             player = new Snake(12, 9, Direction.N);
 
+        // generate and add food to field
         food = new Food();
         generateFood();
         getChildren().add(food);
 
-        setBackground(new Background(new BackgroundFill(new Color(.95,.95,.95,1), new CornerRadii(0), new Insets(0))));
-        
         // add player to field
         getChildren().add(player.getFirst());
         
+        // change background color
+        setBackground(new Background(new BackgroundFill(new Color(.95,.95,.95,1), new CornerRadii(0), new Insets(0))));
+        
+        // change title based on high score and current score
+        stage.setTitle("Snake (" + highScore + ") (" + score + ")");
+        
+        // create Timeline for field
         frameTimer = new Timeline(new KeyFrame(Duration.seconds(1.0/fps),
             e->{
             try {
@@ -190,8 +196,6 @@ public class GameField extends Pane
         // get first piece from snake
         Tail head = player.getFirst();
         
-        //[add] if direction undefined, get input from user then head.setDirection()
-        
         // pause game if game over
         if(isGameOver()) {
             pause();
@@ -204,7 +208,7 @@ public class GameField extends Pane
             // add piece to player then update player
             addPiece();
             score++;
-            stage.setTitle("Snake (" + score + ")");
+            stage.setTitle("Snake (" + highScore + ") (" + score + ")");
             player.updateFrame(movement);
             
             // pause game if game over, else generate food
@@ -244,6 +248,7 @@ public class GameField extends Pane
         return false;
     }
     
+    // change player's direction on key input
     public void handleKey(KeyEvent ke)
     {
         if(diagonal) {
@@ -273,19 +278,23 @@ public class GameField extends Pane
         frameTimer.play();
     }
     
+    // end game and go back to main menu
     public void pause() throws IOException
     {
         frameTimer.pause();
         MainMenu menu = new MainMenu(stage, diagonal, reverse);
         
+        // set high scores for new menu
         menu.setHighScore(this.menu.getHighScore());
         
+        // update high score if it is beaten and write to file
         int prevScore = this.menu.getHighScore(diagonal, reverse);
         if(prevScore < score) {
             menu.setHighScore(diagonal, reverse, score);
             menu.writeHighScores();
         }
-
+        
+        // update high score label
         menu.showHighScore(diagonal, reverse);
         
         Scene scene = new Scene(menu, 500, 380);

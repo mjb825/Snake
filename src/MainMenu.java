@@ -91,12 +91,10 @@ public class MainMenu extends VBox {
     
     public MainMenu(Stage stage, boolean isDiagonal, boolean isReverse) throws IOException
     {
-        
-        highScore = new int[4];
+        // file for storing high scores
         data = new File("scores.dat");
         
-        lblHighScore = new Label("<insert high score here>");
-        
+        // if highscore file doesn't exist, make a new one with 1 as high score for all categories
         if(!data.exists())
         {
             try (
@@ -110,70 +108,47 @@ public class MainMenu extends VBox {
             }
         }
         
+        // update array for storing high scores from file
+        highScore = new int[4];
         setHighScores();
         
         // logo
         Image image = new Image("logo.png");
         ImageView logo = new ImageView(image);
         
+        // high score label
+        lblHighScore = new Label();
+        showHighScore(isDiagonal, isReverse);
+        
         // checkbox options
         HBox options = new HBox();
         diagonal = new CheckBox("Diagonal");
         reverse = new CheckBox("Reverse");
-        
-
-        
+        // set checkbox options according to parameters
         diagonal.setSelected(isDiagonal);
         reverse.setSelected(isReverse);
-        
+        // update high score label when checkboxes are changed
         diagonal.setOnAction(e->showHighScore(diagonal.isSelected(), reverse.isSelected()));
         reverse.setOnAction(e->showHighScore(diagonal.isSelected(), reverse.isSelected()));
-        showHighScore(isDiagonal, isReverse);
-//        
-//        diagonal.setOnKeyPressed(ke-> startGame(ke, diagonal, reverse, stage));
-//        
-//        reverse.setOnKeyPressed(ke-> startGame(ke, diagonal, reverse, stage));
-        
         // add to options and set properties
         options.getChildren().addAll(diagonal, reverse);
         options.setAlignment(Pos.CENTER);
         options.setSpacing(20);
         
-        // high score label
-        
-        
-        
         // start label
         Label start = new Label("PRESS ESCAPE BUTTON");
         start.setStyle("-fx-underline: true;");
         
+        // add elements to vbox and set properties
         getChildren().addAll(logo, options, lblHighScore, start);
         setAlignment(Pos.CENTER);
-        
         setSpacing(40);
         
-        
+        // set key press event so user can start game by pressing escape button
         setOnKeyPressed(ke-> startGame(ke, diagonal, reverse, stage));
-        
-        /*
-        //GameField game = new GameField(false, false); 
-        MainMenu menu = new MainMenu(stage);
-        
-        // 480, 360 -> 470, 350
-        // 500, 380 -> 490, 370
-        //Scene scene = new Scene(game, 490, 370);
-        //scene.setOnKeyPressed(ke->game.handleKey(ke));
-        Scene scene = new Scene(menu, 490, 370);
-        
-        stage.setScene(scene);
-        //stage.setTitle("Snake");
-        stage.setResizable(false);
-        stage.show();
-        
-        //game.play();
-        */
     }
     
+    // start game when user presses escape button
     public void startGame(KeyEvent ke, CheckBox diagonal, CheckBox reverse, Stage stage)
     {
         if(ke.getCode() == KeyCode.ESCAPE) {
@@ -183,58 +158,6 @@ public class MainMenu extends VBox {
             stage.setScene(scene);
             game.play();
         }
-    }
-    /*
-    public void startGame()
-    {
-        //GameField game = new GameField(false, false); 
-        MainMenu menu = new MainMenu(stage);
-        
-        // 480, 360 -> 470, 350
-        // 500, 380 -> 490, 370
-        //Scene scene = new Scene(game, 490, 370);
-        //scene.setOnKeyPressed(ke->game.handleKey(ke));
-        Scene scene = new Scene(menu, 490, 370);
-        
-        stage.setScene(scene);
-        //stage.setTitle("Snake");
-        stage.setResizable(false);
-        stage.show();
-        
-        //game.play();
-    }
-*/
-    
-    class Logo extends StackPane
-    {
-        
-        public Logo()
-        {
-            Image image = new Image("logo.png");
-            ImageView imageView = new ImageView(image);
-            getChildren().add(imageView);
-            
-            //setStyle("-fx-background-color: red;");
-        }
-        
-    }
-    
-
-    
-    class Options extends HBox {
-        
-        public Options()
-        {
-            CheckBox diagonal = new CheckBox("Diagonal");
-            CheckBox reverse = new CheckBox("Reverse");
-            
-            getChildren().addAll(diagonal, reverse);
-            
-            setAlignment(Pos.CENTER);
-            //setPadding(new Insets(40));
-            setSpacing(20);
-        }
-        
     }
     
 }

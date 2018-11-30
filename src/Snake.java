@@ -27,6 +27,7 @@ public class Snake
         tail.add(head);
     }
 
+    // add piece to Snake's tail
     public void add(Tail piece)
     {
         tail.add(piece);
@@ -69,10 +70,10 @@ public class Snake
             currentMove.setX(currentMove.getX() + movement);
         }
         
+        // update head of snake
         getFirst().updateFrame(currentMove);
-        //getFirst().updateFrame(movement, currentMove.getDirection());
         
-        // update each piece of snake
+        // update each tail piece of snake
         for(int i = 1; i < tail.size(); i++) {
             tail.get(i).updateFrame(tail.get(i - 1));
         }
@@ -99,11 +100,13 @@ public class Snake
         previousMove = currentMove.copy();
     }
     
+    // get first piece of snake
     public Tail getFirst()
     {
         return tail.get(0);
     }
     
+    // get last piece of snake
     public Tail getLast()
     {
         return tail.get(tail.size() - 1);
