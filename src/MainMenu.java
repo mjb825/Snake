@@ -64,31 +64,31 @@ public class MainMenu extends VBox {
     public void setHighScores()
     {
         try {
-        try (
-            FileInputStream file = new FileInputStream("scores.dat");
-            DataInputStream input = new DataInputStream(file);
-        ) {
-                    
-            highScore[0]=(input.readInt());
-            highScore[1]=(input.readInt());
-            highScore[2]=(input.readInt());
-            highScore[3]=(input.readInt());
-        }
+            try (
+                FileInputStream file = new FileInputStream("scores.dat");
+                DataInputStream input = new DataInputStream(file);
+            ) {
+
+                highScore[0]=(input.readInt());
+                highScore[1]=(input.readInt());
+                highScore[2]=(input.readInt());
+                highScore[3]=(input.readInt());
+            }
         } catch (IOException e) {}
     }
     
     public void writeHighScores()
     {
         try {
-        try (
-            FileOutputStream file = new FileOutputStream(data, false);
-            DataOutputStream output = new DataOutputStream(file);
-        ) {
-            output.writeInt(highScore[0]);
-            output.writeInt(highScore[1]);
-            output.writeInt(highScore[2]);
-            output.writeInt(highScore[3]);
-        }
+            try (
+                FileOutputStream file = new FileOutputStream(data, false);
+                DataOutputStream output = new DataOutputStream(file);
+            ) {
+                output.writeInt(highScore[0]);
+                output.writeInt(highScore[1]);
+                output.writeInt(highScore[2]);
+                output.writeInt(highScore[3]);
+            }
         } catch(IOException e) {}
     }
     
@@ -101,18 +101,18 @@ public class MainMenu extends VBox {
         
         // if highscore file doesn't exist, make a new one with 1 as high score for all categories
         try {
-        if(!data.exists())
-        {
-            try (
-                FileOutputStream file = new FileOutputStream(data, false);
-                DataOutputStream output = new DataOutputStream(file);
-            ) {
-                output.writeInt(1);
-                output.writeInt(1);
-                output.writeInt(1);
-                output.writeInt(1);
+            if(!data.exists())
+            {
+                try (
+                    FileOutputStream file = new FileOutputStream(data, false);
+                    DataOutputStream output = new DataOutputStream(file);
+                ) {
+                    output.writeInt(1);
+                    output.writeInt(1);
+                    output.writeInt(1);
+                    output.writeInt(1);
+                }
             }
-        }
         } catch (IOException e) {}
         
         // update array for storing high scores from file

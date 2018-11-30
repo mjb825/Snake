@@ -28,6 +28,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.TextField;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
 
 /**
  * Pane that displays all assets for Snake game
@@ -281,6 +282,8 @@ public class GameField extends Pane
     {
         frameTimer.pause();
         
+        Scene scene;
+        
         // create new main menu
         MainMenu menu = new MainMenu(stage, diagonal, reverse);
         
@@ -288,32 +291,23 @@ public class GameField extends Pane
         menu.setHighScore(this.menu.getHighScore());
         
         // update high score if it is beaten and write to file
-        if(highScore < score) {
+        if(highScore < score || true) {
             menu.setHighScore(diagonal, reverse, score);
             menu.writeHighScores();
+            
+            // get user name for new high score
+            ScoreDialog newScore = new ScoreDialog(menu);
+            scene = new Scene(newScore, 500, 380);
+            stage.setScene(scene);
+        }
+        else {
+            // update high score label
+            menu.showHighScore(diagonal, reverse);
+
+            scene = new Scene(menu, 500, 380);
+            stage.setScene(scene);
         }
         
-        // get user name for new high score
-        ScoreDialog newScore = new ScoreDialog(menu);
-        
-//        getChildren().add(newScore);
-        Scene scene = new Scene(newScore, 500, 380);
-        stage.setScene(scene);
-        
-        //newScore.setName(menu);
-        
-       // newScore.confirm.ad
-        
-        //Scanner input = new Scanner(System.in);
-        //System.out.println(input.next()+",...,.,.");
-        
-        // update high score label
-        
-        
-        
-        //menu.showHighScore(diagonal, reverse);
-
-
     }
     
     public class ScoreDialog extends StackPane
@@ -321,41 +315,71 @@ public class GameField extends Pane
         
         Rectangle box;
         TextField name;
-        Button confirm;
+        Label confirm;
+        Label highScore;
+        Label instruct;
         MainMenu menu;
         
         public ScoreDialog(MainMenu menu)
         {
             this.menu = menu;
             
-            box = new Rectangle(250, 90);
-            box.setStyle("-fx-fill: rgba(0, 0, 0, .2);");
+            box = new Rectangle(360, 180);
+            box.setStyle("-fx-fill: rgba(0, 0, 0, .3); -fx-arc-height: 26; -fx-arc-width: 26;");
             
             
             VBox form = new VBox();
             
+            // high score label
+            highScore = new Label("NEW HIGH SCORE!");
+            highScore.setStyle("-fx-text-fill: white; -fx-font: bold 24 inherit;");
+            
+            instruct = new Label("Enter your initials.");
+            instruct.setStyle("-fx-text-fill: white; -fx-font-size: 18;");
+            
+            // text field for name
             name = new TextField();
-            name.setMaxWidth(40);
-
+            name.setMaxWidth(50);
+            //name.setFont(new Font("courier new", 14));
+            name.setStyle("-fx-font: 14 monospace;");
+            name.setOnKeyReleased(ke->validateName(ke, name));
             
-            confirm = new Button("Submit");
-            confirm.setOnAction(e->setName());
+            // confirm label 
+            confirm = new Label("PRESS ENTER BUTTON");
+            confirm.setStyle("-fx-underline: true; -fx-text-fill: white;");
             
-            form.getChildren().addAll(name, confirm);
+            form.getChildren().addAll(highScore, instruct, name, confirm);
             form.setAlignment(Pos.CENTER);
             form.setSpacing(12);
             
             
             getChildren().addAll(box, form);
+            
+            setOnKeyPressed(ke->setName(ke));
         }
         
-        public void setName()
+        public void validateName(KeyEvent ke, TextField name)
+        {
+            stage.setTitle(name.getText());
+        }
+        
+        public void setName(KeyEvent ke)
         {
             
-            menu.showHighScore(diagonal, reverse);
+            if(ke.getCode() == KeyCode.ENTER) {
+                
+                if(!name.getText().matches("[A-Za-z]{3}")) {
+                    instruct.setText("Enter only 3 letters.");
+                    instruct.setStyle("-fx-text-fill: red; -fx-font-size: 18;");
+                }
+                else {
+                    // update high score label
+                    menu.showHighScore(diagonal, reverse);
 
-            Scene scene = new Scene(menu, 500, 380);
-            stage.setScene(scene);
+                    Scene scene = new Scene(menu, 500, 380);
+                    stage.setScene(scene);
+                }
+            }
      
         }
         
