@@ -284,8 +284,7 @@ public class GameField extends Pane
         menu.setHighScore(this.menu.getHighScore());
         
         // update high score if it is beaten and write to file
-        int prevScore = this.menu.getHighScore(diagonal, reverse);
-        if(prevScore < score) {
+        if(highScore < score) {
             menu.setHighScore(diagonal, reverse, score);
             menu.writeHighScores();
         }
