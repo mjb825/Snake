@@ -45,7 +45,7 @@ public class GameField extends Pane
     private Stage stage;
     private int score;
     private MainMenu menu;
-    private int highScore;
+    private int record;
 
     public GameField(boolean diagonal, boolean reverse, Stage stage, MainMenu menu)
     {
@@ -54,7 +54,7 @@ public class GameField extends Pane
         this.reverse = reverse;
         this.menu = menu;
         score = 1;
-        highScore = this.menu.getHighScore(diagonal, reverse);
+        record = this.menu.getRecord(diagonal, reverse);
         
         // set movement of snake (based on diagonal and reverse)
         if(diagonal && reverse)
@@ -91,7 +91,7 @@ public class GameField extends Pane
         setBackground(new Background(new BackgroundFill(new Color(.95,.95,.95,1), new CornerRadii(0), new Insets(0))));
         
         // change title based on high score and current score
-        stage.setTitle("Snake (" + highScore + ") (" + score + ")");
+        stage.setTitle("Snake (" + record + ") (" + score + ")");
         
         // create Timeline for field
         frameTimer = new Timeline(new KeyFrame(Duration.seconds(1.0/fps),
@@ -207,7 +207,7 @@ public class GameField extends Pane
             // add piece to player then update player
             addPiece();
             score++;
-            stage.setTitle("Snake (" + highScore + ") (" + score + ")");
+            stage.setTitle("Snake (" + record + ") (" + score + ")");
             player.updateFrame(movement);
             
             // pause game if game over, else generate food
@@ -289,12 +289,10 @@ public class GameField extends Pane
         
         // set high scores for new menu
         menu.setHighScore(this.menu.getHighScore());
+        menu.setHighScoreUser(this.menu.getHighScoreUser());
         
         // update high score if it is beaten and write to file
-        if(highScore < score || true) {
-            menu.setHighScore(diagonal, reverse, score);
-            menu.writeHighScores();
-            
+        if(score > record) {
             // get user name for new high score
             ScoreDialog newScore = new ScoreDialog(menu);
             scene = new Scene(newScore, 500, 380);
@@ -302,7 +300,7 @@ public class GameField extends Pane
         }
         else {
             // update high score label
-            menu.showHighScore(diagonal, reverse);
+            menu.showRecord(diagonal, reverse);
 
             scene = new Scene(menu, 500, 380);
             stage.setScene(scene);
@@ -340,12 +338,11 @@ public class GameField extends Pane
             // text field for name
             name = new TextField();
             name.setMaxWidth(50);
-            //name.setFont(new Font("courier new", 14));
             name.setStyle("-fx-font: 14 monospace;");
             
             // confirm label 
             confirm = new Label("PRESS ENTER BUTTON");
-            confirm.setStyle("-fx-underline: true; -fx-text-fill: white;");
+            confirm.setStyle("-fx-underline: true; -fx-text-fill: white; -fx-font-size: 14;");
             
             form.getChildren().addAll(highScore, instruct, name, confirm);
             form.setAlignment(Pos.CENTER);
@@ -367,8 +364,12 @@ public class GameField extends Pane
                     instruct.setText("[Enter only 1-3 letters.]");
                 }
                 else {
+                    // update record and file
+                    menu.setRecord(diagonal, reverse, score, name.getText().toUpperCase());
+                    menu.writeHighScores();
+                    
                     // update high score label
-                    menu.showHighScore(diagonal, reverse);
+                    menu.showRecord(diagonal, reverse);
 
                     Scene scene = new Scene(menu, 500, 380);
                     stage.setScene(scene);

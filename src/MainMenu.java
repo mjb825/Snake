@@ -32,23 +32,25 @@ public class MainMenu extends VBox {
     
     private Label lblHighScore;
     private int[] highScore;
+    private String[] highScoreUser;
     private File data;
     private CheckBox diagonal;
     private CheckBox reverse;
     
-    public void showHighScore(boolean a, boolean b)
+    public void showRecord(boolean diagonal, boolean reverse)
     {
-        lblHighScore.setText("High Score: " + highScore[(a?1:0)+(b?2:0)]);
+        lblHighScore.setText("High Score: " + highScore[(diagonal?1:0)+(reverse?2:0)] + " (" + highScoreUser[(diagonal?1:0)+(reverse?2:0)] + ")");
     }
     
-    public void setHighScore(boolean a, boolean b, int score)
+    public void setRecord(boolean diagonal, boolean reverse, int score, String name)
     {
-        highScore[(a?1:0)+(b?2:0)] = score;
+        highScore[(diagonal?1:0)+(reverse?2:0)] = score;
+        highScoreUser[(diagonal?1:0)+(reverse?2:0)] = name;
     }
     
-    public int getHighScore(boolean a, boolean b)
+    public int getRecord(boolean diagonal, boolean reverse)
     {
-        return highScore[(a?1:0)+(b?2:0)];
+        return highScore[(diagonal?1:0)+(reverse?2:0)];
     }
     
     public void setHighScore(int[] highScore)
@@ -61,6 +63,16 @@ public class MainMenu extends VBox {
         return highScore;
     }
     
+    public void setHighScoreUser(String[] highScoreUser)
+    {
+        this.highScoreUser = highScoreUser;
+    }
+    
+    public String[] getHighScoreUser()
+    {
+        return highScoreUser;
+    }
+    
     public void setHighScores()
     {
         try {
@@ -68,11 +80,14 @@ public class MainMenu extends VBox {
                 FileInputStream file = new FileInputStream("scores.dat");
                 DataInputStream input = new DataInputStream(file);
             ) {
-
                 highScore[0]=(input.readInt());
+                highScoreUser[0]=(input.readUTF());
                 highScore[1]=(input.readInt());
+                highScoreUser[1]=(input.readUTF());
                 highScore[2]=(input.readInt());
+                highScoreUser[2]=(input.readUTF());
                 highScore[3]=(input.readInt());
+                highScoreUser[3]=(input.readUTF());
             }
         } catch (IOException e) {}
     }
@@ -85,9 +100,13 @@ public class MainMenu extends VBox {
                 DataOutputStream output = new DataOutputStream(file);
             ) {
                 output.writeInt(highScore[0]);
+                output.writeUTF(highScoreUser[0]);
                 output.writeInt(highScore[1]);
+                output.writeUTF(highScoreUser[1]);
                 output.writeInt(highScore[2]);
+                output.writeUTF(highScoreUser[2]);
                 output.writeInt(highScore[3]);
+                output.writeUTF(highScoreUser[3]);
             }
         } catch(IOException e) {}
     }
@@ -108,15 +127,20 @@ public class MainMenu extends VBox {
                     DataOutputStream output = new DataOutputStream(file);
                 ) {
                     output.writeInt(1);
+                    output.writeUTF("???");
                     output.writeInt(1);
+                    output.writeUTF("???");
                     output.writeInt(1);
+                    output.writeUTF("???");
                     output.writeInt(1);
+                    output.writeUTF("???");
                 }
             }
         } catch (IOException e) {}
         
         // update array for storing high scores from file
         highScore = new int[4];
+        highScoreUser = new String[4];
         setHighScores();
         
         // logo
@@ -125,7 +149,8 @@ public class MainMenu extends VBox {
         
         // high score label
         lblHighScore = new Label();
-        showHighScore(isDiagonal, isReverse);
+        lblHighScore.setStyle("-fx-font: bold 18 monospace;");
+        showRecord(isDiagonal, isReverse);
         
         // checkbox options
         HBox options = new HBox();
@@ -135,8 +160,8 @@ public class MainMenu extends VBox {
         diagonal.setSelected(isDiagonal);
         reverse.setSelected(isReverse);
         // update high score label when checkboxes are changed
-        diagonal.setOnAction(e->showHighScore(diagonal.isSelected(), reverse.isSelected()));
-        reverse.setOnAction(e->showHighScore(diagonal.isSelected(), reverse.isSelected()));
+        diagonal.setOnAction(e->showRecord(diagonal.isSelected(), reverse.isSelected()));
+        reverse.setOnAction(e->showRecord(diagonal.isSelected(), reverse.isSelected()));
         // add to options and set properties
         options.getChildren().addAll(diagonal, reverse);
         options.setAlignment(Pos.CENTER);
@@ -144,7 +169,7 @@ public class MainMenu extends VBox {
         
         // start label
         Label start = new Label("PRESS ESCAPE BUTTON");
-        start.setStyle("-fx-underline: true;");
+        start.setStyle("-fx-underline: true; -fx-font-size: 14;");
         
         // add elements to vbox and set properties
         getChildren().addAll(logo, options, lblHighScore, start);
