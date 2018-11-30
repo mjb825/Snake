@@ -325,7 +325,7 @@ public class GameField extends Pane
             this.menu = menu;
             
             box = new Rectangle(360, 180);
-            box.setStyle("-fx-fill: rgba(0, 0, 0, .3); -fx-arc-height: 26; -fx-arc-width: 26;");
+            box.setStyle("-fx-fill: rgba(0, 0, 0, .6); -fx-arc-height: 26; -fx-arc-width: 26;");
             
             
             VBox form = new VBox();
@@ -342,7 +342,6 @@ public class GameField extends Pane
             name.setMaxWidth(50);
             //name.setFont(new Font("courier new", 14));
             name.setStyle("-fx-font: 14 monospace;");
-            name.setOnKeyReleased(ke->validateName(ke, name));
             
             // confirm label 
             confirm = new Label("PRESS ENTER BUTTON");
@@ -358,19 +357,14 @@ public class GameField extends Pane
             setOnKeyPressed(ke->setName(ke));
         }
         
-        public void validateName(KeyEvent ke, TextField name)
-        {
-            stage.setTitle(name.getText());
-        }
-        
         public void setName(KeyEvent ke)
         {
             
             if(ke.getCode() == KeyCode.ENTER) {
                 
-                if(!name.getText().matches("[A-Za-z]{3}")) {
-                    instruct.setText("Enter only 3 letters.");
-                    instruct.setStyle("-fx-text-fill: red; -fx-font-size: 18;");
+                // allow only 3 letters for user's initials
+                if(!name.getText().matches("[A-Za-z]{1,3}")) {
+                    instruct.setText("[Enter only 1-3 letters.]");
                 }
                 else {
                     // update high score label
