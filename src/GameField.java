@@ -1,3 +1,4 @@
+import java.io.IOException;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -17,6 +18,8 @@ import javafx.animation.Animation;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javafx.scene.paint.*;
 import javafx.scene.layout.*;
@@ -35,12 +38,16 @@ public class GameField extends Pane
     private boolean reverse;
     private final double movement;
     private Stage stage;
+    private int score;
+    private MainMenu menu;
 
-    public GameField(boolean diagonal, boolean reverse, Stage stage)
+    public GameField(boolean diagonal, boolean reverse, Stage stage, MainMenu menu)
     {
         this.stage = stage;
         this.diagonal = diagonal;
         this.reverse = reverse;
+        this.menu = menu;
+        score = 1;
         
         if(diagonal && reverse)
             movement = -.5;
@@ -77,7 +84,13 @@ public class GameField extends Pane
         getChildren().add(player.getFirst());
         
         frameTimer = new Timeline(new KeyFrame(Duration.seconds(1.0/fps),
-            e->updateFrame()));
+            e->{
+            try {
+                updateFrame();
+            } catch (IOException ex) {
+                Logger.getLogger(GameField.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }));
         frameTimer.setCycleCount(Animation.INDEFINITE);
     }
 
@@ -172,7 +185,7 @@ public class GameField extends Pane
         food.setCenterY(y * 20 + 10);
     }
 
-    public void updateFrame()
+    public void updateFrame() throws IOException
     {
         // get first piece from snake
         Tail head = player.getFirst();
@@ -190,7 +203,8 @@ public class GameField extends Pane
             
             // add piece to player then update player
             addPiece();
-            stage.setTitle("Snake (" + player.getTail().size() + ")");
+            score++;
+            stage.setTitle("Snake (" + score + ")");
             player.updateFrame(movement);
             
             // pause game if game over, else generate food
@@ -259,12 +273,21 @@ public class GameField extends Pane
         frameTimer.play();
     }
     
-    public void pause()
+    public void pause() throws IOException
     {
         frameTimer.pause();
         MainMenu menu = new MainMenu(stage, diagonal, reverse);
         
+        menu.setHighScore(this.menu.getHighScore());
+        
+        int prevScore = this.menu.getHighScore(diagonal, reverse);
+        if(prevScore < score) {
+            menu.setHighScore(diagonal, reverse, score);
+            menu.writeHighScores();
+        }
 
+        menu.showHighScore(diagonal, reverse);
+        
         Scene scene = new Scene(menu, 500, 380);
         stage.setScene(scene);
     }

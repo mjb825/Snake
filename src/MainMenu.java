@@ -21,6 +21,8 @@ import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
+import java.util.*;
+import java.io.*;
 
 /**
  * Main Menu for Snake game
@@ -28,18 +30,105 @@ import javafx.scene.input.KeyEvent;
  */
 public class MainMenu extends VBox {
     
-    public MainMenu(Stage stage, boolean isDiagonal, boolean isReverse)
+    private Label lblHighScore;
+    private int[] highScore;
+    private File data;
+    private CheckBox diagonal;
+    private CheckBox reverse;
+    
+    public void showHighScore(boolean a, boolean b)
     {
+        lblHighScore.setText("High Score: " + highScore[(a?1:0)+(b?2:0)]);
+    }
+    
+    public void setHighScore(boolean a, boolean b, int score)
+    {
+        highScore[(a?1:0)+(b?2:0)] = score;
+    }
+    
+    public int getHighScore(boolean a, boolean b)
+    {
+        return highScore[(a?1:0)+(b?2:0)];
+    }
+    
+    public void setHighScore(int[] highScore)
+    {
+        this.highScore = highScore;
+    }
+    
+    public int[] getHighScore()
+    {
+        return highScore;
+    }
+    
+    public void setHighScores() throws IOException
+    {
+        try (
+            FileInputStream file = new FileInputStream("scores.dat");
+            DataInputStream input = new DataInputStream(file);
+        ) {
+                    
+            highScore[0]=(input.readInt());
+            highScore[1]=(input.readInt());
+            highScore[2]=(input.readInt());
+            highScore[3]=(input.readInt());
+        }
+        
+    }
+    
+    public void writeHighScores() throws IOException
+    {
+        try (
+            FileOutputStream file = new FileOutputStream(data, false);
+            DataOutputStream output = new DataOutputStream(file);
+        ) {
+            output.writeInt(highScore[0]);
+            output.writeInt(highScore[1]);
+            output.writeInt(highScore[2]);
+            output.writeInt(highScore[3]);
+        }
+    }
+    
+    public MainMenu(Stage stage, boolean isDiagonal, boolean isReverse) throws IOException
+    {
+        
+        highScore = new int[4];
+        data = new File("scores.dat");
+        
+        lblHighScore = new Label("<insert high score here>");
+        
+        if(!data.exists())
+        {
+            try (
+                FileOutputStream file = new FileOutputStream(data, false);
+                DataOutputStream output = new DataOutputStream(file);
+            ) {
+                output.writeInt(1);
+                output.writeInt(1);
+                output.writeInt(1);
+                output.writeInt(1);
+            }
+        }
+        
+        setHighScores();
+        
         // logo
         Image image = new Image("logo.png");
         ImageView logo = new ImageView(image);
         
         // checkbox options
         HBox options = new HBox();
-        CheckBox diagonal = new CheckBox("Diagonal");
-        CheckBox reverse = new CheckBox("Reverse");
+        diagonal = new CheckBox("Diagonal");
+        reverse = new CheckBox("Reverse");
+        
+
+        
         diagonal.setSelected(isDiagonal);
         reverse.setSelected(isReverse);
+        
+        diagonal.setOnAction(e->showHighScore(diagonal.isSelected(), reverse.isSelected()));
+        reverse.setOnAction(e->showHighScore(diagonal.isSelected(), reverse.isSelected()));
+        showHighScore(isDiagonal, isReverse);
 //        
 //        diagonal.setOnKeyPressed(ke-> startGame(ke, diagonal, reverse, stage));
 //        
@@ -50,13 +139,15 @@ public class MainMenu extends VBox {
         options.setAlignment(Pos.CENTER);
         options.setSpacing(20);
         
+        // high score label
+        
+        
+        
         // start label
         Label start = new Label("PRESS ESCAPE BUTTON");
         start.setStyle("-fx-underline: true;");
         
-        getChildren().add(logo);
-        getChildren().add(options);
-        getChildren().add(start);
+        getChildren().addAll(logo, options, lblHighScore, start);
         setAlignment(Pos.CENTER);
         
         setSpacing(40);
@@ -86,7 +177,7 @@ public class MainMenu extends VBox {
     public void startGame(KeyEvent ke, CheckBox diagonal, CheckBox reverse, Stage stage)
     {
         if(ke.getCode() == KeyCode.ESCAPE) {
-            GameField game = new GameField(diagonal.isSelected(), reverse.isSelected(), stage);
+            GameField game = new GameField(diagonal.isSelected(), reverse.isSelected(), stage, this);
             Scene scene = new Scene(game, 500, 380);
             scene.setOnKeyPressed(kke->game.handleKey(kke));
             stage.setScene(scene);
