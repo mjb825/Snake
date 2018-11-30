@@ -294,17 +294,25 @@ public class GameField extends Pane
         }
         
         // get user name for new high score
-        ScoreDialog newScore = new ScoreDialog();
-        getChildren().add(newScore);
+        ScoreDialog newScore = new ScoreDialog(menu);
         
-        Scanner input = new Scanner(newScore.setName());
-        System.out.println(input.next());
+//        getChildren().add(newScore);
+        Scene scene = new Scene(newScore, 500, 380);
+        stage.setScene(scene);
+        
+        //newScore.setName(menu);
+        
+       // newScore.confirm.ad
+        
+        //Scanner input = new Scanner(System.in);
+        //System.out.println(input.next()+",...,.,.");
         
         // update high score label
-        menu.showHighScore(diagonal, reverse);
+        
+        
+        
+        //menu.showHighScore(diagonal, reverse);
 
-        Scene scene = new Scene(menu, 500, 380);
-        //stage.setScene(scene);
 
     }
     
@@ -314,11 +322,14 @@ public class GameField extends Pane
         Rectangle box;
         TextField name;
         Button confirm;
+        MainMenu menu;
         
-        public ScoreDialog()
+        public ScoreDialog(MainMenu menu)
         {
+            this.menu = menu;
+            
             box = new Rectangle(250, 90);
-            box.setStyle("-fx-fill: blue;");
+            box.setStyle("-fx-fill: rgba(0, 0, 0, .2);");
             
             
             VBox form = new VBox();
@@ -334,14 +345,17 @@ public class GameField extends Pane
             form.setAlignment(Pos.CENTER);
             form.setSpacing(12);
             
+            
             getChildren().addAll(box, form);
         }
         
-        public String setName()
+        public void setName()
         {
             
-            
-            return "will this work?";
+            menu.showHighScore(diagonal, reverse);
+
+            Scene scene = new Scene(menu, 500, 380);
+            stage.setScene(scene);
      
         }
         
