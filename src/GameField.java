@@ -18,12 +18,16 @@ import javafx.animation.Animation;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import java.util.ArrayList;
+import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javafx.scene.paint.*;
 import javafx.scene.layout.*;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.control.TextField;
+import javafx.scene.shape.Rectangle;
 
 /**
  * Pane that displays all assets for Snake game
@@ -289,11 +293,58 @@ public class GameField extends Pane
             menu.writeHighScores();
         }
         
+        // get user name for new high score
+        ScoreDialog newScore = new ScoreDialog();
+        getChildren().add(newScore);
+        
+        Scanner input = new Scanner(newScore.setName());
+        System.out.println(input.next());
+        
         // update high score label
         menu.showHighScore(diagonal, reverse);
-        
+
         Scene scene = new Scene(menu, 500, 380);
-        stage.setScene(scene);
+        //stage.setScene(scene);
+
+    }
+    
+    public class ScoreDialog extends StackPane
+    {
+        
+        Rectangle box;
+        TextField name;
+        Button confirm;
+        
+        public ScoreDialog()
+        {
+            box = new Rectangle(250, 90);
+            box.setStyle("-fx-fill: blue;");
+            
+            
+            VBox form = new VBox();
+            
+            name = new TextField();
+            name.setMaxWidth(40);
+
+            
+            confirm = new Button("Submit");
+            confirm.setOnAction(e->setName());
+            
+            form.getChildren().addAll(name, confirm);
+            form.setAlignment(Pos.CENTER);
+            form.setSpacing(12);
+            
+            getChildren().addAll(box, form);
+        }
+        
+        public String setName()
+        {
+            
+            
+            return "will this work?";
+     
+        }
+        
     }
     
 }
