@@ -71,7 +71,23 @@ public class Settings extends Pane {
         
         options.add(new BlankSpace(80, 10), 1, 0);
         options.add(new BlankSpace(20, 200), 0, 4);
-        options.add(new TextField(), 0, 5);
+        
+        // text field for custom sizes
+        TextField size = new TextField();
+        options.add(size, 0, 5);
+        
+        // simple label to test size textfield
+        Label preview = new Label("6");
+        options.add(preview, 0, 6);
+        
+        size.textProperty().addListener(l -> {
+            if(size.getText().matches("[0-9]+")) {
+                
+                preview.setText(size.getText());
+            }
+            else
+                preview.setText("[Numbers Only]");
+        });
         
         /*********
          * SNAKE *
