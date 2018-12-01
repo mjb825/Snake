@@ -79,6 +79,8 @@ public class GameField extends Pane
         else
             player = new Snake(12, 9, Direction.N);
 
+        
+        
         // generate and add food to field
         food = new Food();
         generateFood();
@@ -102,7 +104,7 @@ public class GameField extends Pane
     public void addPiece()
     {
         // create a copy of last piece
-        Tail piece = player.getLast().copy();
+        Tail piece = player.getLast().copy(player.determineColor());
         Move move = piece.getCurrentMove();
         
         // set new piece position according to direction copied from last piece

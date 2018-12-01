@@ -190,6 +190,11 @@ public class MainMenu extends VBox {
             stage.setScene(scene);
             game.play();
         }
+        else if(ke.getCode() == KeyCode.SHIFT) {
+            Settings settings = new Settings();
+            Scene scene = new Scene(settings, 500, 380);
+            stage.setScene(scene);
+        }
     }
     
 }

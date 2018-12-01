@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import javafx.scene.paint.Color;
 
 /**
  * container class for pieces of Snake
@@ -12,19 +13,42 @@ public class Snake
     private Move currentMove;
     private Move previousMove;
     
+    private ArrayList<Color> snakeColors = new ArrayList<Color>();
+    private ArrayList<Color> tailColors = new ArrayList<Color>();
+    
+    private int snakeColorPos = 0;
+    private int tailColorPos = 0;
+    
+    private boolean headUnique = false;
+    private boolean sequence = true;
+    
+    public void setColors()
+    {
+        snakeColors.add(Color.WHITE);
+        snakeColors.add(Color.GRAY);
+        snakeColors.add(Color.BLACK);
+        tailColors.add(Color.BLUE);
+        tailColors.add(Color.GREEN);
+        
+    }
+    
     public Snake()
     {
     }
     
     public Snake(double x, double y, Direction direction)
     {
+        //[temp] will get colors and boolean values from settings
+        setColors();
+        
         tail = new ArrayList<>();
         currentMove = new Move(x, y, direction);
         previousMove = currentMove.copy();
         
         // add initial head piece to snake
-        Tail head = new Tail(currentMove.copy(), "red");
+        Tail head = new Tail(currentMove.copy(), determineColor());
         tail.add(head);
+        
     }
 
     // add piece to Snake's tail
@@ -70,6 +94,8 @@ public class Snake
             currentMove.setX(currentMove.getX() + movement);
         }
         
+        updateColors();
+        
         // update head of snake
         getFirst().updateFrame(currentMove);
         
@@ -77,6 +103,85 @@ public class Snake
         for(int i = 1; i < tail.size(); i++) {
             tail.get(i).updateFrame(tail.get(i - 1));
         }
+    }
+    
+    public void updateColors()
+    {
+        // snakeColors and tailColors will at least have 1 color,
+        // but maybe not if we set a default value if user got rid of all colors
+        // if snakeColors.size() == 0; Color.GRAY;
+        
+
+        if(headUnique) {
+            
+            if(sequence) {
+                
+            }
+            
+            else {
+                
+                tail.get(0).setColor(snakeColors.get(snakeColorPos));
+                for(int i = 1; i < tail.size(); i++) {
+                    tail.get(i).setColor(tailColors.get(tailColorPos));
+                }
+
+                snakeColorPos = (snakeColorPos + 1) % snakeColors.size();
+                tailColorPos = (tailColorPos + 1) % tailColors.size();
+            }
+            
+        }
+           
+        else {
+            
+            if(sequence) {
+                
+                // i = snake pieces
+                for(int i = 0; i < tail.size(); i++) {
+                    
+                    // j = number of available colors
+                    for(int j = 0; j < snakeColors.size(); j++) {
+                        
+                        if(i % snakeColors.size() == j) {
+
+                            tail.get(i).setColor(snakeColors.get((snakeColorPos + j) % snakeColors.size()));
+                            // stop looking through colors because snake piece won't match anymore
+                            break;
+                            
+                        }  
+                        
+                    }
+                    
+                }
+
+                snakeColorPos = (snakeColorPos + 1) % snakeColors.size();
+                
+            }
+            
+            else {
+                
+                for(int i = 0; i < tail.size(); i++) {
+                    tail.get(i).setColor(snakeColors.get(snakeColorPos));
+                }
+
+                snakeColorPos = (snakeColorPos + 1) % snakeColors.size();
+                
+            }
+            
+        }
+        
+    }
+    
+    public Color determineColor()
+    {
+        
+        // updateColors will update pos of array list
+        if(!headUnique && !sequence) {
+            
+            //snakeColorPos = (snakeColorPos + 1) % snakeColors.size();
+            return snakeColors.get(snakeColorPos);
+        }
+        
+        return Color.WHITE;
     }
     
     public void changeDirection(Direction direction)

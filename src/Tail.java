@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
 /**
@@ -9,25 +11,14 @@ public class Tail extends Circle
     private Move currentMove;
     private Move previousMove;
     
-    public Tail()
-    {
-    }
+    public Tail(){}
     
-    public Tail(Move currentMove)
+    public Tail(Move currentMove, Color color)
     {
         // circle properties
         super(6);
-        setStyle("-fx-stroke: black; -fx-fill: blue; -fx-stroke-width: 2;");
-        
-        // piece properties
-        this.currentMove = currentMove;
-    }
-    
-    public Tail(Move currentMove, String color)
-    {
-        // circle properties
-        super(6);
-        setStyle("-fx-stroke: black; -fx-fill: " + color + "; -fx-stroke-width: 2;");
+        setStyle("-fx-stroke: black; -fx-stroke-width: 2;");
+        setFill(color);
         
         // piece properties
         this.currentMove = currentMove;
@@ -60,9 +51,9 @@ public class Tail extends Circle
     }
     
     // return copy of piece
-    public Tail copy()
+    public Tail copy(Color color)
     {   
-        return new Tail(currentMove.copy());
+        return new Tail(currentMove.copy(), color);
     }
     
     public Move getCurrentMove()
@@ -73,5 +64,10 @@ public class Tail extends Circle
     public Move getPreviousMove()
     {
         return previousMove;
+    }
+    
+    public void setColor(Color color)
+    {
+        setFill(color);
     }
 }
