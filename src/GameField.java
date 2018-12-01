@@ -342,6 +342,12 @@ public class GameField extends Pane
             name.setMaxWidth(50);
             name.setStyle("-fx-font: 14 monospace;");
             
+            name.textProperty().addListener(l -> {
+                // trim last character if it's not a letter or there are more than 3
+                if(!name.getText().matches("[A-Za-z]{1,3}") && name.getText().matches(".+"))
+                    name.setText(name.getText().substring(0, name.getText().length() - 1));
+            });
+            
             // confirm label 
             confirm = new Label("PRESS ENTER BUTTON");
             confirm.setStyle("-fx-underline: true; -fx-text-fill: white; -fx-font-size: 14;");
