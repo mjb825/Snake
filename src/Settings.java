@@ -12,11 +12,13 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 /**
@@ -46,7 +48,7 @@ public class Settings extends Pane {
         /****************
          * COLOR SELECT *
          ****************/
-        GridPane colorSelect = new GridPane();
+        GridPane options = new GridPane();
         // color select sliders
         Slider rSlider = new Slider();
         Slider gSlider = new Slider();
@@ -58,14 +60,18 @@ public class Settings extends Pane {
         Label bLabel = new Label("B: 0");
         Label aLabel = new Label("A: 100%");
         // add sliders and labels
-        colorSelect.add(rSlider, 0, 0);
-        colorSelect.add(rLabel, 1, 0);
-        colorSelect.add(gSlider, 0, 1);
-        colorSelect.add(gLabel, 1, 1);
-        colorSelect.add(bSlider, 0, 2);
-        colorSelect.add(bLabel, 1, 2);
-        colorSelect.add(aSlider, 0, 3);
-        colorSelect.add(aLabel, 1, 3);
+        options.add(rSlider, 0, 0);
+        options.add(rLabel, 2, 0);
+        options.add(gSlider, 0, 1);
+        options.add(gLabel, 2, 1);
+        options.add(bSlider, 0, 2);
+        options.add(bLabel, 2, 2);
+        options.add(aSlider, 0, 3);
+        options.add(aLabel, 2, 3);
+        
+        options.add(new BlankSpace(80, 10), 1, 0);
+        options.add(new BlankSpace(20, 200), 0, 4);
+        options.add(new TextField(), 0, 5);
         
         /*********
          * SNAKE *
@@ -114,7 +120,7 @@ public class Settings extends Pane {
         bSlider.setValue(0);
         aSlider.setValue(100);
         
-        getChildren().addAll(colorSelect);
+        getChildren().addAll(options);
         
         for(int i = 0; i < snake.length; i++) {
             getChildren().add(snake[i]);
@@ -122,5 +128,28 @@ public class Settings extends Pane {
         
     }
 
+    private class SettingsPreview
+    {
+        public SettingsPreview(){}
+        
+        public SettingsPreview(String title)
+        {
+            
+        }
+        
+    }
+    
+    private class BlankSpace extends Rectangle
+    {
+        
+        public BlankSpace(){}
+        
+        public BlankSpace(double width, double height)
+        {
+            super(width, height);
+            setFill(Color.rgb(0, 255, 0, 0.1));
+        }
+        
+    }
     
 }
