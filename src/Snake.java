@@ -29,6 +29,7 @@ public class Snake
         snakeColors.add(Color.BLACK);
         tailColors.add(Color.BLUE);
         tailColors.add(Color.GREEN);
+        tailColors.add(Color.WHITE);
         
     }
     
@@ -114,21 +115,43 @@ public class Snake
 
         if(headUnique) {
             
+            tail.get(0).setColor(snakeColors.get(snakeColorPos));
+            
             if(sequence) {
+                
+                // i = snake pieces
+                for(int i = 1; i < tail.size(); i++) {
+                    
+                    // j = number of available colors
+                    for(int j = 0; j < tailColors.size(); j++) {
+                        
+                        if(i % tailColors.size() == j) {
+                            
+                            //[funny bug]
+                            //tail.get(i).setColor(snakeColors.get((tailColorPos + j) % tailColors.size()));
+                            tail.get(i).setColor(tailColors.get((tailColorPos + j) % tailColors.size()));
+                            // stop looking through colors because snake piece won't match anymore
+                            break;
+                            
+                        }  
+                        
+                    }
+                    
+                }
                 
             }
             
             else {
                 
-                tail.get(0).setColor(snakeColors.get(snakeColorPos));
                 for(int i = 1; i < tail.size(); i++) {
                     tail.get(i).setColor(tailColors.get(tailColorPos));
                 }
 
-                snakeColorPos = (snakeColorPos + 1) % snakeColors.size();
-                tailColorPos = (tailColorPos + 1) % tailColors.size();
             }
             
+            // update position for snake and tail color
+            snakeColorPos = (snakeColorPos + 1) % snakeColors.size();
+            tailColorPos = (tailColorPos + 1) % tailColors.size();
         }
            
         else {
@@ -152,8 +175,6 @@ public class Snake
                     }
                     
                 }
-
-                snakeColorPos = (snakeColorPos + 1) % snakeColors.size();
                 
             }
             
@@ -162,11 +183,11 @@ public class Snake
                 for(int i = 0; i < tail.size(); i++) {
                     tail.get(i).setColor(snakeColors.get(snakeColorPos));
                 }
-
-                snakeColorPos = (snakeColorPos + 1) % snakeColors.size();
                 
             }
             
+            // update position for snake color
+            snakeColorPos = (snakeColorPos + 1) % snakeColors.size();
         }
         
     }
@@ -174,14 +195,14 @@ public class Snake
     public Color determineColor()
     {
         
-        // updateColors will update pos of array list
-        if(!headUnique && !sequence) {
-            
-            //snakeColorPos = (snakeColorPos + 1) % snakeColors.size();
+        // updateColors will update pos of colors
+        if(headUnique) {
+            return tailColors.get(tailColorPos);
+        }
+        else {
             return snakeColors.get(snakeColorPos);
         }
         
-        return Color.WHITE;
     }
     
     public void changeDirection(Direction direction)
