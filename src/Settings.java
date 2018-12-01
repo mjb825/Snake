@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -50,24 +51,32 @@ public class Settings extends Pane {
          ****************/
         GridPane options = new GridPane();
         // color select sliders
-        Slider rSlider = new Slider();
-        Slider gSlider = new Slider();
-        Slider bSlider = new Slider();
-        Slider aSlider = new Slider();
-        // color select labels
-        Label rLabel = new Label("R: 255");
-        Label gLabel = new Label("G: 0");
-        Label bLabel = new Label("B: 0");
-        Label aLabel = new Label("A: 100%");
+        Slider rSlider = new Slider(0, 255, 255);
+        Slider gSlider = new Slider(0, 255, 0);
+        Slider bSlider = new Slider(0, 255, 0);
+        Slider aSlider = new Slider(0, 1, 1);
+        // color select textfields
+        TextField rField = new TextField("255");
+        rField.setMaxWidth(40);
+        TextField gField = new TextField("0");
+        gField.setMaxWidth(40);
+        TextField bField = new TextField("0");
+        bField.setMaxWidth(40);
+        TextField aField = new TextField("100");
+        aField.setMaxWidth(40);
         // add sliders and labels
         options.add(rSlider, 0, 0);
-        options.add(rLabel, 2, 0);
+        options.add(new Label("R: "), 2, 0);
+        options.add(rField, 3, 0);
         options.add(gSlider, 0, 1);
-        options.add(gLabel, 2, 1);
+        options.add(new Label("G: "), 2, 1);
+        options.add(gField, 3, 1);
         options.add(bSlider, 0, 2);
-        options.add(bLabel, 2, 2);
+        options.add(new Label("B: "), 2, 2);
+        options.add(bField, 3, 2);
         options.add(aSlider, 0, 3);
-        options.add(aLabel, 2, 3);
+        options.add(new Label("A%: "), 2, 3);
+        options.add(aField, 3, 3);
         
         //options.add(new BlankSpace(80, 10), 1, 0);
         options.add(new BlankSpace(20, 200), 0, 4);
@@ -87,9 +96,9 @@ public class Settings extends Pane {
         SettingsPreview tail = new SettingsPreview("TAIL", Color.BLUE, 6.0);
         SettingsPreview food = new SettingsPreview("FOOD", Color.ORANGE, 6.0);
         // add previews to options
-        options.add(head, 3, 0, 1, 30);
-        options.add(tail, 4, 0, 1, 30);
-        options.add(food, 5, 0, 1, 30);
+        options.add(head, 4, 0, 1, 30);
+        options.add(tail, 5, 0, 1, 30);
+        options.add(food, 6, 0, 1, 30);
         
 
         size.textProperty().addListener(l -> {
@@ -103,37 +112,43 @@ public class Settings extends Pane {
 
         
         rSlider.valueProperty().addListener(l -> {
-            r = ((int)(rSlider.getValue() / 100 * 255));
-            rLabel.setText("R: " + r);
+            r = (int)rSlider.getValue();
+//            r = ((int)(rSlider.getValue() / 100 * 255));
+            rField.setText("" + r);
             head.previewColor(Color.rgb(r, g, b, a));
             //snake[0].setFill(Color.rgb(r, g, b, a));
         });
         
         gSlider.valueProperty().addListener(l -> {
-            g = ((int)(gSlider.getValue() / 100 * 255));
-            gLabel.setText("G: " + g);
+            g = (int)gSlider.getValue();
+            //g = ((int)(gSlider.getValue() / 100 * 255));
+            gField.setText("" + g);
             head.previewColor(Color.rgb(r, g, b, a));
             //snake[0].setFill(Color.rgb(r, g, b, a));
         });
         
         bSlider.valueProperty().addListener(l -> {
-            b = ((int)(bSlider.getValue() / 100 * 255));
-            bLabel.setText("B: " + b);
+            b = (int)bSlider.getValue();
+            //b = ((int)(bSlider.getValue() / 100 * 255));
+            bField.setText("" + b);
             head.previewColor(Color.rgb(r, g, b, a));
             //snake[0].setFill(Color.rgb(r, g, b, a));
         });
         
         aSlider.valueProperty().addListener(l -> {
-            a = (aSlider.getValue() / 100);
-            aLabel.setText("A: " + (int)(a * 100) + "%");
+            a = aSlider.getValue();
+            //a = (aSlider.getValue() / 100);
+            aField.setText("" + (int)(a * 100));
             head.previewColor(Color.rgb(r, g, b, a));
             //snake[0].setFill(Color.rgb(r, g, b, a));
         });
         
+        /*//[obsolete]
         rSlider.setValue(100);
         gSlider.setValue(0);
         bSlider.setValue(0);
         aSlider.setValue(100);
+*/
         
         getChildren().addAll(options);
         

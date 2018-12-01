@@ -340,7 +340,7 @@ public class GameField extends Pane
             // text field for name
             name = new TextField();
             name.setMaxWidth(50);
-            name.setStyle("-fx-font: 14 monospace;");
+            name.setStyle("-fx-font: 14 monospace; -fx-alignment: center;");
             
             name.textProperty().addListener(l -> {
                 // trim last character if it's not a letter or there are more than 3
