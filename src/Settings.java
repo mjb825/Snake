@@ -11,6 +11,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Slider;
@@ -94,9 +95,11 @@ public class Settings extends Pane {
         options.add(aField, 3, 3);
         
         //options.add(new BlankSpace(80, 10), 1, 0);
-        options.add(new BlankSpace(20, 200), 0, 4);
+        //options.add(new BlankSpace(20, 200), 0, 4);
         
-        // radio buttons for selecting which category to edit
+        /**************************
+         * CATEGORY RADIO BUTTONS *
+         **************************/
         HBox categories = new HBox();
         ToggleGroup group = new ToggleGroup();
         RadioButton headRadio = new RadioButton("HEAD");
@@ -106,22 +109,93 @@ public class Settings extends Pane {
         RadioButton foodRadio = new RadioButton("FOOD");
         foodRadio.setToggleGroup(group);
         categories.getChildren().addAll(headRadio, tailRadio, foodRadio);
-        
         // set head as beginning category
         headRadio.fire();
-        
+        categories.setSpacing(6);
         options.add(categories, 0, 4);
         
+        /******************
+         * SIZE TEXTFIELD *
+         ******************/
+        // label describing size textfield
+        Label preview = new Label("Size [ 1, 99.99 ]");
+        preview.setStyle("-fx-font: 18 monospace; -fx-alignment: center; -fx-underline: true;");
+        options.add(preview, 0, 5);
         // text field for custom sizes
         TextField size = new TextField();
-        options.add(size, 0, 5);
+        size.setMaxWidth(60);
+        options.add(size, 0, 6);
         
-        // simple label to test size textfield
-        Label preview = new Label("Size [ 1, 99.99 ]");
-        preview.setStyle("-fx-font: 12 monospace;");
-        options.add(preview, 0, 6);
+        /*****************
+         * COLOR OPTIONS *
+         *****************/
+        // color options label
+        Label colorLabel = new Label("Color Options");
+        colorLabel.setStyle("-fx-font: 18 monospace; -fx-alignment: center; -fx-underline: true;");
+        options.add(colorLabel, 0, 7);
         
+        // color gradient options
+        HBox colorGradient = new HBox();
+        CheckBox colorGrad = new CheckBox("Gradient");
+        TextField colorGradAmount = new TextField();
+        colorGradAmount.setMaxWidth(60);
+        colorGradient.getChildren().addAll(colorGrad, colorGradAmount);
+        colorGradient.setSpacing(6);
+        options.add(colorGradient, 0, 8);
         
+        // color buttons (add, remove)
+        HBox colorButtons = new HBox();
+        Button colorAdd = new Button("Add");
+        Button colorRemove = new Button("Remove");
+        colorButtons.getChildren().addAll(colorAdd, colorRemove);
+        colorButtons.setSpacing(6);
+        options.add(colorButtons, 0, 9);
+        
+        /****************
+         * SIZE OPTIONS *
+         ****************/
+        // size options label
+        Label sizeLabel = new Label("Size Options");
+        sizeLabel.setStyle("-fx-font: 18 monospace; -fx-alignment: center; -fx-underline: true;");
+        options.add(sizeLabel, 0, 10);
+        
+        // color gradient options
+        HBox sizeGradient = new HBox();
+        CheckBox sizeGrad = new CheckBox("Gradient");
+        TextField sizeGradAmount = new TextField();
+        sizeGradAmount.setMaxWidth(60);
+        sizeGradient.getChildren().addAll(sizeGrad, sizeGradAmount);
+        sizeGradient.setSpacing(6);
+        options.add(sizeGradient, 0, 11);
+        
+        // color buttons (add, remove)
+        HBox sizeButtons = new HBox();
+        Button sizeAdd = new Button("Add");
+        Button sizeRemove = new Button("Remove");
+        sizeButtons.getChildren().addAll(sizeAdd, sizeRemove);
+        sizeButtons.setSpacing(6);
+        options.add(sizeButtons, 0, 12);
+        
+        /****************
+         * GAME OPTIONS *
+         ****************/
+        // game options label
+        Label gameLabel = new Label("Game Options");
+        gameLabel.setStyle("-fx-font: 18 monospace; -fx-alignment: center; -fx-underline: true;");
+        options.add(gameLabel, 0, 13);
+        
+        // game options checkboxes
+        HBox gameOptions = new HBox();
+        CheckBox headUnique = new CheckBox("Head Unique");
+        CheckBox sequence = new CheckBox("Sequence");
+        CheckBox mirror = new CheckBox("Mirror");
+        gameOptions.getChildren().addAll(headUnique, sequence, mirror);
+        gameOptions.setSpacing(6);
+        options.add(gameOptions, 0, 14);
+        
+        /*********************
+         * CATEGORY PREVIEWS *
+         *********************/
         // add previews for HEAD, TAIL, FOOD
         SettingsPreview head = new SettingsPreview("HEAD", Color.RED, 6.0);
         SettingsPreview tail = new SettingsPreview("TAIL", Color.BLUE, 6.0);
