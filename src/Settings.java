@@ -69,7 +69,7 @@ public class Settings extends Pane {
         options.add(aSlider, 0, 3);
         options.add(aLabel, 2, 3);
         
-        options.add(new BlankSpace(80, 10), 1, 0);
+        //options.add(new BlankSpace(80, 10), 1, 0);
         options.add(new BlankSpace(20, 200), 0, 4);
         
         // text field for custom sizes
@@ -77,28 +77,29 @@ public class Settings extends Pane {
         options.add(size, 0, 5);
         
         // simple label to test size textfield
-        Label preview = new Label("6");
+        Label preview = new Label("Size [ 1, 99.99 ]");
+        preview.setStyle("-fx-font: 12 monospace;");
         options.add(preview, 0, 6);
         
-        size.textProperty().addListener(l -> {
-            if(size.getText().matches("[0-9]+")) {
-                
-                preview.setText(size.getText());
-            }
-            else
-                preview.setText("[Numbers Only]");
-        });
         
         // add previews for HEAD, TAIL, FOOD
-        SettingsPreview head = new SettingsPreview("HEAD");
-        SettingsPreview tail = new SettingsPreview("TAIL");
-        SettingsPreview food = new SettingsPreview("FOOD");
+        SettingsPreview head = new SettingsPreview("HEAD", Color.RED, 6.0);
+        SettingsPreview tail = new SettingsPreview("TAIL", Color.BLUE, 6.0);
+        SettingsPreview food = new SettingsPreview("FOOD", Color.ORANGE, 6.0);
         // add previews to options
         options.add(head, 3, 0, 1, 30);
         options.add(tail, 4, 0, 1, 30);
         options.add(food, 5, 0, 1, 30);
         
 
+        size.textProperty().addListener(l -> {
+            // only allow values [1, 99.99]
+            if(size.getText().matches("(([1-9][0-9])|[1-9])([.][0-9]{0,2})?"))
+                head.previewSize(size.getText());
+            // trim textfield if doesn't result in a legit match
+            else if(size.getText().matches(".+"))
+                size.setText(size.getText().substring(0, size.getText().length() - 1));
+        });
 
         
         rSlider.valueProperty().addListener(l -> {
@@ -157,15 +158,15 @@ public class Settings extends Pane {
         
         public SettingsPreview(){}
         
-        public SettingsPreview(String title)
+        public SettingsPreview(String title, Color defaultColor, Double defaultSize)
         {
             // set title for previews
             this.title = new Label(title);
             this.title.setStyle("-fx-font: 12 monospace;");
             add(this.title, 1, 0);
             
-            // set amount of previews
-            amount = 12;
+            // set amount of previews (49 if you want two columns)
+            amount = 24;
             
             // initialize colors and sizes arraylists
             colors = new ArrayList<Color>();
@@ -179,16 +180,34 @@ public class Settings extends Pane {
                 Rectangle color = new Rectangle(30, 15);
                 Label size = new Label("?");
                 
+                
+                
                 colorPreview[i] = color;
                 sizePreview[i] = size;
                 
                 size.setStyle("-fx-font: 12 monospace;");
                 
-                color.setStyle("-fx-fill: none; -fx-stroke: black; -fx-stroke-width: 1;");
+                color.setStyle("-fx-stroke: black; -fx-stroke-width: 1;");
                 
-                // i + 1 since title gets 0th position
-                add(color, 1, i + 1);
-                add(size, 0, i + 1);
+                color.setFill(Color.rgb(0, 0, 0, 0));
+                
+                if(i == 0) {
+                    color.setFill(defaultColor);
+                    size.setText(defaultSize + "");
+                    colors.add(defaultColor);
+                    sizes.add(defaultSize);
+                }
+                
+                
+                if(i >= 24) {
+                    add(color, 3, i - 24);
+                    add(size, 2, i - 24);
+                }
+                else {
+                    // i + 1 since title gets 0th position
+                    add(color, 1, i + 1);
+                    add(size, 0, i + 1);
+                }
                 
             }
             
