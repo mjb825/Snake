@@ -12,11 +12,15 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
@@ -58,12 +62,23 @@ public class Settings extends Pane {
         // color select textfields
         TextField rField = new TextField("255");
         rField.setMaxWidth(40);
+        rField.setEditable(false);/*
+        rField.textProperty().addListener(l -> {
+           if(!rField.getText().matches("(^[1-9][0-9]{1,2}$) || (^[1-9][0-9]$) || (^[0-9]$)") && rField.getText().matches(".+")) {
+               rField.setText(rField.getText().substring(0, rField.getText().length() - 1));
+           }
+           else
+               rSlider.setValue(new Double(rField.getText()));
+        });*/
         TextField gField = new TextField("0");
         gField.setMaxWidth(40);
+        gField.setEditable(false);
         TextField bField = new TextField("0");
         bField.setMaxWidth(40);
+        bField.setEditable(false);
         TextField aField = new TextField("100");
         aField.setMaxWidth(40);
+        aField.setEditable(false);
         // add sliders and labels
         options.add(rSlider, 0, 0);
         options.add(new Label("R: "), 2, 0);
@@ -80,6 +95,22 @@ public class Settings extends Pane {
         
         //options.add(new BlankSpace(80, 10), 1, 0);
         options.add(new BlankSpace(20, 200), 0, 4);
+        
+        // radio buttons for selecting which category to edit
+        HBox categories = new HBox();
+        ToggleGroup group = new ToggleGroup();
+        RadioButton headRadio = new RadioButton("HEAD");
+        headRadio.setToggleGroup(group);
+        RadioButton tailRadio = new RadioButton("TAIL");
+        tailRadio.setToggleGroup(group);
+        RadioButton foodRadio = new RadioButton("FOOD");
+        foodRadio.setToggleGroup(group);
+        categories.getChildren().addAll(headRadio, tailRadio, foodRadio);
+        
+        // set head as beginning category
+        headRadio.fire();
+        
+        options.add(categories, 0, 4);
         
         // text field for custom sizes
         TextField size = new TextField();
@@ -104,58 +135,66 @@ public class Settings extends Pane {
         size.textProperty().addListener(l -> {
             // only allow values [1, 99.99]
             if(size.getText().matches("(([1-9][0-9])|[1-9])([.][0-9]{0,2})?"))
-                head.previewSize(size.getText());
+                if(headRadio.isSelected())
+                    head.previewSize(size.getText());
+                else if(tailRadio.isSelected())
+                    tail.previewSize(size.getText());
+                else
+                    food.previewSize(size.getText());
             // trim textfield if doesn't result in a legit match
             else if(size.getText().matches(".+"))
                 size.setText(size.getText().substring(0, size.getText().length() - 1));
         });
 
-        
+        //[change] combine all of these into one method
         rSlider.valueProperty().addListener(l -> {
             r = (int)rSlider.getValue();
-//            r = ((int)(rSlider.getValue() / 100 * 255));
             rField.setText("" + r);
-            head.previewColor(Color.rgb(r, g, b, a));
-            //snake[0].setFill(Color.rgb(r, g, b, a));
+            if(headRadio.isSelected())
+                head.previewColor(Color.rgb(r, g, b, a));
+            else if(tailRadio.isSelected())
+                tail.previewColor(Color.rgb(r, g, b, a));
+            else
+                food.previewColor(Color.rgb(r, g, b, a));
         });
         
         gSlider.valueProperty().addListener(l -> {
             g = (int)gSlider.getValue();
-            //g = ((int)(gSlider.getValue() / 100 * 255));
             gField.setText("" + g);
-            head.previewColor(Color.rgb(r, g, b, a));
-            //snake[0].setFill(Color.rgb(r, g, b, a));
+            if(headRadio.isSelected())
+                head.previewColor(Color.rgb(r, g, b, a));
+            else if(tailRadio.isSelected())
+                tail.previewColor(Color.rgb(r, g, b, a));
+            else
+                food.previewColor(Color.rgb(r, g, b, a));
         });
         
         bSlider.valueProperty().addListener(l -> {
             b = (int)bSlider.getValue();
-            //b = ((int)(bSlider.getValue() / 100 * 255));
             bField.setText("" + b);
-            head.previewColor(Color.rgb(r, g, b, a));
-            //snake[0].setFill(Color.rgb(r, g, b, a));
+            if(headRadio.isSelected())
+                head.previewColor(Color.rgb(r, g, b, a));
+            else if(tailRadio.isSelected())
+                tail.previewColor(Color.rgb(r, g, b, a));
+            else
+                food.previewColor(Color.rgb(r, g, b, a));
         });
         
         aSlider.valueProperty().addListener(l -> {
             a = aSlider.getValue();
-            //a = (aSlider.getValue() / 100);
             aField.setText("" + (int)(a * 100));
-            head.previewColor(Color.rgb(r, g, b, a));
-            //snake[0].setFill(Color.rgb(r, g, b, a));
+            if(headRadio.isSelected())
+                head.previewColor(Color.rgb(r, g, b, a));
+            else if(tailRadio.isSelected())
+                tail.previewColor(Color.rgb(r, g, b, a));
+            else
+                food.previewColor(Color.rgb(r, g, b, a));
         });
         
-        /*//[obsolete]
-        rSlider.setValue(100);
-        gSlider.setValue(0);
-        bSlider.setValue(0);
-        aSlider.setValue(100);
-*/
+
         
         getChildren().addAll(options);
-        
-        // set and preview default colors 
-        //head.previewColor(Color.RED);
-        //tail.previewColor(Color.BLUE);
-        //food.previewColor(Color.ORANGE);
+
         
     }
 
