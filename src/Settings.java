@@ -159,7 +159,7 @@ public class Settings extends Pane {
         sizeLabel.setStyle("-fx-font: 18 monospace; -fx-alignment: center; -fx-underline: true;");
         options.add(sizeLabel, 0, 10);
         
-        // color gradient options
+        // size gradient options
         HBox sizeGradient = new HBox();
         CheckBox sizeGrad = new CheckBox("Gradient");
         TextField sizeGradAmount = new TextField();
@@ -168,7 +168,7 @@ public class Settings extends Pane {
         sizeGradient.setSpacing(6);
         options.add(sizeGradient, 0, 11);
         
-        // color buttons (add, remove)
+        // size buttons (add, remove)
         HBox sizeButtons = new HBox();
         Button sizeAdd = new Button("Add");
         Button sizeRemove = new Button("Remove");
@@ -205,6 +205,23 @@ public class Settings extends Pane {
         options.add(tail, 5, 0, 1, 30);
         options.add(food, 6, 0, 1, 30);
         
+        colorAdd.setOnAction(e -> {
+            if(headRadio.isSelected())
+                head.addColor();
+            else if(tailRadio.isSelected())
+                tail.addColor();
+            else
+                food.addColor();
+        });
+        
+        sizeAdd.setOnAction(e -> {
+            if(headRadio.isSelected())
+                head.addSize();
+            else if(tailRadio.isSelected())
+                tail.addSize();
+            else
+                food.addSize();
+        });
 
         size.textProperty().addListener(l -> {
             // only allow values [1, 99.99]
@@ -358,10 +375,10 @@ public class Settings extends Pane {
             sizePreview[sizePosition % amount].setText(value);
         }
         
-        public void addColor(Color color)
+        public void addColor()
         {
             colorPosition++;
-            colors.add(color);
+            //colors.add(color);
         }
         
         public void removeColor()
@@ -370,10 +387,10 @@ public class Settings extends Pane {
             colors.remove(colorPosition);
         }
         
-        public void addSize(Double value)
+        public void addSize()
         {
             sizePosition++;
-            sizes.add(value);
+            //sizes.add(value);
         }
         
         public void removeSize()
