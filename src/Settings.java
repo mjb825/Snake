@@ -89,6 +89,15 @@ public class Settings extends Pane {
                 preview.setText("[Numbers Only]");
         });
         
+        // add previews for HEAD, TAIL, FOOD
+        SettingsPreview head = new SettingsPreview("HEAD");
+        SettingsPreview tail = new SettingsPreview("TAIL");
+        SettingsPreview food = new SettingsPreview("FOOD");
+        // add previews to options
+        options.add(head, 3, 0, 1, 30);
+        options.add(tail, 4, 0, 1, 30);
+        options.add(food, 5, 0, 1, 30);
+        
         /*********
          * SNAKE *
          *********/
@@ -144,13 +153,35 @@ public class Settings extends Pane {
         
     }
 
-    private class SettingsPreview
+    private class SettingsPreview extends GridPane
     {
+        Label title;
+        Rectangle[] colors;
+        Label[] sizes;
+        
         public SettingsPreview(){}
         
         public SettingsPreview(String title)
         {
+            this.title = new Label(title);
+            this.title.setStyle("-fx-font: 12 monospace;");
             
+            add(this.title, 1, 0);
+            
+            for(int i = 1; i < 12; i++) {
+                
+                Rectangle color = new Rectangle(30, 15);
+                Label size = new Label("6");
+                size.setStyle("-fx-font: 12 monospace;");
+                
+                color.setStyle("-fx-fill: none; -fx-stroke: black; -fx-stroke-width: 1;");
+                
+                add(color, 1, i);
+                add(size, 0, i);
+                
+            }
+            
+            setVgap(-1);
         }
         
     }
