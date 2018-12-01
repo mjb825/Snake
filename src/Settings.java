@@ -98,46 +98,35 @@ public class Settings extends Pane {
         options.add(tail, 4, 0, 1, 30);
         options.add(food, 5, 0, 1, 30);
         
-        /*********
-         * SNAKE *
-         *********/
-        Circle snake[] = new Circle[19];
-        for(int i = 0; i < snake.length; i++) {
-            snake[i] = new Circle(6);
-            snake[i].setStyle("-fx-stroke: black; -fx-fill: rgb(255, 0, 0, 1); -fx-stroke-width: 2;");
-            snake[i].setCenterX(490);
-            snake[i].setCenterY(i * 20 + 10);
-        }
-//        Circle snake = new Circle(6);
-//        snake.setStyle("-fx-stroke: black; -fx-fill: rgb(255, 0, 0, 1); -fx-stroke-width: 2;");
-//        
-//        snake.setCenterX(250);
-//        snake.setCenterY(250);
-        
+
 
         
         rSlider.valueProperty().addListener(l -> {
             r = ((int)(rSlider.getValue() / 100 * 255));
             rLabel.setText("R: " + r);
-            snake[0].setFill(Color.rgb(r, g, b, a));
+            head.previewColor(Color.rgb(r, g, b, a));
+            //snake[0].setFill(Color.rgb(r, g, b, a));
         });
         
         gSlider.valueProperty().addListener(l -> {
             g = ((int)(gSlider.getValue() / 100 * 255));
             gLabel.setText("G: " + g);
-            snake[0].setFill(Color.rgb(r, g, b, a));
+            head.previewColor(Color.rgb(r, g, b, a));
+            //snake[0].setFill(Color.rgb(r, g, b, a));
         });
         
         bSlider.valueProperty().addListener(l -> {
             b = ((int)(bSlider.getValue() / 100 * 255));
             bLabel.setText("B: " + b);
-            snake[0].setFill(Color.rgb(r, g, b, a));
+            head.previewColor(Color.rgb(r, g, b, a));
+            //snake[0].setFill(Color.rgb(r, g, b, a));
         });
         
         aSlider.valueProperty().addListener(l -> {
             a = (aSlider.getValue() / 100);
             aLabel.setText("A: " + (int)(a * 100) + "%");
-            snake[0].setFill(Color.rgb(r, g, b, a));
+            head.previewColor(Color.rgb(r, g, b, a));
+            //snake[0].setFill(Color.rgb(r, g, b, a));
         });
         
         rSlider.setValue(100);
@@ -147,41 +136,103 @@ public class Settings extends Pane {
         
         getChildren().addAll(options);
         
-        for(int i = 0; i < snake.length; i++) {
-            getChildren().add(snake[i]);
-        }
+        // set and preview default colors 
+        //head.previewColor(Color.RED);
+        //tail.previewColor(Color.BLUE);
+        //food.previewColor(Color.ORANGE);
         
     }
 
     private class SettingsPreview extends GridPane
     {
-        Label title;
-        Rectangle[] colors;
-        Label[] sizes;
+        private Label title;
+        private Rectangle[] colorPreview;
+        private Label[] sizePreview;
+        private int colorPosition;
+        private int sizePosition;
+        private int amount; // amount of previews (color and size)
+        
+        private ArrayList<Color> colors;
+        private ArrayList<Double> sizes;
         
         public SettingsPreview(){}
         
         public SettingsPreview(String title)
         {
+            // set title for previews
             this.title = new Label(title);
             this.title.setStyle("-fx-font: 12 monospace;");
-            
             add(this.title, 1, 0);
             
-            for(int i = 1; i < 12; i++) {
+            // set amount of previews
+            amount = 12;
+            
+            // initialize colors and sizes arraylists
+            colors = new ArrayList<Color>();
+            sizes = new ArrayList<Double>();
+            
+            colorPreview = new Rectangle[amount];
+            sizePreview = new Label[amount];
+            
+            for(int i = 0; i < amount; i++) {
                 
                 Rectangle color = new Rectangle(30, 15);
-                Label size = new Label("6");
+                Label size = new Label("?");
+                
+                colorPreview[i] = color;
+                sizePreview[i] = size;
+                
                 size.setStyle("-fx-font: 12 monospace;");
                 
                 color.setStyle("-fx-fill: none; -fx-stroke: black; -fx-stroke-width: 1;");
                 
-                add(color, 1, i);
-                add(size, 0, i);
+                // i + 1 since title gets 0th position
+                add(color, 1, i + 1);
+                add(size, 0, i + 1);
                 
             }
             
             setVgap(-1);
+            
+            // current color and size
+            colorPosition = 0;
+            sizePosition = 0;
+        }
+        
+        public void previewColor(Color color)
+        {
+            // in case there are more colors added then there are previews (use modulus)
+            colorPreview[colorPosition % amount].setFill(color);
+        }
+        
+        public void previewSize(String value)
+        {
+            // in case there are more sizes added then there are previews (use modulus)
+            sizePreview[sizePosition % amount].setText(value);
+        }
+        
+        public void addColor(Color color)
+        {
+            colorPosition++;
+            colors.add(color);
+        }
+        
+        public void removeColor()
+        {
+            colorPosition--;
+            colors.remove(colorPosition);
+        }
+        
+        public void addSize(Double value)
+        {
+            sizePosition++;
+            sizes.add(value);
+        }
+        
+        public void removeSize()
+        {
+            sizePosition--;
+            sizes.remove(sizePosition);
         }
         
     }
