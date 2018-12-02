@@ -36,7 +36,102 @@ public class MainMenu extends VBox {
     private File data;
     private CheckBox diagonal;
     private CheckBox reverse;
+    private Game gameApp;
     
+
+    
+    public MainMenu(){}
+    
+    public MainMenu(Game gameApp, Stage stage, boolean isDiagonal, boolean isReverse)
+    {
+        this.gameApp = gameApp;
+        
+        // file for storing high scores
+        data = new File("scores.dat");
+        
+        // if highscore file doesn't exist, make a new one with 1 as high score for all categories
+        try {
+            if(!data.exists())
+            {
+                try (
+                    FileOutputStream file = new FileOutputStream(data, false);
+                    DataOutputStream output = new DataOutputStream(file);
+                ) {
+                    output.writeInt(1);
+                    output.writeUTF("???");
+                    output.writeInt(1);
+                    output.writeUTF("???");
+                    output.writeInt(1);
+                    output.writeUTF("???");
+                    output.writeInt(1);
+                    output.writeUTF("???");
+                }
+            }
+        } catch (IOException e) {}
+        
+        // update array for storing high scores from file
+        highScore = new int[4];
+        highScoreUser = new String[4];
+        setHighScores();
+        
+        // logo
+        Image image = new Image("logo.png");
+        ImageView logo = new ImageView(image);
+        
+        // high score label
+        lblHighScore = new Label();
+        lblHighScore.setStyle("-fx-font: bold 18 monospace;");
+        showRecord(isDiagonal, isReverse);
+        
+        // checkbox options
+        HBox options = new HBox();
+        diagonal = new CheckBox("Diagonal");
+        reverse = new CheckBox("Reverse");
+        // set checkbox options according to parameters
+        diagonal.setSelected(isDiagonal);
+        reverse.setSelected(isReverse);
+        // update high score label when checkboxes are changed
+        diagonal.setOnAction(e->showRecord(diagonal.isSelected(), reverse.isSelected()));
+        reverse.setOnAction(e->showRecord(diagonal.isSelected(), reverse.isSelected()));
+        // add to options and set properties
+        options.getChildren().addAll(diagonal, reverse);
+        options.setAlignment(Pos.CENTER);
+        options.setSpacing(20);
+        
+        // start label
+        Label start = new Label("PRESS ESCAPE BUTTON");
+        start.setStyle("-fx-underline: true; -fx-font-size: 14;");
+        
+        // add elements to vbox and set properties
+        getChildren().addAll(logo, options, lblHighScore, start);
+        setAlignment(Pos.CENTER);
+        setSpacing(40);
+        
+        // set key press event so user can start game by pressing escape button
+        setOnKeyPressed(ke-> startGame(ke, diagonal, reverse, stage));
+    }
+    
+    // start game when user presses escape button
+    public void startGame(KeyEvent ke, CheckBox diagonal, CheckBox reverse, Stage stage)
+    {
+        if(ke.getCode() == KeyCode.ESCAPE) {
+            GameField game = new GameField(diagonal.isSelected(), reverse.isSelected(), stage, this, gameApp);
+            gameApp.scene.setRoot(game);
+            gameApp.scene.setOnKeyPressed(kke->game.handleKey(kke));
+            stage.setScene(gameApp.scene);
+            game.play();
+        }
+        else if(ke.getCode() == KeyCode.SHIFT) {
+            Settings settings = new Settings();
+            gameApp.scene.setRoot(settings);
+            stage.setScene(gameApp.scene);
+        }
+    }
+
+    /***************
+     * HIGH SCORES *
+     ***************/
+
     public void showRecord(boolean diagonal, boolean reverse)
     {
         lblHighScore.setText("High Score: " + highScore[(diagonal?1:0)+(reverse?2:0)] + " (" + highScoreUser[(diagonal?1:0)+(reverse?2:0)] + ")");
@@ -109,92 +204,5 @@ public class MainMenu extends VBox {
                 output.writeUTF(highScoreUser[3]);
             }
         } catch(IOException e) {}
-    }
-    
-    public MainMenu(){}
-    
-    public MainMenu(Stage stage, boolean isDiagonal, boolean isReverse)
-    {
-        // file for storing high scores
-        data = new File("scores.dat");
-        
-        // if highscore file doesn't exist, make a new one with 1 as high score for all categories
-        try {
-            if(!data.exists())
-            {
-                try (
-                    FileOutputStream file = new FileOutputStream(data, false);
-                    DataOutputStream output = new DataOutputStream(file);
-                ) {
-                    output.writeInt(1);
-                    output.writeUTF("???");
-                    output.writeInt(1);
-                    output.writeUTF("???");
-                    output.writeInt(1);
-                    output.writeUTF("???");
-                    output.writeInt(1);
-                    output.writeUTF("???");
-                }
-            }
-        } catch (IOException e) {}
-        
-        // update array for storing high scores from file
-        highScore = new int[4];
-        highScoreUser = new String[4];
-        setHighScores();
-        
-        // logo
-        Image image = new Image("logo.png");
-        ImageView logo = new ImageView(image);
-        
-        // high score label
-        lblHighScore = new Label();
-        lblHighScore.setStyle("-fx-font: bold 18 monospace;");
-        showRecord(isDiagonal, isReverse);
-        
-        // checkbox options
-        HBox options = new HBox();
-        diagonal = new CheckBox("Diagonal");
-        reverse = new CheckBox("Reverse");
-        // set checkbox options according to parameters
-        diagonal.setSelected(isDiagonal);
-        reverse.setSelected(isReverse);
-        // update high score label when checkboxes are changed
-        diagonal.setOnAction(e->showRecord(diagonal.isSelected(), reverse.isSelected()));
-        reverse.setOnAction(e->showRecord(diagonal.isSelected(), reverse.isSelected()));
-        // add to options and set properties
-        options.getChildren().addAll(diagonal, reverse);
-        options.setAlignment(Pos.CENTER);
-        options.setSpacing(20);
-        
-        // start label
-        Label start = new Label("PRESS ESCAPE BUTTON");
-        start.setStyle("-fx-underline: true; -fx-font-size: 14;");
-        
-        // add elements to vbox and set properties
-        getChildren().addAll(logo, options, lblHighScore, start);
-        setAlignment(Pos.CENTER);
-        setSpacing(40);
-        
-        // set key press event so user can start game by pressing escape button
-        setOnKeyPressed(ke-> startGame(ke, diagonal, reverse, stage));
-    }
-    
-    // start game when user presses escape button
-    public void startGame(KeyEvent ke, CheckBox diagonal, CheckBox reverse, Stage stage)
-    {
-        if(ke.getCode() == KeyCode.ESCAPE) {
-            GameField game = new GameField(diagonal.isSelected(), reverse.isSelected(), stage, this);
-            Scene scene = new Scene(game, 500, 380);
-            scene.setOnKeyPressed(kke->game.handleKey(kke));
-            stage.setScene(scene);
-            game.play();
-        }
-        else if(ke.getCode() == KeyCode.SHIFT) {
-            Settings settings = new Settings();
-            Scene scene = new Scene(settings, 500, 380);
-            stage.setScene(scene);
-        }
-    }
-    
+    }    
 }

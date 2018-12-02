@@ -46,8 +46,9 @@ public class GameField extends Pane
     private int score;
     private MainMenu menu;
     private int record;
+    private Game gameApp;
 
-    public GameField(boolean diagonal, boolean reverse, Stage stage, MainMenu menu)
+    public GameField(boolean diagonal, boolean reverse, Stage stage, MainMenu menu, Game gameApp)
     {
         this.stage = stage;
         this.diagonal = diagonal;
@@ -55,6 +56,7 @@ public class GameField extends Pane
         this.menu = menu;
         score = 1;
         record = this.menu.getRecord(diagonal, reverse);
+        this.gameApp = gameApp;
         
         // set movement of snake (based on diagonal and reverse)
         if(diagonal && reverse)
@@ -284,28 +286,16 @@ public class GameField extends Pane
     {
         frameTimer.pause();
         
-        Scene scene;
-        
-        // create new main menu
-        MainMenu menu = new MainMenu(stage, diagonal, reverse);
-        
-        // set high scores for new menu
-        menu.setHighScore(this.menu.getHighScore());
-        menu.setHighScoreUser(this.menu.getHighScoreUser());
-        
         // update high score if it is beaten and write to file
         if(score > record) {
             // get user name for new high score
-            ScoreDialog newScore = new ScoreDialog(menu);
-            scene = new Scene(newScore, 500, 380);
-            stage.setScene(scene);
+            ScoreDialog newScore = new ScoreDialog();
+            gameApp.scene.setRoot(newScore);
+            stage.setScene(gameApp.scene);
         }
         else {
-            // update high score label
-            menu.showRecord(diagonal, reverse);
-
-            scene = new Scene(menu, 500, 380);
-            stage.setScene(scene);
+            gameApp.scene.setRoot(menu);
+            stage.setScene(gameApp.scene);
         }
         
     }
@@ -318,11 +308,9 @@ public class GameField extends Pane
         Label confirm;
         Label highScore;
         Label instruct;
-        MainMenu menu;
         
-        public ScoreDialog(MainMenu menu)
+        public ScoreDialog()
         {
-            this.menu = menu;
             
             box = new Rectangle(360, 180);
             box.setStyle("-fx-fill: rgba(0, 0, 0, .6); -fx-arc-height: 26; -fx-arc-width: 26;");
@@ -381,8 +369,8 @@ public class GameField extends Pane
                     // update high score label
                     menu.showRecord(diagonal, reverse);
 
-                    Scene scene = new Scene(menu, 500, 380);
-                    stage.setScene(scene);
+                    gameApp.scene.setRoot(menu);
+                    stage.setScene(gameApp.scene);
                 }
             }
      

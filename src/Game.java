@@ -14,13 +14,16 @@ import javafx.stage.Stage;
  */
 public class Game extends Application
 {    
+    
+    public Scene scene;
+    
     @Override
     public void start(Stage stage) throws Exception
     {
         // main menu of game
-        MainMenu menu = new MainMenu(stage, false, false);
+        MainMenu menu = new MainMenu(this, stage, false, false);
         
-        Scene scene = new Scene(menu, 500, 380);
+        scene = new Scene(menu, 500, 380);
         
         stage.setScene(scene);
         stage.setTitle("Snake");

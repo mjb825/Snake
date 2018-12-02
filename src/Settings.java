@@ -39,9 +39,12 @@ public class Settings extends Pane {
     private int b;
     private double a;
     private double size;
-    private ArrayList<Color> snakeColors;
+    private ArrayList<Color> headColors;
     private ArrayList<Color> tailColors;
     private ArrayList<Color> foodColors;
+    private ArrayList<Double> headSizes;
+    private ArrayList<Double> tailSizes;
+    private ArrayList<Double> foodSizes;
     
     private CheckBox colorGrad;
     private CheckBox sizeGrad;
@@ -50,8 +53,14 @@ public class Settings extends Pane {
 
     public Settings() {
     
-        snakeColors = new ArrayList<Color>();
-        snakeColors.add(Color.RED);
+        headColors = new ArrayList<Color>();
+        tailColors = new ArrayList<Color>();
+        foodColors = new ArrayList<Color>();
+        headSizes = new ArrayList<Double>();
+        tailSizes = new ArrayList<Double>();
+        foodSizes = new ArrayList<Double>();
+        
+        headColors.add(Color.RED);
         
         r = 255;
         g = 0;
