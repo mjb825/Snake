@@ -34,14 +34,19 @@ import javafx.stage.Stage;
  */
 public class Settings extends Pane {
     
-    int r;
-    int g;
-    int b;
-    double a;
-    double size;
-    ArrayList<Color> snakeColors;
-    ArrayList<Color> tailColors;
-    ArrayList<Color> foodColors;
+    private int r;
+    private int g;
+    private int b;
+    private double a;
+    private double size;
+    private ArrayList<Color> snakeColors;
+    private ArrayList<Color> tailColors;
+    private ArrayList<Color> foodColors;
+    
+    private CheckBox colorGrad;
+    private CheckBox sizeGrad;
+    private TextField colorGradAmount;
+    private TextField sizeGradAmount;
 
     public Settings() {
     
@@ -90,12 +95,31 @@ public class Settings extends Pane {
         
         // color gradient options
         HBox colorGradient = new HBox();
-        CheckBox colorGrad = new CheckBox("Gradient");
-        TextField colorGradAmount = new TextField();
+        colorGrad = new CheckBox("Gradient");
+        colorGradAmount = new TextField();
         colorGradAmount.setMaxWidth(60);
-        colorGradient.getChildren().addAll(colorGrad, colorGradAmount);
+        
+        colorGradAmount.textProperty().addListener(l -> {
+            
+            // trim last character if value is not in range [1, 29]
+            if(!colorGradAmount.getText().matches("([1-9])||(1[0-9])||(20)") && colorGradAmount.getText().matches(".+")) {
+                colorGradAmount.setText(colorGradAmount.getText().substring(0, colorGradAmount.getText().length() - 1));
+            }
+        });
+        
+        Slider colorStepSlider = new Slider(1, 20, 1);
+        TextField colorSliderField = new TextField("1");
+        colorSliderField.setMaxWidth(40);
+        colorSliderField.setEditable(false);
+        
+        colorStepSlider.valueProperty().addListener(l -> {
+            colorSliderField.setText("" + (int)colorStepSlider.getValue());
+        });
+        
+        colorGradient.getChildren().addAll(colorGrad, colorStepSlider);
         colorGradient.setSpacing(6);
         options.add(colorGradient, 0, 3);
+        options.add(colorSliderField, 3, 3);
         
         // color buttons (add, remove)
         HBox colorButtons = new HBox();
@@ -155,12 +179,23 @@ public class Settings extends Pane {
         
         // size gradient options
         HBox sizeGradient = new HBox();
-        CheckBox sizeGrad = new CheckBox("Gradient");
-        TextField sizeGradAmount = new TextField();
+        sizeGrad = new CheckBox("Gradient");
+        sizeGradAmount = new TextField();
         sizeGradAmount.setMaxWidth(60);
-        sizeGradient.getChildren().addAll(sizeGrad, sizeGradAmount);
+        
+        Slider sizeStepSlider = new Slider(1, 20, 1);
+        TextField sizeSliderField = new TextField("1");
+        sizeSliderField.setMaxWidth(40);
+        sizeSliderField.setEditable(false);
+        
+        sizeStepSlider.valueProperty().addListener(l -> {
+            sizeSliderField.setText("" + (int)sizeStepSlider.getValue());
+        });
+        
+        sizeGradient.getChildren().addAll(sizeGrad, sizeStepSlider);
         sizeGradient.setSpacing(6);
         options.add(sizeGradient, 0, 10);
+        options.add(sizeSliderField, 3, 10);
         
         // size buttons (add, remove)
         HBox sizeButtons = new HBox();
@@ -325,11 +360,12 @@ public class Settings extends Pane {
         private ArrayList<Color> colors;
         private ArrayList<Double> sizes;
         
-        private int prevR;
-        private int prevG;
-        private int prevB;
-        private double prevA;
-        private double prevSize;
+        // initialize out of bounds values to test if null
+        private int prevR = 999;
+        private int prevG = 999;
+        private int prevB = 999;
+        private double prevA = 999;
+        private double prevSize = 999;
         
         public SettingsPreview(){}
         
@@ -431,6 +467,9 @@ public class Settings extends Pane {
         
         public void addColor()
         {
+            
+            if(colorGrad.isSelected()){}
+            
             // set previous values in case of gradient
             prevR = r;
             prevG = g;
