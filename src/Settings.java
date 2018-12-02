@@ -403,27 +403,23 @@ public class Settings extends Pane {
                 
                 size.setStyle("-fx-font: 12 monospace;");
                 
-                color.setStyle("-fx-stroke: black; -fx-stroke-width: 1;");
+                color.setStroke(Color.BLACK);
+                color.setStrokeWidth(1);
                 
                 color.setFill(Color.rgb(0, 0, 0, 0));
                 
                 if(i == 0) {
                     color.setFill(defaultColor);
                     size.setText((int)defaultSize + "");
+                    color.setStrokeWidth(2);
+                    size.setUnderline(true);
                     colors.add(defaultColor);
                     sizes.add(defaultSize);
                 }
-                
-                
-                if(i >= 24) {
-                    add(color, 3, i - 24);
-                    add(size, 2, i - 24);
-                }
-                else {
-                    // i + 1 since title gets 0th position
-                    add(color, 1, i + 1);
-                    add(size, 0, i + 1);
-                }
+            
+                // i + 1 since title gets 0th position
+                add(color, 1, i + 1);
+                add(size, 0, i + 1);
                 
             }
             
@@ -442,28 +438,11 @@ public class Settings extends Pane {
             colorPreview[colorPosition % amount].setFill(Color.rgb(r, g, b, a));
         }
         
-        // reset color preview
-        public void resetColor()
-        {
-            // in case there are more colors added then there are previews (use modulus)
-            colorPreview[colorPosition % amount].setFill(Color.rgb(0, 0, 0, 0));
-        }
-        
         public void previewSize()
         {            
             // in case there are more sizes added then there are previews (use modulus)
             sizePreview[sizePosition % amount].setText("" + (int)size);
         }
-        
-        // reset size preview
-        public void resetSize()
-        {
-            
-            // in case there are more sizes added then there are previews (use modulus)
-            sizePreview[sizePosition % amount].setText("?");
-        }
-        
-        
         
         public void addColor()
         {
@@ -477,16 +456,21 @@ public class Settings extends Pane {
             prevA = a;
             
             previewColor();
+            colorPreview[colorPosition % amount].setStrokeWidth(1);
             colorPosition++;
+            colorPreview[colorPosition % amount].setStrokeWidth(2);
             //colors.add(color);
         }
         
         public void removeColor()
         {
-            // null color preview
-            resetColor();
+            // reset color preview
+            // in case there are more colors added then there are previews (use modulus)
+            colorPreview[colorPosition % amount].setFill(Color.rgb(0, 0, 0, 0));
             
+            colorPreview[colorPosition % amount].setStrokeWidth(1);
             colorPosition = colorPosition == 0 ? 0 : colorPosition - 1;
+            colorPreview[colorPosition % amount].setStrokeWidth(2);
             //if(colors.size() != 0)
             //colors.remove(colorPosition);
         }
@@ -497,16 +481,21 @@ public class Settings extends Pane {
             prevSize = size;
             
             previewSize();
+            sizePreview[sizePosition % amount].setUnderline(false);
             sizePosition++;
+            sizePreview[sizePosition % amount].setUnderline(true);
             //sizes.add(value);
         }
         
         public void removeSize()
         {
-            // null size preview
-            resetSize();
+            // reset size preview
+            // in case there are more sizes added then there are previews (use modulus)
+            sizePreview[sizePosition % amount].setText("?");
             
+            sizePreview[sizePosition % amount].setUnderline(false);
             sizePosition = sizePosition == 0 ? 0 : sizePosition - 1;
+            sizePreview[sizePosition % amount].setUnderline(true);
             //if(sizes.size() != 0)
             //sizes.remove(sizePosition);
         }
