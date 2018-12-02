@@ -224,6 +224,15 @@ public class Settings extends Pane {
                 food.addColor();
         });
         
+        colorRemove.setOnAction(e -> {
+            if(headRadio.isSelected())
+                head.removeColor();
+            else if(tailRadio.isSelected())
+                tail.removeColor();
+            else
+                food.removeColor();
+        });
+        
         sizeAdd.setOnAction(e -> {
             if(headRadio.isSelected())
                 head.addSize();
@@ -232,75 +241,70 @@ public class Settings extends Pane {
             else
                 food.addSize();
         });
-
-//        size.textProperty().addListener(l -> {
-//            // only allow values [1, 99.99]
-//            if(size.getText().matches("(([1-9][0-9])|[1-9])([.][0-9]{0,2})?"))
-//                if(headRadio.isSelected())
-//                    head.previewSize(size.getText());
-//                else if(tailRadio.isSelected())
-//                    tail.previewSize(size.getText());
-//                else
-//                    food.previewSize(size.getText());
-//            // trim textfield if doesn't result in a legit match
-//            else if(size.getText().matches(".+"))
-//                size.setText(size.getText().substring(0, size.getText().length() - 1));
-//        });
+        
+        sizeRemove.setOnAction(e -> {
+            if(headRadio.isSelected())
+                head.removeSize();
+            else if(tailRadio.isSelected())
+                tail.removeSize();
+            else
+                food.removeSize();
+        });
 
         //[change] combine all of these into one method
         rSlider.valueProperty().addListener(l -> {
             r = (int)rSlider.getValue();
             rField.setText("" + r);
             if(headRadio.isSelected())
-                head.previewColor(Color.rgb(r, g, b, a));
+                head.previewColor();
             else if(tailRadio.isSelected())
-                tail.previewColor(Color.rgb(r, g, b, a));
+                tail.previewColor();
             else
-                food.previewColor(Color.rgb(r, g, b, a));
+                food.previewColor();
         });
         
         gSlider.valueProperty().addListener(l -> {
             g = (int)gSlider.getValue();
             gField.setText("" + g);
             if(headRadio.isSelected())
-                head.previewColor(Color.rgb(r, g, b, a));
+                head.previewColor();
             else if(tailRadio.isSelected())
-                tail.previewColor(Color.rgb(r, g, b, a));
+                tail.previewColor();
             else
-                food.previewColor(Color.rgb(r, g, b, a));
+                food.previewColor();
         });
         
         bSlider.valueProperty().addListener(l -> {
             b = (int)bSlider.getValue();
             bField.setText("" + b);
             if(headRadio.isSelected())
-                head.previewColor(Color.rgb(r, g, b, a));
+                head.previewColor();
             else if(tailRadio.isSelected())
-                tail.previewColor(Color.rgb(r, g, b, a));
+                tail.previewColor();
             else
-                food.previewColor(Color.rgb(r, g, b, a));
+                food.previewColor();
         });
         
         aSlider.valueProperty().addListener(l -> {
             a = aSlider.getValue();
             aField.setText("" + (int)(a * 100));
             if(headRadio.isSelected())
-                head.previewColor(Color.rgb(r, g, b, a));
+                head.previewColor();
             else if(tailRadio.isSelected())
-                tail.previewColor(Color.rgb(r, g, b, a));
+                tail.previewColor();
             else
-                food.previewColor(Color.rgb(r, g, b, a));
+                food.previewColor();
         });
         
         sizeSlider.valueProperty().addListener(l -> {
             size = sizeSlider.getValue();
             sizeField.setText("" + (int)size);
             if(headRadio.isSelected())
-                head.previewSize(size);
+                head.previewSize();
             else if(tailRadio.isSelected())
-                tail.previewSize(size);
+                tail.previewSize();
             else
-                food.previewSize(size);
+                food.previewSize();
         });
 
         
@@ -320,6 +324,12 @@ public class Settings extends Pane {
         
         private ArrayList<Color> colors;
         private ArrayList<Double> sizes;
+        
+        private int prevR;
+        private int prevG;
+        private int prevB;
+        private double prevA;
+        private double prevSize;
         
         public SettingsPreview(){}
         
@@ -390,53 +400,74 @@ public class Settings extends Pane {
             sizePosition = 0;
         }
         
-        public void previewColor(Color color)
+        public void previewColor()
         {
             // in case there are more colors added then there are previews (use modulus)
-            colorPreview[colorPosition % amount].setFill(color);
+            colorPreview[colorPosition % amount].setFill(Color.rgb(r, g, b, a));
         }
         
-        public void previewSize(double value)
+        // reset color preview
+        public void resetColor()
         {
-            // in case there are more sizes added then there are previews (use modulus)
-            sizePreview[sizePosition % amount].setText("" + (int)value);
+            // in case there are more colors added then there are previews (use modulus)
+            colorPreview[colorPosition % amount].setFill(Color.rgb(0, 0, 0, 0));
         }
+        
+        public void previewSize()
+        {            
+            // in case there are more sizes added then there are previews (use modulus)
+            sizePreview[sizePosition % amount].setText("" + (int)size);
+        }
+        
+        // reset size preview
+        public void resetSize()
+        {
+            
+            // in case there are more sizes added then there are previews (use modulus)
+            sizePreview[sizePosition % amount].setText("?");
+        }
+        
+        
         
         public void addColor()
         {
+            // set previous values in case of gradient
+            prevR = r;
+            prevG = g;
+            prevB = b;
+            prevA = a;
+            
+            previewColor();
             colorPosition++;
             //colors.add(color);
         }
         
         public void removeColor()
         {
+            // null color preview
+            resetColor();
+            
             colorPosition--;
-            colors.remove(colorPosition);
+            //colors.remove(colorPosition);
         }
         
         public void addSize()
         {
+            // set previous values in case of gradient
+            prevSize = size;
+            
+            previewSize();
             sizePosition++;
             //sizes.add(value);
         }
         
         public void removeSize()
         {
+            // null size preview
+            resetSize();
+            
             sizePosition--;
-            sizes.remove(sizePosition);
-        }
-        
-    }
-    
-    private class BlankSpace extends Rectangle
-    {
-        
-        public BlankSpace(){}
-        
-        public BlankSpace(double width, double height)
-        {
-            super(width, height);
-            setFill(Color.rgb(0, 255, 0, 0.1));
+            //sizes.remove(sizePosition);
         }
         
     }
