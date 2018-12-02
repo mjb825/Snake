@@ -344,8 +344,10 @@ public class GameField extends Pane
             
             name.textProperty().addListener(l -> {
                 // trim last character if it's not a letter or there are more than 3
-                if(!name.getText().matches("[A-Za-z]{1,3}") && name.getText().matches(".+"))
+                if(!name.getText().matches("[A-Za-z]{1,3}") && name.getText().matches(".+")) {
                     name.setText(name.getText().substring(0, name.getText().length() - 1));
+                    instruct.setText("[Enter only 1-3 letters.]");
+                }
             });
             
             // confirm label 
