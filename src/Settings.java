@@ -381,7 +381,7 @@ public class Settings extends Pane {
             placeHolder.setStyle("-fx-font: 12 monospace");
             add(placeHolder, 0, 0);
             
-            // set amount of previews (49 if you want two columns)
+            // set amount of previews
             amount = 24;
             
             // initialize colors and sizes arraylists
@@ -486,7 +486,8 @@ public class Settings extends Pane {
             // null color preview
             resetColor();
             
-            colorPosition--;
+            colorPosition = colorPosition == 0 ? 0 : colorPosition - 1;
+            //if(colors.size() != 0)
             //colors.remove(colorPosition);
         }
         
@@ -505,7 +506,8 @@ public class Settings extends Pane {
             // null size preview
             resetSize();
             
-            sizePosition--;
+            sizePosition = sizePosition == 0 ? 0 : sizePosition - 1;
+            //if(sizes.size() != 0)
             //sizes.remove(sizePosition);
         }
         
