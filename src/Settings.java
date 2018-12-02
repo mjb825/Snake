@@ -251,9 +251,9 @@ public class Settings extends Pane {
          * CATEGORY PREVIEWS *
          *********************/
         // add previews for HEAD, TAIL, FOOD
-        SettingsPreview head = new SettingsPreview("HEAD", Color.RED, 6.0);
-        SettingsPreview tail = new SettingsPreview("TAIL", Color.BLUE, 6.0);
-        SettingsPreview food = new SettingsPreview("FOOD", Color.ORANGE, 6.0);
+        SettingsPreview head = new SettingsPreview("HEAD", headColors, headSizes);
+        SettingsPreview tail = new SettingsPreview("TAIL", tailColors, tailSizes);
+        SettingsPreview food = new SettingsPreview("FOOD", foodColors, foodSizes);
         // add previews to options
         options.add(head, 4, 0, 1, 30);
         options.add(tail, 5, 0, 1, 30);
@@ -366,8 +366,8 @@ public class Settings extends Pane {
         private int sizePosition;
         private int amount; // amount of previews (color and size)
         
-        private ArrayList<Color> colors;
-        private ArrayList<Double> sizes;
+        private ArrayList<Color> colorsList;
+        private ArrayList<Double> sizesList;
         
         // initialize out of bounds values to test if null
         private int prevR = 999;
@@ -378,7 +378,7 @@ public class Settings extends Pane {
         
         public SettingsPreview(){}
         
-        public SettingsPreview(String title, Color defaultColor, double defaultSize)
+        public SettingsPreview(String title, ArrayList<Color> colorsList, ArrayList<Double> sizesList)
         {
             // set title for previews
             this.title = new Label(title);
@@ -393,9 +393,9 @@ public class Settings extends Pane {
             // set amount of previews
             amount = 24;
             
-            // initialize colors and sizes arraylists
-            colors = new ArrayList<Color>();
-            sizes = new ArrayList<Double>();
+            // assign array lists
+            this.colorsList = colorsList;
+            this.sizesList = sizesList;
             
             colorPreview = new Rectangle[amount];
             sizePreview = new Label[amount];
@@ -418,12 +418,8 @@ public class Settings extends Pane {
                 color.setFill(Color.rgb(0, 0, 0, 0));
                 
                 if(i == 0) {
-                    color.setFill(defaultColor);
-                    size.setText((int)defaultSize + "");
                     color.setStrokeWidth(2);
                     size.setUnderline(true);
-                    colors.add(defaultColor);
-                    sizes.add(defaultSize);
                 }
             
                 // i + 1 since title gets 0th position
