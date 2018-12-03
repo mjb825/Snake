@@ -13,10 +13,10 @@ public class Tail extends Circle
     
     public Tail(){}
     
-    public Tail(Move currentMove, Color color)
+    public Tail(Move currentMove, Color color, Double size)
     {
         // circle properties
-        super(6);
+        super(size);
         setStyle("-fx-stroke: black; -fx-stroke-width: 2;");
         setFill(color);
         
@@ -51,9 +51,9 @@ public class Tail extends Circle
     }
     
     // return copy of piece
-    public Tail copy(Color color)
+    public Tail copy(Color color, Double size)
     {   
-        return new Tail(currentMove.copy(), color);
+        return new Tail(currentMove.copy(), color, size);
     }
     
     public Move getCurrentMove()
@@ -70,4 +70,10 @@ public class Tail extends Circle
     {
         setFill(color);
     }
+
+    public void setSize(Double size)
+    {
+        setRadius(size);
+    }
+    
 }

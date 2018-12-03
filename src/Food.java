@@ -42,4 +42,9 @@ public class Food extends Circle
     {
         this.y = y;
     }
+    
+    public void updateFrame()
+    {
+        
+    }
 }

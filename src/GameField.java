@@ -106,7 +106,7 @@ public class GameField extends Pane
     public void addPiece()
     {
         // create a copy of last piece
-        Tail piece = player.getLast().copy(player.determineColor());
+        Tail piece = player.getLast().copy(player.determineColor(), player.determineSize());
         Move move = piece.getCurrentMove();
         
         // set new piece position according to direction copied from last piece
@@ -223,6 +223,7 @@ public class GameField extends Pane
             
         } else {
             player.updateFrame(movement);
+            food.updateFrame();
         }
     }
 

@@ -21,6 +21,8 @@ public class Snake
     
     private int snakeColorPos = 0;
     private int tailColorPos = 0;
+    private int snakeSizePos = 0;
+    private int tailSizePos = 0;
     
     private boolean headUnique;
     private boolean sequence;
@@ -57,7 +59,7 @@ public class Snake
         previousMove = currentMove.copy();
         
         // add initial head piece to snake
-        Tail head = new Tail(currentMove.copy(), headColors.get(0));
+        Tail head = new Tail(currentMove.copy(), headColors.get(0), headSizes.get(0));
         tail.add(head);
         
     }
@@ -106,6 +108,7 @@ public class Snake
         }
         
         updateColors();
+        updateSizes();
         
         // update head of snake
         getFirst().updateFrame(currentMove);
@@ -214,6 +217,107 @@ public class Snake
         }
         
     }
+    
+
+    public void updateSizes()
+    {
+        // snakeColors and tailSizes will at least have 1 color,
+        // but maybe not if we set a default value if user got rid of all colors
+        // if snakeColors.size() == 0; Color.GRAY;
+        
+
+        if(headUnique) {
+            
+            tail.get(0).setSize(headSizes.get(snakeSizePos));
+            
+            if(sequence) {
+                
+                // i = snake pieces
+                for(int i = 1; i < tail.size(); i++) {
+                    
+                    // j = number of available colors
+                    for(int j = 0; j < tailSizes.size(); j++) {
+                        
+                        if(i % tailSizes.size() == j) {
+                            
+                            //[funny bug]
+                            //tail.get(i).setSize(snakeColors.get((tailSizePos + j) % tailSizes.size()));
+                            tail.get(i).setSize(tailSizes.get((tailSizePos + j) % tailSizes.size()));
+                            // stop looking through colors because snake piece won't match anymore
+                            break;
+                            
+                        }  
+                        
+                    }
+                    
+                }
+                
+            }
+            
+            else {
+                
+                for(int i = 1; i < tail.size(); i++) {
+                    tail.get(i).setSize(tailSizes.get(tailSizePos));
+                }
+
+            }
+            
+            // update position for snake and tail color
+            snakeSizePos = (snakeSizePos + 1) % headSizes.size();
+            tailSizePos = (tailSizePos + 1) % tailSizes.size();
+        }
+           
+        else {
+            
+            if(sequence) {
+                
+                // i = snake pieces
+                for(int i = 0; i < tail.size(); i++) {
+                    
+                    // j = number of available colors
+                    for(int j = 0; j < headSizes.size(); j++) {
+                        
+                        if(i % headSizes.size() == j) {
+
+                            tail.get(i).setSize(headSizes.get((snakeSizePos + j) % headSizes.size()));
+                            // stop looking through colors because snake piece won't match anymore
+                            break;
+                            
+                        }  
+                        
+                    }
+                    
+                }
+                
+            }
+            
+            else {
+                
+                for(int i = 0; i < tail.size(); i++) {
+                    tail.get(i).setSize(headSizes.get(snakeSizePos));
+                }
+                
+            }
+            
+            // update position for snake color
+            snakeSizePos = (snakeSizePos + 1) % headSizes.size();
+        }
+        
+    }
+    
+    public Double determineSize()
+    {
+        
+        // updateColors will update pos of colors
+        if(headUnique) {
+            return tailSizes.get(tailSizePos);
+        }
+        else {
+            return headSizes.get(snakeSizePos);
+        }
+        
+    }
+    
     
     public void changeDirection(Direction direction)
     {
