@@ -38,6 +38,16 @@ public class Snake
         headSizes = menu.getSettings().getHeadSizes();
         tailSizes = menu.getSettings().getTailSizes();
         
+        // assign default valuses if none is set
+        if(headColors.isEmpty())
+            headColors.add(Color.RED);
+        if(tailColors.isEmpty())
+            tailColors.add(Color.BLUE);
+        if(headSizes.isEmpty())
+            headSizes.add(6.0);
+        if(tailSizes.isEmpty())
+            tailSizes.add(6.0);
+        
         // get game options from settings
         headUnique = menu.getSettings().headUnique();
         sequence = menu.getSettings().sequence();
@@ -47,7 +57,7 @@ public class Snake
         previousMove = currentMove.copy();
         
         // add initial head piece to snake
-        Tail head = new Tail(currentMove.copy(), determineColor());
+        Tail head = new Tail(currentMove.copy(), headColors.get(0));
         tail.add(head);
         
     }

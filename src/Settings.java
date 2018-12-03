@@ -257,6 +257,8 @@ public class Settings extends Pane {
         // game options checkboxes
         HBox gameOptions = new HBox();
         headUnique = new CheckBox("Head Unique");
+        headUnique.setSelected(true);
+        
         sequence = new CheckBox("Sequence");
         mirror = new CheckBox("Mirror");
         gameOptions.getChildren().addAll(headUnique, sequence, mirror);
