@@ -52,6 +52,10 @@ public class Settings extends Pane {
     private Slider sizeStepSlider;
     private TextField colorGradAmount;
     private TextField sizeGradAmount;
+    
+    private CheckBox headUnique;
+    private CheckBox sequence;
+    private CheckBox mirror;
 
     public Settings() {
     
@@ -242,9 +246,9 @@ public class Settings extends Pane {
         
         // game options checkboxes
         HBox gameOptions = new HBox();
-        CheckBox headUnique = new CheckBox("Head Unique");
-        CheckBox sequence = new CheckBox("Sequence");
-        CheckBox mirror = new CheckBox("Mirror");
+        headUnique = new CheckBox("Head Unique");
+        sequence = new CheckBox("Sequence");
+        mirror = new CheckBox("Mirror");
         gameOptions.getChildren().addAll(headUnique, sequence, mirror);
         gameOptions.setSpacing(6);
         options.add(gameOptions, 0, 14);
@@ -261,6 +265,9 @@ public class Settings extends Pane {
         options.add(tail, 5, 0, 1, 30);
         options.add(food, 6, 0, 1, 30);
         
+        /*************************
+         * ACTIONS AND LISTENERS *
+         *************************/
         colorAdd.setOnAction(e -> {
             if(headRadio.isSelected())
                 head.addColor();
@@ -616,29 +623,91 @@ public class Settings extends Pane {
         
         public void addSize()
         {
-            // set previous values in case of gradient
-            prevSize = size;
             
-            previewSize();
-            sizePreview[sizePosition % amount].setUnderline(false);
-            sizePosition++;
-            sizePreview[sizePosition % amount].setUnderline(true);
-            //sizes.add(value);
+            int howMany = 1;
+            
+            if(sizeGrad.isSelected())
+                howMany = (int)sizeStepSlider.getValue();
+            
+            // set previous values in case of gradient
+            //prevSize = size;
+            
+            for(int i = 0; i < howMany; i++) {
+                previewSize();
+                sizePreview[sizePosition % amount].setUnderline(false);
+                sizePosition++;
+                sizePreview[sizePosition % amount].setUnderline(true);
+                sizesList.add(size);
+            }
         }
         
         public void removeSize()
         {
-            // reset size preview
-            // in case there are more sizes added then there are previews (use modulus)
-            sizePreview[sizePosition % amount].setText("?");
+            // how many to remove from list and how many previews to reset
+            int howMany = 1;
             
-            sizePreview[sizePosition % amount].setUnderline(false);
-            sizePosition = sizePosition == 0 ? 0 : sizePosition - 1;
-            sizePreview[sizePosition % amount].setUnderline(true);
-            //if(sizes.size() != 0)
-            //sizes.remove(sizePosition);
+            // adjust how many according to StepSlider
+            if(sizeGrad.isSelected())
+                howMany = (int)sizeStepSlider.getValue();
+            
+            for(int i = 0; i < howMany; i++) {
+                // reset size preview
+                // in case there are more sizes added then there are previews (use modulus)
+                sizePreview[sizePosition % amount].setText("?");
+
+                sizePreview[sizePosition % amount].setUnderline(false);
+                sizePosition = sizePosition == 0 ? 0 : sizePosition - 1;
+                sizePreview[sizePosition % amount].setUnderline(true);
+                if(!sizesList.isEmpty())
+                    sizesList.remove(sizePosition);
+            }
         }
         
+    }
+    
+    public ArrayList<Color> getHeadColors()
+    {
+        return headColors;
+    }
+    
+    public ArrayList<Double> getHeadSizes()
+    {
+        return headSizes;
+    }
+    
+    public ArrayList<Color> getTailColors()
+    {
+        return tailColors;
+    }
+    
+    public ArrayList<Double> getTailSizes()
+    {
+        return tailSizes;
+    }
+    
+    public ArrayList<Color> getFoodColors()
+    {
+        return foodColors;
+    }
+    
+    public ArrayList<Double> getFoodSizes()
+    {
+        return foodSizes;
+    }
+    
+    public boolean headUnique()
+    {
+        return headUnique.isSelected();
+    }
+    
+    public boolean sequence()
+    {
+        return sequence.isSelected();
+    }
+    
+    public boolean mirror()
+    {
+        return mirror.isSelected();
     }
     
 }
