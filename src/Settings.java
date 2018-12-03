@@ -76,7 +76,6 @@ public class Settings extends Pane {
         tailSizes = new ArrayList<Double>();
         foodSizes = new ArrayList<Double>();
         
-        headColors.add(Color.RED);
         
         r = 255;
         g = 0;

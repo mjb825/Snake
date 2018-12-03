@@ -34,21 +34,34 @@ public class Snake
     
     public Snake(double x, double y, Direction direction, MainMenu menu)
     {
-        // get head and tail colors and sizes from settings and boolean values from settings
-        headColors = menu.getSettings().getHeadColors();
-        tailColors = menu.getSettings().getTailColors();
-        headSizes = menu.getSettings().getHeadSizes();
-        tailSizes = menu.getSettings().getTailSizes();
         
+        // get head and tail colors and sizes from settings and boolean values from settings
         // assign default valuses if none is set
-        if(headColors.isEmpty())
+        
+        // head colors
+        if(menu.getSettings().getHeadColors().isEmpty()) {
+            headColors = new ArrayList<Color>();
             headColors.add(Color.RED);
-        if(tailColors.isEmpty())
+        } else headColors = menu.getSettings().getHeadColors();
+
+        // tail colors
+        if(menu.getSettings().getTailColors().isEmpty()) {
+            tailColors = new ArrayList<Color>();
             tailColors.add(Color.BLUE);
-        if(headSizes.isEmpty())
+        } else tailColors = menu.getSettings().getTailColors();
+        
+        // head sizes
+        if(menu.getSettings().getHeadSizes().isEmpty()) {
+            headSizes = new ArrayList<Double>();
             headSizes.add(6.0);
-        if(tailSizes.isEmpty())
+        } else headSizes = menu.getSettings().getHeadSizes();
+        
+        // tail sizes
+        if(menu.getSettings().getTailSizes().isEmpty()) {
+            tailSizes = new ArrayList<Double>();
             tailSizes.add(6.0);
+        } else tailSizes = menu.getSettings().getTailSizes();
+        
         
         // get game options from settings
         headUnique = menu.getSettings().headUnique();
