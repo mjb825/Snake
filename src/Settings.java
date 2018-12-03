@@ -18,6 +18,8 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -57,8 +59,16 @@ public class Settings extends Pane {
     private CheckBox sequence;
     private CheckBox mirror;
 
-    public Settings() {
+    private Game gameApp;
+    private MainMenu menu;
+    private Stage stage;
     
+    public Settings(Stage stage, MainMenu menu, Game gameApp) {
+    
+        this.gameApp = gameApp;
+        this.menu = menu;
+        this.stage = stage;
+        
         headColors = new ArrayList<Color>();
         tailColors = new ArrayList<Color>();
         foodColors = new ArrayList<Color>();
@@ -720,5 +730,12 @@ public class Settings extends Pane {
     {
         return mirror.isSelected();
     }
-    
+
+    public void handleKey(KeyEvent ke)
+    {
+        if(ke.getCode() == KeyCode.ESCAPE) {
+            gameApp.scene.setRoot(menu);
+            stage.setScene(gameApp.scene);
+        }
+    }
 }

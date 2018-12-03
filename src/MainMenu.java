@@ -37,7 +37,7 @@ public class MainMenu extends VBox {
     private CheckBox diagonal;
     private CheckBox reverse;
     private Game gameApp;
-    
+    Settings settings;
 
     
     public MainMenu(){}
@@ -45,6 +45,7 @@ public class MainMenu extends VBox {
     public MainMenu(Game gameApp, Stage stage, boolean isDiagonal, boolean isReverse)
     {
         this.gameApp = gameApp;
+        settings = new Settings(stage, this, gameApp);
         
         // file for storing high scores
         data = new File("scores.dat");
@@ -122,12 +123,17 @@ public class MainMenu extends VBox {
             game.play();
         }
         else if(ke.getCode() == KeyCode.SHIFT) {
-            Settings settings = new Settings();
             gameApp.scene.setRoot(settings);
+            gameApp.scene.setOnKeyPressed(kke->settings.handleKey(kke));
             stage.setScene(gameApp.scene);
         }
     }
 
+    public Settings getSettings()
+    {
+        return settings;
+    }
+    
     /***************
      * HIGH SCORES *
      ***************/

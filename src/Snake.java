@@ -13,34 +13,34 @@ public class Snake
     private Move currentMove;
     private Move previousMove;
     
-    private ArrayList<Color> snakeColors = new ArrayList<Color>();
-    private ArrayList<Color> tailColors = new ArrayList<Color>();
+    private ArrayList<Color> headColors;// = new ArrayList<Color>();
+    private ArrayList<Color> tailColors;// = new ArrayList<Color>();
+    private ArrayList<Double> headSizes;//1 = new Array
+    private ArrayList<Double> tailSizes;
+    
     
     private int snakeColorPos = 0;
     private int tailColorPos = 0;
     
-    private boolean headUnique = false;
-    private boolean sequence = true;
+    private boolean headUnique;
+    private boolean sequence;
     
-    public void setColors()
-    {
-        snakeColors.add(Color.WHITE);
-        snakeColors.add(Color.GRAY);
-        snakeColors.add(Color.BLACK);
-        tailColors.add(Color.BLUE);
-        tailColors.add(Color.GREEN);
-        tailColors.add(Color.WHITE);
-        
-    }
     
     public Snake()
     {
     }
     
-    public Snake(double x, double y, Direction direction)
+    public Snake(double x, double y, Direction direction, MainMenu menu)
     {
-        //[temp] will get colors and boolean values from settings
-        setColors();
+        // get head and tail colors and sizes from settings and boolean values from settings
+        headColors = menu.getSettings().getHeadColors();
+        tailColors = menu.getSettings().getTailColors();
+        headSizes = menu.getSettings().getHeadSizes();
+        tailSizes = menu.getSettings().getTailSizes();
+        
+        // get game options from settings
+        headUnique = menu.getSettings().headUnique();
+        sequence = menu.getSettings().sequence();
         
         tail = new ArrayList<>();
         currentMove = new Move(x, y, direction);
@@ -115,7 +115,7 @@ public class Snake
 
         if(headUnique) {
             
-            tail.get(0).setColor(snakeColors.get(snakeColorPos));
+            tail.get(0).setColor(headColors.get(snakeColorPos));
             
             if(sequence) {
                 
@@ -150,7 +150,7 @@ public class Snake
             }
             
             // update position for snake and tail color
-            snakeColorPos = (snakeColorPos + 1) % snakeColors.size();
+            snakeColorPos = (snakeColorPos + 1) % headColors.size();
             tailColorPos = (tailColorPos + 1) % tailColors.size();
         }
            
@@ -162,11 +162,11 @@ public class Snake
                 for(int i = 0; i < tail.size(); i++) {
                     
                     // j = number of available colors
-                    for(int j = 0; j < snakeColors.size(); j++) {
+                    for(int j = 0; j < headColors.size(); j++) {
                         
-                        if(i % snakeColors.size() == j) {
+                        if(i % headColors.size() == j) {
 
-                            tail.get(i).setColor(snakeColors.get((snakeColorPos + j) % snakeColors.size()));
+                            tail.get(i).setColor(headColors.get((snakeColorPos + j) % headColors.size()));
                             // stop looking through colors because snake piece won't match anymore
                             break;
                             
@@ -181,13 +181,13 @@ public class Snake
             else {
                 
                 for(int i = 0; i < tail.size(); i++) {
-                    tail.get(i).setColor(snakeColors.get(snakeColorPos));
+                    tail.get(i).setColor(headColors.get(snakeColorPos));
                 }
                 
             }
             
             // update position for snake color
-            snakeColorPos = (snakeColorPos + 1) % snakeColors.size();
+            snakeColorPos = (snakeColorPos + 1) % headColors.size();
         }
         
     }
@@ -200,7 +200,7 @@ public class Snake
             return tailColors.get(tailColorPos);
         }
         else {
-            return snakeColors.get(snakeColorPos);
+            return headColors.get(snakeColorPos);
         }
         
     }
