@@ -58,6 +58,7 @@ public class Settings extends Pane {
     private CheckBox headUnique;
     private CheckBox sequence;
     private CheckBox mirror;
+    private CheckBox headUniqueSize;
 
     private Game gameApp;
     private MainMenu menu;
@@ -263,6 +264,10 @@ public class Settings extends Pane {
         gameOptions.getChildren().addAll(headUnique, sequence, mirror);
         gameOptions.setSpacing(6);
         options.add(gameOptions, 0, 14);
+        
+        headUniqueSize = new CheckBox("Head Unique (Size)");
+        headUniqueSize.setSelected(true);
+        options.add(headUniqueSize, 0, 15);
         
         /*********************
          * CATEGORY PREVIEWS *
@@ -665,18 +670,8 @@ public class Settings extends Pane {
                 }
                 else
                     sizePreview[sizePosition % amount].setText("?");
-                
-                /*
-                // reset color preview
-                // in case there are more colors than amount of previews
-                // reset to the preview of the previous set (i.e., colorPosition - amount)
-                if(colorPosition >= amount) {
-                    colorPreview[colorPosition % amount].setFill(colorsList.get(colorPosition - amount));
-                }
-                else
-                    colorPreview[colorPosition % amount].setFill(Color.rgb(0, 0, 0, 0));
-                */
 
+                
                 sizePreview[sizePosition % amount].setUnderline(false);
                 sizePosition = sizePosition == 0 ? 0 : sizePosition - 1;
                 sizePreview[sizePosition % amount].setUnderline(true);
@@ -730,6 +725,11 @@ public class Settings extends Pane {
     public boolean mirror()
     {
         return mirror.isSelected();
+    }
+    
+    public boolean headUniqueSize()
+    {
+        return headUniqueSize.isSelected();
     }
 
     public void handleKey(KeyEvent ke)
