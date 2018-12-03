@@ -629,22 +629,65 @@ public class Settings extends Pane {
         
         public void addSize()
         {
-            
             int howMany = 1;
+            boolean gradientSet = false;
+            boolean prevLarger = false;
+            
+            double gradSize = 0;
+            
+            // store size
+            double tempSize = size;
             
             if(sizeGrad.isSelected())
                 howMany = (int)sizeStepSlider.getValue();
             
-            // set previous values in case of gradient
-            //prevSize = size;
-            
-            for(int i = 0; i < howMany; i++) {
+            for(int i = 1; i < howMany; i++) {
+                
+                if(!prevSizeSet) {
+                    prevSize = size;
+                    prevSizeSet = true;
+                }
+                
+                
+                if(!gradientSet) {
+                    gradSize = Math.abs(size - prevSize) / howMany;
+                    prevLarger = Math.max(size, prevSize) == prevSize ? true : false;
+                    gradientSet = true;
+                }
+                
+                int sizeStep;// = size - prevSize < 0 ? howMany - i : i;
+                
+                if(prevLarger) {
+                    sizeStep = howMany - i;
+                    size = size == prevSize ? size : prevSize - gradSize * i;
+                }
+                else {
+                    sizeStep = i;
+                    size = size == prevSize ? size : prevSize + gradSize * sizeStep;
+                }
+                
+                System.out.println("grad: " + gradSize + " step: " + sizeStep);
+                System.out.println("pre: " + prevSize + " cur: " + size);
+                
+                //size = size == prevSize ? size : Math.min(size, prevSize) + gradSize * sizeStep;
+                
                 previewSize();
                 sizePreview[sizePosition % amount].setUnderline(false);
                 sizePosition++;
                 sizePreview[sizePosition % amount].setUnderline(true);
                 sizesList.add(size);
             }
+            
+            size = tempSize;
+            
+            previewSize();
+            sizePreview[sizePosition % amount].setUnderline(false);
+            sizePosition++;
+            sizePreview[sizePosition % amount].setUnderline(true);
+            sizesList.add(size);
+            
+            prevSize = size;
+            prevSizeSet = true;
         }
         
         public void removeSize()
