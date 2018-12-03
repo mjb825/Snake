@@ -467,6 +467,10 @@ public class Settings extends Pane {
         {
             int howMany = 1;
             boolean gradientSet = false;
+            boolean prevRLarger = false;
+            boolean prevGLarger = false;
+            boolean prevBLarger = false;
+            boolean prevALarger = false;
             
             double gradR = 0;
             double gradG = 0;
@@ -501,73 +505,26 @@ public class Settings extends Pane {
                 // calculate value used for gradient
                 if(!gradientSet) {
                     gradR = Math.abs(r - prevR) / howMany;
+                    prevRLarger = Math.max(r, prevR) == prevR ? true : false;
                     gradG = Math.abs(g - prevG) / howMany;
+                    prevGLarger = Math.max(g, prevG) == prevG ? true : false;
                     gradB = Math.abs(b - prevB) / howMany;
+                    prevBLarger = Math.max(b, prevB) == prevB ? true : false;
                     gradA = Math.abs(a - prevA) / howMany;
+                    prevALarger = Math.max(a, prevA) == prevA ? true : false;
                     gradientSet = true;
                 }
                 
-                /*
-                r = r == (int)prevR ? r : (int) ( (Math.abs(r - prevR) / howMany) * (i) );
-                
-                
+                r = r == prevR ? r : prevRLarger ? (int)(prevR - gradR * i) : (int)(prevR + gradR * i);
+                g = g == prevG ? g : prevGLarger ? (int)(prevG - gradG * i) : (int)(prevG + gradG * i);
+                b = b == prevB ? b : prevBLarger ? (int)(prevB - gradB * i) : (int)(prevB + gradB * i);
+                a = a == prevA ? a : prevALarger ? (prevA - gradA * i) : (prevA + gradA * i);
 
-                if(!gradientSet) {
-                    gradR =
-                    gradientSet = true;
-                }
-*/
-//                System.out.println("r: " + r + " prevR: " + prevR);
-//                System.out.println("g: " + g + " prevG: " + prevG);
-//                System.out.println("b: " + b + " prevB: " + prevB);
-//                System.out.println("a: " + a + " prevA: " + prevA);
-
-                //System.out.println(r - prevR);
-
-                //System.out.println(r + "==" + prevR);
-                //System.out.println("Calculated: " + ((int) ( (Math.abs(r - prevR) / howMany) * (howMany - (i)) )));
-                
-//                r = r == (int)prevR ? r : (int) ( (Math.abs(r - prevR) / howMany) * (howMany - i) );
-//                g = g == (int)prevG ? g : (int) ( (Math.abs(g - prevG) / howMany) * (howMany - i) );
-//                b = b == (int)prevB ? b : (int) ( (Math.abs(b - prevB) / howMany) * (howMany - i) );
-//                a = a == prevA ? a : ( (Math.abs(a - prevA) / howMany) * (howMany - i) );
-                
-/* somehow more accurate?*/
-                int rHuh = r - (int)prevR < 0 ? howMany - i : i;
-                int gHuh = g - (int)prevG < 0 ? howMany - i : i;
-                int bHuh = b - (int)prevB < 0 ? howMany - i : i;
-                int aHuh = a - prevA < 0 ? howMany - i : i;
-                
-                r = r == (int)prevR ? r : (int) ( gradR * rHuh );
-                g = g == (int)prevG ? g : (int) ( gradG * gHuh );
-                b = b == (int)prevB ? b : (int) ( gradB * bHuh );
-                a = a == prevA ? a : ( gradA * aHuh );
-/**/
-
-//                r = r == (int)prevR ? r : (int) ( gradR * (i) );
-//                g = g == (int)prevG ? g : (int) ( gradG * (i) );
-//                b = b == (int)prevB ? b : (int) ( gradB * (i) );
-//                a = a == prevA ? a : ( gradA * (i) );
-                
-                
-//                r = (int)(gradR * (howMany - i));
-//                g = (int)(gradG * (howMany - i));
-//                b = (int)(gradB * (howMany - i));
-                //a = (prevA * (howMany - i));
-                
-                
-//                System.out.println("r: " + r + " prevR: " + prevR);
-//                System.out.println("g: " + g + " prevG: " + prevG);
-//                System.out.println("b: " + b + " prevB: " + prevB);
-//                System.out.println("a: " + a + " prevA: " + prevA);
-                
                 previewColor();
                 colorPreview[colorPosition % amount].setStrokeWidth(1);
                 colorPosition++;
                 colorPreview[colorPosition % amount].setStrokeWidth(2);
 
-                // rgb(prevR, prevG, prevB, prevA) ???
-                
                 // add to list
                 colorsList.add(Color.rgb(r, g, b, a));
             }
@@ -655,22 +612,12 @@ public class Settings extends Pane {
                     gradientSet = true;
                 }
                 
-                int sizeStep;// = size - prevSize < 0 ? howMany - i : i;
-                
-                if(prevLarger) {
-                    sizeStep = howMany - i;
+                if(prevLarger) 
                     size = size == prevSize ? size : prevSize - gradSize * i;
-                }
-                else {
-                    sizeStep = i;
-                    size = size == prevSize ? size : prevSize + gradSize * sizeStep;
-                }
+                else
+                    size = size == prevSize ? size : prevSize + gradSize * i;
                 
-                System.out.println("grad: " + gradSize + " step: " + sizeStep);
-                System.out.println("pre: " + prevSize + " cur: " + size);
-                
-                //size = size == prevSize ? size : Math.min(size, prevSize) + gradSize * sizeStep;
-                
+
                 previewSize();
                 sizePreview[sizePosition % amount].setUnderline(false);
                 sizePosition++;
