@@ -47,7 +47,9 @@ public class Settings extends Pane {
     private ArrayList<Double> foodSizes;
     
     private CheckBox colorGrad;
+    private Slider colorStepSlider;
     private CheckBox sizeGrad;
+    private Slider sizeStepSlider;
     private TextField colorGradAmount;
     private TextField sizeGradAmount;
 
@@ -116,8 +118,8 @@ public class Settings extends Pane {
             }
         });
         
-        Slider colorStepSlider = new Slider(1, 20, 1);
-        TextField colorSliderField = new TextField("1");
+        colorStepSlider = new Slider(2, 20, 2);
+        TextField colorSliderField = new TextField("2");
         colorSliderField.setMaxWidth(40);
         colorSliderField.setEditable(false);
         
@@ -192,8 +194,8 @@ public class Settings extends Pane {
         sizeGradAmount = new TextField();
         sizeGradAmount.setMaxWidth(60);
         
-        Slider sizeStepSlider = new Slider(1, 20, 1);
-        TextField sizeSliderField = new TextField("1");
+        sizeStepSlider = new Slider(2, 20, 2);
+        TextField sizeSliderField = new TextField("2");
         sizeSliderField.setMaxWidth(40);
         sizeSliderField.setEditable(false);
         
@@ -369,12 +371,17 @@ public class Settings extends Pane {
         private ArrayList<Color> colorsList;
         private ArrayList<Double> sizesList;
         
-        // initialize out of bounds values to test if null
-        private int prevR = 999;
-        private int prevG = 999;
-        private int prevB = 999;
-        private double prevA = 999;
-        private double prevSize = 999;
+        // test whether previous values have been assigned or not
+        private boolean prevColorsSet;
+        private boolean prevSizeSet;
+        
+        // previous values used to calculate gradient
+        // double for colors for better accuracy despite color still being assigned an int
+        private double prevR;
+        private double prevG;
+        private double prevB;
+        private double prevA;
+        private double prevSize;
         
         public SettingsPreview(){}
         
@@ -451,33 +458,160 @@ public class Settings extends Pane {
         
         public void addColor()
         {
+            int howMany = 1;
+            boolean gradientSet = false;
             
-            if(colorGrad.isSelected()){}
+            double gradR = 0;
+            double gradG = 0;
+            double gradB = 0;
+            double gradA = 0;
             
-            // set previous values in case of gradient
-            prevR = r;
-            prevG = g;
-            prevB = b;
-            prevA = a;
+            // store colors
+            int tempR = r;
+            int tempG = g;
+            int tempB = b;
+            double tempA = a;
+            
+            // adjust how many according to colorStepSlider
+            //[update] howMany = StepSlider >  colorPosition ? colorPosition : StepSlider
+            // prevent causing multiple loops and isEmpty test shouldn't be required either
+            if(colorGrad.isSelected())
+                howMany = (int)colorStepSlider.getValue();
+            
+            for(int i = 1; i < howMany; i++) {
+                // set previous values in case of gradient
+                //[add] logic for transition will go here!! using howMany!
+                
+                // if previous values haven't been set, set them to current colors before use
+                if(!prevColorsSet) {
+                    prevR = r;
+                    prevG = g;
+                    prevB = b;
+                    prevA = a;
+                    prevColorsSet = true;
+                }
+                
+                // calculate value used for gradient
+                if(!gradientSet) {
+                    gradR = Math.abs(r - prevR) / howMany;
+                    gradG = Math.abs(g - prevG) / howMany;
+                    gradB = Math.abs(b - prevB) / howMany;
+                    gradA = Math.abs(a - prevA) / howMany;
+                    gradientSet = true;
+                }
+                
+                /*
+                r = r == (int)prevR ? r : (int) ( (Math.abs(r - prevR) / howMany) * (i) );
+                
+                
+
+                if(!gradientSet) {
+                    gradR =
+                    gradientSet = true;
+                }
+*/
+//                System.out.println("r: " + r + " prevR: " + prevR);
+//                System.out.println("g: " + g + " prevG: " + prevG);
+//                System.out.println("b: " + b + " prevB: " + prevB);
+//                System.out.println("a: " + a + " prevA: " + prevA);
+
+                //System.out.println(r - prevR);
+
+                //System.out.println(r + "==" + prevR);
+                //System.out.println("Calculated: " + ((int) ( (Math.abs(r - prevR) / howMany) * (howMany - (i)) )));
+                
+//                r = r == (int)prevR ? r : (int) ( (Math.abs(r - prevR) / howMany) * (howMany - i) );
+//                g = g == (int)prevG ? g : (int) ( (Math.abs(g - prevG) / howMany) * (howMany - i) );
+//                b = b == (int)prevB ? b : (int) ( (Math.abs(b - prevB) / howMany) * (howMany - i) );
+//                a = a == prevA ? a : ( (Math.abs(a - prevA) / howMany) * (howMany - i) );
+                
+/* somehow more accurate?*/
+                int rHuh = r - (int)prevR < 0 ? howMany - i : i;
+                int gHuh = g - (int)prevG < 0 ? howMany - i : i;
+                int bHuh = b - (int)prevB < 0 ? howMany - i : i;
+                int aHuh = a - prevA < 0 ? howMany - i : i;
+                
+                r = r == (int)prevR ? r : (int) ( gradR * rHuh );
+                g = g == (int)prevG ? g : (int) ( gradG * gHuh );
+                b = b == (int)prevB ? b : (int) ( gradB * bHuh );
+                a = a == prevA ? a : ( gradA * aHuh );
+/**/
+
+//                r = r == (int)prevR ? r : (int) ( gradR * (i) );
+//                g = g == (int)prevG ? g : (int) ( gradG * (i) );
+//                b = b == (int)prevB ? b : (int) ( gradB * (i) );
+//                a = a == prevA ? a : ( gradA * (i) );
+                
+                
+//                r = (int)(gradR * (howMany - i));
+//                g = (int)(gradG * (howMany - i));
+//                b = (int)(gradB * (howMany - i));
+                //a = (prevA * (howMany - i));
+                
+                
+//                System.out.println("r: " + r + " prevR: " + prevR);
+//                System.out.println("g: " + g + " prevG: " + prevG);
+//                System.out.println("b: " + b + " prevB: " + prevB);
+//                System.out.println("a: " + a + " prevA: " + prevA);
+                
+                previewColor();
+                colorPreview[colorPosition % amount].setStrokeWidth(1);
+                colorPosition++;
+                colorPreview[colorPosition % amount].setStrokeWidth(2);
+
+                // rgb(prevR, prevG, prevB, prevA) ???
+                
+                // add to list
+                colorsList.add(Color.rgb(r, g, b, a));
+            }
+            
+            // restore colors
+            r = tempR;
+            g = tempG;
+            b = tempB;
+            a = tempA;
             
             previewColor();
             colorPreview[colorPosition % amount].setStrokeWidth(1);
             colorPosition++;
             colorPreview[colorPosition % amount].setStrokeWidth(2);
-            //colors.add(color);
+
+            // add to list
+            colorsList.add(Color.rgb(r, g, b, a));
+            
+            
+            // set previous values to current values
+            prevR = r;
+            prevG = g;
+            prevB = b;
+            prevA = a;
+            prevColorsSet = true;
         }
         
         public void removeColor()
         {
-            // reset color preview
-            // in case there are more colors added then there are previews (use modulus)
-            colorPreview[colorPosition % amount].setFill(Color.rgb(0, 0, 0, 0));
+            // how many colors to remove from list and how many previews to reset
+            int howMany = 1;
             
-            colorPreview[colorPosition % amount].setStrokeWidth(1);
-            colorPosition = colorPosition == 0 ? 0 : colorPosition - 1;
-            colorPreview[colorPosition % amount].setStrokeWidth(2);
-            //if(colors.size() != 0)
-            //colors.remove(colorPosition);
+            // adjust how many according to colorStepSlider
+            //[update] howMany = StepSlider >  colorPosition ? colorPosition : StepSlider
+            // prevent causing multiple loops and isEmpty test shouldn't be required either
+            if(colorGrad.isSelected())
+                howMany = (int)colorStepSlider.getValue();
+            
+            for(int i = 0; i < howMany; i++) {
+                // reset color preview
+                // in case there are more colors added then there are previews (use modulus)
+                colorPreview[colorPosition % amount].setFill(Color.rgb(0, 0, 0, 0));
+
+                colorPreview[colorPosition % amount].setStrokeWidth(1);
+                colorPosition = colorPosition == 0 ? 0 : colorPosition - 1;
+                colorPreview[colorPosition % amount].setStrokeWidth(2);
+
+                // remove from list if not empty
+                if(!colorsList.isEmpty())
+                    colorsList.remove(colorPosition);
+            }
         }
         
         public void addSize()
