@@ -593,6 +593,7 @@ public class Settings extends Pane {
             prevB = b;
             prevA = a;
             prevColorsSet = true;
+            
         }
         
         public void removeColor()
@@ -608,8 +609,13 @@ public class Settings extends Pane {
             
             for(int i = 0; i < howMany; i++) {
                 // reset color preview
-                // in case there are more colors added then there are previews (use modulus)
-                colorPreview[colorPosition % amount].setFill(Color.rgb(0, 0, 0, 0));
+                // in case there are more colors than amount of previews
+                // reset to the preview of the previous set (i.e., colorPosition - amount)
+                if(colorPosition >= amount) {
+                    colorPreview[colorPosition % amount].setFill(colorsList.get(colorPosition - amount));
+                }
+                else
+                    colorPreview[colorPosition % amount].setFill(Color.rgb(0, 0, 0, 0));
 
                 colorPreview[colorPosition % amount].setStrokeWidth(1);
                 colorPosition = colorPosition == 0 ? 0 : colorPosition - 1;
@@ -653,7 +659,22 @@ public class Settings extends Pane {
             for(int i = 0; i < howMany; i++) {
                 // reset size preview
                 // in case there are more sizes added then there are previews (use modulus)
-                sizePreview[sizePosition % amount].setText("?");
+                if(sizePosition >= amount) {
+                    sizePreview[sizePosition % amount].setText("" + ((int)sizesList.get(sizePosition - amount).doubleValue()));
+                }
+                else
+                    sizePreview[sizePosition % amount].setText("?");
+                
+                /*
+                // reset color preview
+                // in case there are more colors than amount of previews
+                // reset to the preview of the previous set (i.e., colorPosition - amount)
+                if(colorPosition >= amount) {
+                    colorPreview[colorPosition % amount].setFill(colorsList.get(colorPosition - amount));
+                }
+                else
+                    colorPreview[colorPosition % amount].setFill(Color.rgb(0, 0, 0, 0));
+                */
 
                 sizePreview[sizePosition % amount].setUnderline(false);
                 sizePosition = sizePosition == 0 ? 0 : sizePosition - 1;
