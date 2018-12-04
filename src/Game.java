@@ -23,7 +23,7 @@ public class Game extends Application
         // main menu of game
         MainMenu menu = new MainMenu(this, stage, false, false);
         
-        scene = new Scene(menu, 500, 380);
+        scene = new Scene(menu, 490, 370);
         
         stage.setScene(scene);
         stage.setTitle("Snake");

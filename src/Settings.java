@@ -59,6 +59,8 @@ public class Settings extends Pane {
     private CheckBox sequence;
     private CheckBox mirror;
     private CheckBox headUniqueSize;
+    private CheckBox sequenceSize;
+    private CheckBox mirrorSize;
 
     private Game gameApp;
     private MainMenu menu;
@@ -233,7 +235,7 @@ public class Settings extends Pane {
         /***************
          * SIZE SELECT *
          ***************/
-        Slider sizeSlider = new Slider(4, 20, 6);
+        Slider sizeSlider = new Slider(0, 40, 6);
         
         options.add(sizeSlider, 0, 12);
         
@@ -257,17 +259,24 @@ public class Settings extends Pane {
         // game options checkboxes
         HBox gameOptions = new HBox();
         headUnique = new CheckBox("Head Unique");
-        headUnique.setSelected(true);
-        
+            headUnique.setSelected(true);
         sequence = new CheckBox("Sequence");
         mirror = new CheckBox("Mirror");
         gameOptions.getChildren().addAll(headUnique, sequence, mirror);
         gameOptions.setSpacing(6);
         options.add(gameOptions, 0, 14);
+        options.add(new Label("(Color)"), 3, 14);
         
-        headUniqueSize = new CheckBox("Head Unique (Size)");
-        headUniqueSize.setSelected(true);
-        options.add(headUniqueSize, 0, 15);
+        // game options checkboxes (size)
+        HBox gameOptionsSize = new HBox();
+        headUniqueSize = new CheckBox("Head Unique");
+            headUniqueSize.setSelected(true);
+        sequenceSize = new CheckBox("Sequence");
+        mirrorSize = new CheckBox("Mirror");
+        gameOptionsSize.getChildren().addAll(headUniqueSize, sequenceSize, mirrorSize);
+        gameOptionsSize.setSpacing(6);
+        options.add(gameOptionsSize, 0, 15);
+        options.add(new Label("(Size)"), 3, 15);
         
         /*********************
          * CATEGORY PREVIEWS *
@@ -730,6 +739,16 @@ public class Settings extends Pane {
     public boolean headUniqueSize()
     {
         return headUniqueSize.isSelected();
+    }
+    
+    public boolean sequenceSize()
+    {
+        return sequenceSize.isSelected();
+    }
+    
+    public boolean mirrorSize()
+    {
+        return mirrorSize.isSelected();
     }
 
     public void handleKey(KeyEvent ke)

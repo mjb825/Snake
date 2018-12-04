@@ -27,6 +27,7 @@ public class Snake
     private boolean headUnique;
     private boolean sequence;
     private boolean headUniqueSize;
+    private boolean sequenceSize;
     
     
     public Snake()
@@ -68,6 +69,7 @@ public class Snake
         headUnique = menu.getSettings().headUnique();
         sequence = menu.getSettings().sequence();
         headUniqueSize = menu.getSettings().headUniqueSize();
+        sequenceSize = menu.getSettings().sequenceSize();
         
         tail = new ArrayList<>();
         currentMove = new Move(x, y, direction);
@@ -245,7 +247,7 @@ public class Snake
             
             tail.get(0).setSize(headSizes.get(snakeSizePos));
             
-            if(sequence) {
+            if(sequenceSize) {
                 
                 // i = snake pieces
                 for(int i = 1; i < tail.size(); i++) {
@@ -284,7 +286,7 @@ public class Snake
            
         else {
             
-            if(sequence) {
+            if(sequenceSize) {
                 
                 // i = snake pieces
                 for(int i = 0; i < tail.size(); i++) {
