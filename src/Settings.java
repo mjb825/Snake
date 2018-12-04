@@ -57,10 +57,10 @@ public class Settings extends Pane {
     
     private CheckBox headUnique;
     private CheckBox sequence;
-    private CheckBox mirror;
+    private CheckBox stationary;
     private CheckBox headUniqueSize;
     private CheckBox sequenceSize;
-    private CheckBox mirrorSize;
+    private CheckBox stationarySize;
 
     private Game gameApp;
     private MainMenu menu;
@@ -261,8 +261,8 @@ public class Settings extends Pane {
         headUnique = new CheckBox("Head Unique");
             headUnique.setSelected(true);
         sequence = new CheckBox("Sequence");
-        mirror = new CheckBox("Mirror");
-        gameOptions.getChildren().addAll(headUnique, sequence, mirror);
+        stationary = new CheckBox("Freeze");
+        gameOptions.getChildren().addAll(headUnique, sequence, stationary);
         gameOptions.setSpacing(6);
         options.add(gameOptions, 0, 14);
         options.add(new Label("(Color)"), 3, 14);
@@ -272,8 +272,8 @@ public class Settings extends Pane {
         headUniqueSize = new CheckBox("Head Unique");
             headUniqueSize.setSelected(true);
         sequenceSize = new CheckBox("Sequence");
-        mirrorSize = new CheckBox("Mirror");
-        gameOptionsSize.getChildren().addAll(headUniqueSize, sequenceSize, mirrorSize);
+        stationarySize = new CheckBox("Freeze");
+        gameOptionsSize.getChildren().addAll(headUniqueSize, sequenceSize, stationarySize);
         gameOptionsSize.setSpacing(6);
         options.add(gameOptionsSize, 0, 15);
         options.add(new Label("(Size)"), 3, 15);
@@ -731,9 +731,9 @@ public class Settings extends Pane {
         return sequence.isSelected();
     }
     
-    public boolean mirror()
+    public boolean stationary()
     {
-        return mirror.isSelected();
+        return stationary.isSelected();
     }
     
     public boolean headUniqueSize()
@@ -746,9 +746,9 @@ public class Settings extends Pane {
         return sequenceSize.isSelected();
     }
     
-    public boolean mirrorSize()
+    public boolean stationarySize()
     {
-        return mirrorSize.isSelected();
+        return stationarySize.isSelected();
     }
 
     public void handleKey(KeyEvent ke)

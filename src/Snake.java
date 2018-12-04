@@ -26,8 +26,10 @@ public class Snake
     
     private boolean headUnique;
     private boolean sequence;
+    private boolean stationary;
     private boolean headUniqueSize;
     private boolean sequenceSize;
+    private boolean stationarySize;
     
     
     public Snake()
@@ -68,8 +70,10 @@ public class Snake
         // get game options from settings
         headUnique = menu.getSettings().headUnique();
         sequence = menu.getSettings().sequence();
+        stationary = menu.getSettings().stationary();
         headUniqueSize = menu.getSettings().headUniqueSize();
         sequenceSize = menu.getSettings().sequenceSize();
+        stationarySize = menu.getSettings().stationarySize();
         
         tail = new ArrayList<>();
         currentMove = new Move(x, y, direction);
@@ -124,8 +128,10 @@ public class Snake
             currentMove.setX(currentMove.getX() + movement);
         }
         
-        updateColors();
-        updateSizes();
+        if(!stationary)
+            updateColors();
+        if(!stationarySize)
+            updateSizes();
         
         // update head of snake
         getFirst().updateFrame(currentMove);
@@ -224,6 +230,11 @@ public class Snake
     public Color determineColor()
     {
         
+        if(stationary) {
+            snakeColorPos = (snakeColorPos + 1) % headColors.size();
+            tailColorPos = (tailColorPos + 1) % tailColors.size();
+        }
+        
         // updateColors will update pos of colors
         if(headUnique) {
             return tailColors.get(tailColorPos);
@@ -231,6 +242,8 @@ public class Snake
         else {
             return headColors.get(snakeColorPos);
         }
+        
+        
         
     }
     
