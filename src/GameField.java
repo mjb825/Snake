@@ -291,12 +291,12 @@ public class GameField extends Pane
         if(score > record) {
             // get user name for new high score
             ScoreDialog newScore = new ScoreDialog();
-            gameApp.scene.setRoot(newScore);
-            stage.setScene(gameApp.scene);
+            gameApp.getScene().setRoot(newScore);
+            stage.setScene(gameApp.getScene());
         }
         else {
-            gameApp.scene.setRoot(menu);
-            stage.setScene(gameApp.scene);
+            gameApp.getScene().setRoot(menu);
+            stage.setScene(gameApp.getScene());
         }
         
     }
@@ -370,8 +370,8 @@ public class GameField extends Pane
                     // update high score label
                     menu.showRecord(diagonal, reverse);
 
-                    gameApp.scene.setRoot(menu);
-                    stage.setScene(gameApp.scene);
+                    gameApp.getScene().setRoot(menu);
+                    stage.setScene(gameApp.getScene());
                 }
             }
      

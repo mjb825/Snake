@@ -15,7 +15,7 @@ import javafx.stage.Stage;
 public class Game extends Application
 {    
     
-    public Scene scene;
+    private Scene scene;
     
     @Override
     public void start(Stage stage) throws Exception
@@ -35,4 +35,10 @@ public class Game extends Application
     {
         launch(args);
     }
+    
+    public Scene getScene()
+    {
+        return scene;
+    }
+    
 }

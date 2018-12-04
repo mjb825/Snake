@@ -117,15 +117,15 @@ public class MainMenu extends VBox {
     {
         if(ke.getCode() == KeyCode.ESCAPE) {
             GameField game = new GameField(diagonal.isSelected(), reverse.isSelected(), stage, this, gameApp);
-            gameApp.scene.setRoot(game);
-            gameApp.scene.setOnKeyPressed(kke->game.handleKey(kke));
-            stage.setScene(gameApp.scene);
+            gameApp.getScene().setRoot(game);
+            gameApp.getScene().setOnKeyPressed(kke->game.handleKey(kke));
+            stage.setScene(gameApp.getScene());
             game.play();
         }
         else if(ke.getCode() == KeyCode.SHIFT) {
-            gameApp.scene.setRoot(settings);
-            gameApp.scene.setOnKeyPressed(kke->settings.handleKey(kke));
-            stage.setScene(gameApp.scene);
+            gameApp.getScene().setRoot(settings);
+            gameApp.getScene().setOnKeyPressed(kke->settings.handleKey(kke));
+            stage.setScene(gameApp.getScene());
         }
     }
 

@@ -150,10 +150,6 @@ public class Snake
     
     public void updateColors()
     {
-        // snakeColors and tailColors will at least have 1 color,
-        // but maybe not if we set a default value if user got rid of all colors
-        // if snakeColors.size() == 0; Color.GRAY;
-        
 
         if(headUnique) {
             
@@ -171,6 +167,7 @@ public class Snake
 
                             if(i % tailColors.size() == j) {
 
+                                //tail.get(tail.size() - i - 1).setColor(tailColors.get((tailColorPos + j) % tailColors.size()));
                                 tail.get(i).setColor(tailColors.get((tailColorPos + j) % tailColors.size()));
                                 // stop looking through colors because snake piece won't match anymore
                                 break;
@@ -186,17 +183,18 @@ public class Snake
                 else {
 
                     for(int i = 1; i < tail.size(); i++) {
+                        //tail.get(tail.size() - i - 1).setColor(tailColors.get(tailColorPos));
                         tail.get(i).setColor(tailColors.get(tailColorPos));
                     }
 
                 }
                 
+                // update position for tail color if isn't frozen, in which case determineColor will update
+                tailColorPos = (tailColorPos + 1) % tailColors.size();
             }
             
-            // update position for snake and tail color
+            // update position for head color
             headColorPos = (headColorPos + 1) % headColors.size();
-            if(!frozen)
-                tailColorPos = (tailColorPos + 1) % tailColors.size();
         }
            
         else {
@@ -213,7 +211,7 @@ public class Snake
 
                             if(i % headColors.size() == j) {
 
-    //                            tail.get(tail.size() - i - 1).setColor(headColors.get((snakeColorPos + j) % headColors.size()));
+                                //tail.get(tail.size() - i - 1).setColor(headColors.get((snakeColorPos + j) % headColors.size()));
                                 tail.get(i).setColor(headColors.get((headColorPos + j) % headColors.size()));
                                 // stop looking through colors because snake piece won't match anymore
                                 break;
@@ -229,16 +227,15 @@ public class Snake
                 else {
 
                     for(int i = 0; i < tail.size(); i++) {
+                        //tail.get(tail.size() - i - 1).setColor(headColors.get(headColorPos));
                         tail.get(i).setColor(headColors.get(headColorPos));
                     }
 
                 }
-            
+                // update position for head color if isn't frozen, in which case determineColor will update
+                headColorPos = (headColorPos + 1) % headColors.size();
             }
             
-            // update position for snake color
-            if(!frozen)
-                headColorPos = (headColorPos + 1) % headColors.size();
         }
         
     }
@@ -262,11 +259,7 @@ public class Snake
 
     public void updateSizes()
     {
-        // snakeColors and tailSizes will at least have 1 color,
-        // but maybe not if we set a default value if user got rid of all colors
-        // if snakeColors.size() == 0; Color.GRAY;
-        
-
+      
         if(headUniqueSize) {
             
             tail.get(0).setSize(headSizes.get(headSizePos));
@@ -278,13 +271,14 @@ public class Snake
                     // i = snake pieces
                     for(int i = 1; i < tail.size(); i++) {
 
-                        // j = number of available colors
+                        // j = number of available sizes
                         for(int j = 0; j < tailSizes.size(); j++) {
 
                             if(i % tailSizes.size() == j) {
 
+                                //tail.get(tail.size() - i - 1).setSize(tailSizes.get((tailSizePos + j) % tailSizes.size()));
                                 tail.get(i).setSize(tailSizes.get((tailSizePos + j) % tailSizes.size()));
-                                // stop looking through colors because snake piece won't match anymore
+                                // stop looking through sizes because snake piece won't match anymore
                                 break;
 
                             }  
@@ -298,17 +292,18 @@ public class Snake
                 else {
 
                     for(int i = 1; i < tail.size(); i++) {
+                        //tail.get(tail.size() - i - 1).setSize(tailSizes.get(tailSizePos));
                         tail.get(i).setSize(tailSizes.get(tailSizePos));
                     }
 
                 }
             
+                // update position for tail size if isn't frozen, in which case determineSize will update
+                tailSizePos = (tailSizePos + 1) % tailSizes.size();
             }
             
-            // update position for snake and tail color
+            // update position for head size
             headSizePos = (headSizePos + 1) % headSizes.size();
-            if(!frozenSize)
-                tailSizePos = (tailSizePos + 1) % tailSizes.size();
         }
            
         else {
@@ -320,14 +315,14 @@ public class Snake
                     // i = snake pieces
                     for(int i = 0; i < tail.size(); i++) {
 
-                        // j = number of available colors
+                        // j = number of available sizes
                         for(int j = 0; j < headSizes.size(); j++) {
 
                             if(i % headSizes.size() == j) {
 
-    //                            tail.get(tail.size() - i - 1).setSize(headSizes.get((snakeSizePos + j) % headSizes.size()));
+                                //tail.get(tail.size() - i - 1).setSize(headSizes.get((snakeSizePos + j) % headSizes.size()));
                                 tail.get(i).setSize(headSizes.get((headSizePos + j) % headSizes.size()));
-                                // stop looking through colors because snake piece won't match anymore
+                                // stop looking through sizes because snake piece won't match anymore
                                 break;
 
                             }  
@@ -341,16 +336,16 @@ public class Snake
                 else {
 
                     for(int i = 0; i < tail.size(); i++) {
+                        //tail.get(tail.size() - i - 1).setSize(headSizes.get(headSizePos));
                         tail.get(i).setSize(headSizes.get(headSizePos));
                     }
 
                 }
             
+                // update position for head size if isn't frozen, in which case determineSize will update
+                headSizePos = (headSizePos + 1) % headSizes.size();
             }
             
-            // update position for snake color
-            if(!frozenSize)
-                headSizePos = (headSizePos + 1) % headSizes.size();
         }
         
     }

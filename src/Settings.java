@@ -6,6 +6,9 @@
 
 import java.util.ArrayList;
 import javafx.application.Application;
+import javafx.beans.InvalidationListener;
+import javafx.beans.Observable;
+import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -31,30 +34,37 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 /**
- * Adjust size and color of Snake
+ * Adjust size and color of Snake(head, tail) and Food
  * @author Owner
  */
-public class Settings extends Pane {
+public class Settings extends GridPane {
     
+    // values to be added to color/size lists, which will be used by the Snake and Food class
     private int r;
     private int g;
     private int b;
     private double a;
     private double size;
+    
+    // color lists
     private ArrayList<Color> headColors;
     private ArrayList<Color> tailColors;
     private ArrayList<Color> foodColors;
+    
+    // size lists
     private ArrayList<Double> headSizes;
     private ArrayList<Double> tailSizes;
     private ArrayList<Double> foodSizes;
     
+    // color options
     private CheckBox colorGrad;
     private Slider colorStepSlider;
+    
+    // site options
     private CheckBox sizeGrad;
     private Slider sizeStepSlider;
-    private TextField colorGradAmount;
-    private TextField sizeGradAmount;
     
+    // game options
     private CheckBox headUnique;
     private CheckBox sequence;
     private CheckBox frozen;
@@ -65,7 +75,29 @@ public class Settings extends Pane {
     private Game gameApp;
     private MainMenu menu;
     private Stage stage;
+
+    // color sliders
+    private Slider rSlider;
+    private Slider gSlider;
+    private Slider bSlider;
+    private Slider aSlider;
     
+    // color text fields
+    private TextField rField;
+    private TextField gField;
+    private TextField bField;
+    private TextField aField;
+    
+    // category radio buttons
+    private RadioButton headRadio;
+    private RadioButton tailRadio;
+    private RadioButton foodRadio;
+    
+    // previews for color/size for head, tail, and food
+    private SettingsPreview head;
+    private SettingsPreview tail;
+    private SettingsPreview food;
+            
     public Settings(Stage stage, MainMenu menu, Game gameApp) {
     
         this.gameApp = gameApp;
@@ -79,14 +111,12 @@ public class Settings extends Pane {
         tailSizes = new ArrayList<Double>();
         foodSizes = new ArrayList<Double>();
         
-        
+        // set initial colors and size
         r = 255;
         g = 0;
         b = 0;
         a = 1;
         size = 6;
-        
-        GridPane options = new GridPane();
         
         /**************************
          * CATEGORY RADIO BUTTONS *
@@ -95,22 +125,22 @@ public class Settings extends Pane {
         // category label
         Label categoryLabel = new Label("Category");
         categoryLabel.setStyle("-fx-font: 18 monospace; -fx-alignment: center; -fx-underline: true;");
-        options.add(categoryLabel, 0, 0);
+        add(categoryLabel, 0, 0);
         
         // category radio buttons
         HBox categories = new HBox();
         ToggleGroup group = new ToggleGroup();
-        RadioButton headRadio = new RadioButton("HEAD");
+        headRadio = new RadioButton("HEAD");
         headRadio.setToggleGroup(group);
-        RadioButton tailRadio = new RadioButton("TAIL");
+        tailRadio = new RadioButton("TAIL");
         tailRadio.setToggleGroup(group);
-        RadioButton foodRadio = new RadioButton("FOOD");
+        foodRadio = new RadioButton("FOOD");
         foodRadio.setToggleGroup(group);
         categories.getChildren().addAll(headRadio, tailRadio, foodRadio);
         // set head as beginning category
         headRadio.fire();
         categories.setSpacing(6);
-        options.add(categories, 0, 1);
+        add(categories, 0, 1);
         
         /*****************
          * COLOR OPTIONS *
@@ -118,35 +148,25 @@ public class Settings extends Pane {
         // color options label
         Label colorLabel = new Label("Color Options");
         colorLabel.setStyle("-fx-font: 18 monospace; -fx-alignment: center; -fx-underline: true;");
-        options.add(colorLabel, 0, 2);
+        add(colorLabel, 0, 2);
         
         // color gradient options
         HBox colorGradient = new HBox();
         colorGrad = new CheckBox("Gradient");
-        colorGradAmount = new TextField();
-        colorGradAmount.setMaxWidth(60);
-        
-        colorGradAmount.textProperty().addListener(l -> {
-            
-            // trim last character if value is not in range [1, 29]
-            if(!colorGradAmount.getText().matches("([1-9])||(1[0-9])||(20)") && colorGradAmount.getText().matches(".+")) {
-                colorGradAmount.setText(colorGradAmount.getText().substring(0, colorGradAmount.getText().length() - 1));
-            }
-        });
-        
         colorStepSlider = new Slider(2, 20, 2);
         TextField colorSliderField = new TextField("2");
         colorSliderField.setMaxWidth(40);
         colorSliderField.setEditable(false);
         
+        // adjust color slider field according to color step slider
         colorStepSlider.valueProperty().addListener(l -> {
             colorSliderField.setText("" + (int)colorStepSlider.getValue());
         });
         
         colorGradient.getChildren().addAll(colorGrad, colorStepSlider);
         colorGradient.setSpacing(6);
-        options.add(colorGradient, 0, 3);
-        options.add(colorSliderField, 3, 3);
+        add(colorGradient, 0, 3);
+        add(colorSliderField, 3, 3);
         
         // color buttons (add, remove)
         HBox colorButtons = new HBox();
@@ -154,47 +174,47 @@ public class Settings extends Pane {
         Button colorRemove = new Button("Remove");
         colorButtons.getChildren().addAll(colorAdd, colorRemove);
         colorButtons.setSpacing(6);
-        options.add(colorButtons, 0, 4);
+        add(colorButtons, 0, 4);
         
         /****************
          * COLOR SELECT *
          ****************/
         
         // color select sliders
-        Slider rSlider = new Slider(0, 255, 255);
-        Slider gSlider = new Slider(0, 255, 0);
-        Slider bSlider = new Slider(0, 255, 0);
-        Slider aSlider = new Slider(0, 1, 1);
+        rSlider = new Slider(0, 255, 255);
+        gSlider = new Slider(0, 255, 0);
+        bSlider = new Slider(0, 255, 0);
+        aSlider = new Slider(0, 1, 1);
         
         // add sliders
-        options.add(rSlider, 0, 5);
-        options.add(gSlider, 0, 6);
-        options.add(bSlider, 0, 7);
-        options.add(aSlider, 0, 8);
+        add(rSlider, 0, 5);
+        add(gSlider, 0, 6);
+        add(bSlider, 0, 7);
+        add(aSlider, 0, 8);
         
         // color select textfields
-        TextField rField = new TextField("255");
+        rField = new TextField("255");
         rField.setMaxWidth(40);
         rField.setEditable(false);
-        TextField gField = new TextField("0");
+        gField = new TextField("0");
         gField.setMaxWidth(40);
         gField.setEditable(false);
-        TextField bField = new TextField("0");
+        bField = new TextField("0");
         bField.setMaxWidth(40);
         bField.setEditable(false);
-        TextField aField = new TextField("100");
+        aField = new TextField("100");
         aField.setMaxWidth(40);
         aField.setEditable(false);
         
         // add labels and textfields
-        options.add(new Label("R: "), 2, 5);
-        options.add(rField, 3, 5);
-        options.add(new Label("G: "), 2, 6);
-        options.add(gField, 3, 6);
-        options.add(new Label("B: "), 2, 7);
-        options.add(bField, 3, 7);
-        options.add(new Label("A: "), 2, 8);
-        options.add(aField, 3, 8);
+        add(new Label("R: "), 2, 5);
+        add(rField, 3, 5);
+        add(new Label("G: "), 2, 6);
+        add(gField, 3, 6);
+        add(new Label("B: "), 2, 7);
+        add(bField, 3, 7);
+        add(new Label("A: "), 2, 8);
+        add(aField, 3, 8);
         
         /****************
          * SIZE OPTIONS *
@@ -202,27 +222,25 @@ public class Settings extends Pane {
         // size options label
         Label sizeLabel = new Label("Size Options");
         sizeLabel.setStyle("-fx-font: 18 monospace; -fx-alignment: center; -fx-underline: true;");
-        options.add(sizeLabel, 0, 9);
+        add(sizeLabel, 0, 9);
         
         // size gradient options
         HBox sizeGradient = new HBox();
         sizeGrad = new CheckBox("Gradient");
-        sizeGradAmount = new TextField();
-        sizeGradAmount.setMaxWidth(60);
-        
         sizeStepSlider = new Slider(2, 20, 2);
         TextField sizeSliderField = new TextField("2");
         sizeSliderField.setMaxWidth(40);
         sizeSliderField.setEditable(false);
         
+        // adjust size slider field according to size step slider
         sizeStepSlider.valueProperty().addListener(l -> {
             sizeSliderField.setText("" + (int)sizeStepSlider.getValue());
         });
         
         sizeGradient.getChildren().addAll(sizeGrad, sizeStepSlider);
         sizeGradient.setSpacing(6);
-        options.add(sizeGradient, 0, 10);
-        options.add(sizeSliderField, 3, 10);
+        add(sizeGradient, 0, 10);
+        add(sizeSliderField, 3, 10);
         
         // size buttons (add, remove)
         HBox sizeButtons = new HBox();
@@ -230,14 +248,14 @@ public class Settings extends Pane {
         Button sizeRemove = new Button("Remove");
         sizeButtons.getChildren().addAll(sizeAdd, sizeRemove);
         sizeButtons.setSpacing(6);
-        options.add(sizeButtons, 0, 11);
+        add(sizeButtons, 0, 11);
         
         /***************
          * SIZE SELECT *
          ***************/
         Slider sizeSlider = new Slider(0, 40, 6);
         
-        options.add(sizeSlider, 0, 12);
+        add(sizeSlider, 0, 12);
         
         // size select textfield
         TextField sizeField = new TextField("6");
@@ -245,8 +263,8 @@ public class Settings extends Pane {
         sizeField.setEditable(false);
         
         // add labels and textfields
-        options.add(new Label("#: "), 2, 12);
-        options.add(sizeField, 3, 12);
+        add(new Label("#: "), 2, 12);
+        add(sizeField, 3, 12);
         
         /****************
          * GAME OPTIONS *
@@ -254,7 +272,7 @@ public class Settings extends Pane {
         // game options label
         Label gameLabel = new Label("Game Options");
         gameLabel.setStyle("-fx-font: 18 monospace; -fx-alignment: center; -fx-underline: true;");
-        options.add(gameLabel, 0, 13);
+        add(gameLabel, 0, 13);
         
         // game options checkboxes
         HBox gameOptions = new HBox();
@@ -264,8 +282,8 @@ public class Settings extends Pane {
         frozen = new CheckBox("Frozen");
         gameOptions.getChildren().addAll(headUnique, sequence, frozen);
         gameOptions.setSpacing(6);
-        options.add(gameOptions, 0, 14);
-        options.add(new Label("(Color)"), 3, 14);
+        add(gameOptions, 0, 14);
+        add(new Label("(Color)"), 3, 14);
         
         // game options checkboxes (size)
         HBox gameOptionsSize = new HBox();
@@ -275,24 +293,26 @@ public class Settings extends Pane {
         frozenSize = new CheckBox("Frozen");
         gameOptionsSize.getChildren().addAll(headUniqueSize, sequenceSize, frozenSize);
         gameOptionsSize.setSpacing(6);
-        options.add(gameOptionsSize, 0, 15);
-        options.add(new Label("(Size)"), 3, 15);
+        add(gameOptionsSize, 0, 15);
+        add(new Label("(Size)"), 3, 15);
         
         /*********************
          * CATEGORY PREVIEWS *
          *********************/
         // add previews for HEAD, TAIL, FOOD
-        SettingsPreview head = new SettingsPreview("HEAD", headColors, headSizes);
-        SettingsPreview tail = new SettingsPreview("TAIL", tailColors, tailSizes);
-        SettingsPreview food = new SettingsPreview("FOOD", foodColors, foodSizes);
+        head = new SettingsPreview("HEAD", headColors, headSizes);
+        tail = new SettingsPreview("TAIL", tailColors, tailSizes);
+        food = new SettingsPreview("FOOD", foodColors, foodSizes);
         // add previews to options
-        options.add(head, 4, 0, 1, 30);
-        options.add(tail, 5, 0, 1, 30);
-        options.add(food, 6, 0, 1, 30);
+        add(head, 4, 0, 1, 30);
+        add(tail, 5, 0, 1, 30);
+        add(food, 6, 0, 1, 30);
         
         /*************************
          * ACTIONS AND LISTENERS *
          *************************/
+        
+        // add color to list
         colorAdd.setOnAction(e -> {
             if(headRadio.isSelected())
                 head.addColor();
@@ -302,6 +322,7 @@ public class Settings extends Pane {
                 food.addColor();
         });
         
+        // remove color from list
         colorRemove.setOnAction(e -> {
             if(headRadio.isSelected())
                 head.removeColor();
@@ -311,6 +332,7 @@ public class Settings extends Pane {
                 food.removeColor();
         });
         
+        // add size to list
         sizeAdd.setOnAction(e -> {
             if(headRadio.isSelected())
                 head.addSize();
@@ -320,6 +342,7 @@ public class Settings extends Pane {
                 food.addSize();
         });
         
+        // remove size from list
         sizeRemove.setOnAction(e -> {
             if(headRadio.isSelected())
                 head.removeSize();
@@ -328,53 +351,15 @@ public class Settings extends Pane {
             else
                 food.removeSize();
         });
-
-        //[change] combine all of these into one method
-        rSlider.valueProperty().addListener(l -> {
-            r = (int)rSlider.getValue();
-            rField.setText("" + r);
-            if(headRadio.isSelected())
-                head.previewColor();
-            else if(tailRadio.isSelected())
-                tail.previewColor();
-            else
-                food.previewColor();
-        });
         
-        gSlider.valueProperty().addListener(l -> {
-            g = (int)gSlider.getValue();
-            gField.setText("" + g);
-            if(headRadio.isSelected())
-                head.previewColor();
-            else if(tailRadio.isSelected())
-                tail.previewColor();
-            else
-                food.previewColor();
-        });
+        // adjust color textfields and color previews when color slider is moved
+        rSlider.valueProperty().addListener(new ColorListener());
+        gSlider.valueProperty().addListener(new ColorListener());
+        bSlider.valueProperty().addListener(new ColorListener());
+        aSlider.valueProperty().addListener(new ColorListener());
         
-        bSlider.valueProperty().addListener(l -> {
-            b = (int)bSlider.getValue();
-            bField.setText("" + b);
-            if(headRadio.isSelected())
-                head.previewColor();
-            else if(tailRadio.isSelected())
-                tail.previewColor();
-            else
-                food.previewColor();
-        });
-        
-        aSlider.valueProperty().addListener(l -> {
-            a = aSlider.getValue();
-            aField.setText("" + (int)(a * 100));
-            if(headRadio.isSelected())
-                head.previewColor();
-            else if(tailRadio.isSelected())
-                tail.previewColor();
-            else
-                food.previewColor();
-        });
-        
-        sizeSlider.valueProperty().addListener(l -> {
+        // adjust size textfield and size preview when size slider is moved
+        sizeSlider.valueProperty().addListener(ov -> {
             size = sizeSlider.getValue();
             sizeField.setText("" + (int)size);
             if(headRadio.isSelected())
@@ -385,12 +370,31 @@ public class Settings extends Pane {
                 food.previewSize();
         });
 
-        
-        getChildren().addAll(options);
-
-        
     }
 
+    // adjust color textfields and color previews when color slider is moved
+    private class ColorListener implements InvalidationListener
+    {
+        @Override
+        public void invalidated(Observable ov)
+        {
+            r = (int)rSlider.getValue();
+            rField.setText("" + r);
+            g = (int)gSlider.getValue();
+            gField.setText("" + g);
+            b = (int)bSlider.getValue();
+            bField.setText("" + b);
+            a = aSlider.getValue();
+            aField.setText("" + (int)(a * 100));
+            if(headRadio.isSelected())
+                head.previewColor();
+            else if(tailRadio.isSelected())
+                tail.previewColor();
+            else
+                food.previewColor();
+        }
+    }
+    
     private class SettingsPreview extends GridPane
     {
         private Label title;
@@ -408,7 +412,7 @@ public class Settings extends Pane {
         private boolean prevSizeSet;
         
         // previous values used to calculate gradient
-        // double for colors for better accuracy despite color still being assigned an int
+        // double for colors for better accuracy despite color still being assigned as int
         private double prevR;
         private double prevG;
         private double prevB;
@@ -491,32 +495,29 @@ public class Settings extends Pane {
         public void addColor()
         {
             int howMany = 1;
+            
+            // variables to calculate gradient
             boolean gradientSet = false;
             boolean prevRLarger = false;
             boolean prevGLarger = false;
             boolean prevBLarger = false;
             boolean prevALarger = false;
-            
             double gradR = 0;
             double gradG = 0;
             double gradB = 0;
             double gradA = 0;
             
-            // store colors
+            // store colors to restore last color of gradient
             int tempR = r;
             int tempG = g;
             int tempB = b;
             double tempA = a;
             
             // adjust how many according to colorStepSlider
-            //[update] howMany = StepSlider >  colorPosition ? colorPosition : StepSlider
-            // prevent causing multiple loops and isEmpty test shouldn't be required either
             if(colorGrad.isSelected())
                 howMany = (int)colorStepSlider.getValue();
             
             for(int i = 1; i < howMany; i++) {
-                // set previous values in case of gradient
-                //[add] logic for transition will go here!! using howMany!
                 
                 // if previous values haven't been set, set them to current colors before use
                 if(!prevColorsSet) {
@@ -584,10 +585,9 @@ public class Settings extends Pane {
             int howMany = 1;
             
             // adjust how many according to colorStepSlider
-            //[update] howMany = StepSlider >  colorPosition ? colorPosition : StepSlider
-            // prevent causing multiple loops and isEmpty test shouldn't be required either
             if(colorGrad.isSelected())
                 howMany = (int)colorStepSlider.getValue();
+            
             
             for(int i = 0; i < howMany; i++) {
                 // reset color preview
@@ -612,12 +612,13 @@ public class Settings extends Pane {
         public void addSize()
         {
             int howMany = 1;
+            
+            // variables to calculate gradient
             boolean gradientSet = false;
             boolean prevLarger = false;
-            
             double gradSize = 0;
             
-            // store size
+            // store size to restore last size of gradient
             double tempSize = size;
             
             if(sizeGrad.isSelected())
@@ -691,6 +692,10 @@ public class Settings extends Pane {
         
     }
     
+    /****************************************
+     * PUBLIC GETTERS FOR LISTS AND OPTIONS *
+     ****************************************/
+    
     public ArrayList<Color> getHeadColors()
     {
         return headColors;
@@ -751,11 +756,12 @@ public class Settings extends Pane {
         return frozenSize.isSelected();
     }
 
+    // return to main menu
     public void handleKey(KeyEvent ke)
     {
         if(ke.getCode() == KeyCode.ESCAPE) {
-            gameApp.scene.setRoot(menu);
-            stage.setScene(gameApp.scene);
+            gameApp.getScene().setRoot(menu);
+            stage.setScene(gameApp.getScene());
         }
     }
 }
