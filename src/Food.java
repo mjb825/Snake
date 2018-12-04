@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
 /**
@@ -9,20 +11,31 @@ public class Food extends Circle
     private double x;
     private double y;
     
-    public Food()
+    private ArrayList<Color> foodColors;
+    private ArrayList<Double> foodSizes;
+    
+    private int colorPos = 0;
+    private int sizePos = 0;
+    
+    public Food(MainMenu menu)
     {
         super(6);
-        setStyle("-fx-stroke: black; -fx-fill: orange; -fx-stroke-width: 2;");
+        
+        if(menu.getSettings().getFoodColors().isEmpty()) {
+            foodColors = new ArrayList<Color>();
+            foodColors.add(Color.ORANGE);
+        } else foodColors = menu.getSettings().getFoodColors();
+        
+        if(menu.getSettings().getFoodSizes().isEmpty()) {
+            foodSizes = new ArrayList<Double>();
+            foodSizes.add(6.0);
+        } else foodSizes = menu.getSettings().getFoodSizes();
+        
+        setStyle("-fx-stroke-width: 2; -fx-stroke: black;");
+        setFill(foodColors.get(0));
+        setRadius(foodSizes.get(0));
     }
-    
-    public Food(double x, double y)
-    {
-        super(6);
-        setStyle("-fx-stroke: black; -fx-fill: orange; -fx-stroke-width: 2;");
-        this.x = x;
-        this.y = y;
-    }
-    
+   
     public double getX()
     {
         return x;
@@ -45,6 +58,19 @@ public class Food extends Circle
     
     public void updateFrame()
     {
-        
+        updateColors();
+        updateSizes();
+    }
+    
+    public void updateColors()
+    {
+        this.setFill(foodColors.get(colorPos));
+        colorPos = (colorPos + 1) % foodColors.size();
+    }
+    
+    public void updateSizes()
+    {
+        this.setRadius(foodSizes.get(sizePos));
+        sizePos = (sizePos + 1) % foodSizes.size();
     }
 }

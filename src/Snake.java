@@ -157,8 +157,6 @@ public class Snake
                         
                         if(i % tailColors.size() == j) {
                             
-                            //[funny bug]
-                            //tail.get(i).setColor(snakeColors.get((tailColorPos + j) % tailColors.size()));
                             tail.get(i).setColor(tailColors.get((tailColorPos + j) % tailColors.size()));
                             // stop looking through colors because snake piece won't match anymore
                             break;
@@ -196,6 +194,7 @@ public class Snake
                         
                         if(i % headColors.size() == j) {
 
+//                            tail.get(tail.size() - i - 1).setColor(headColors.get((snakeColorPos + j) % headColors.size()));
                             tail.get(i).setColor(headColors.get((snakeColorPos + j) % headColors.size()));
                             // stop looking through colors because snake piece won't match anymore
                             break;
@@ -257,8 +256,6 @@ public class Snake
                         
                         if(i % tailSizes.size() == j) {
                             
-                            //[funny bug]
-                            //tail.get(i).setSize(snakeColors.get((tailSizePos + j) % tailSizes.size()));
                             tail.get(i).setSize(tailSizes.get((tailSizePos + j) % tailSizes.size()));
                             // stop looking through colors because snake piece won't match anymore
                             break;
@@ -296,6 +293,7 @@ public class Snake
                         
                         if(i % headSizes.size() == j) {
 
+//                            tail.get(tail.size() - i - 1).setSize(headSizes.get((snakeSizePos + j) % headSizes.size()));
                             tail.get(i).setSize(headSizes.get((snakeSizePos + j) % headSizes.size()));
                             // stop looking through colors because snake piece won't match anymore
                             break;

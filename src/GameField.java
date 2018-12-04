@@ -84,7 +84,7 @@ public class GameField extends Pane
         
         
         // generate and add food to field
-        food = new Food();
+        food = new Food(menu);
         generateFood();
         getChildren().add(food);
 
