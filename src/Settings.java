@@ -57,10 +57,10 @@ public class Settings extends Pane {
     
     private CheckBox headUnique;
     private CheckBox sequence;
-    private CheckBox stationary;
+    private CheckBox frozen;
     private CheckBox headUniqueSize;
     private CheckBox sequenceSize;
-    private CheckBox stationarySize;
+    private CheckBox frozenSize;
 
     private Game gameApp;
     private MainMenu menu;
@@ -261,8 +261,8 @@ public class Settings extends Pane {
         headUnique = new CheckBox("Head Unique");
             headUnique.setSelected(true);
         sequence = new CheckBox("Sequence");
-        stationary = new CheckBox("Freeze");
-        gameOptions.getChildren().addAll(headUnique, sequence, stationary);
+        frozen = new CheckBox("Frozen");
+        gameOptions.getChildren().addAll(headUnique, sequence, frozen);
         gameOptions.setSpacing(6);
         options.add(gameOptions, 0, 14);
         options.add(new Label("(Color)"), 3, 14);
@@ -272,8 +272,8 @@ public class Settings extends Pane {
         headUniqueSize = new CheckBox("Head Unique");
             headUniqueSize.setSelected(true);
         sequenceSize = new CheckBox("Sequence");
-        stationarySize = new CheckBox("Freeze");
-        gameOptionsSize.getChildren().addAll(headUniqueSize, sequenceSize, stationarySize);
+        frozenSize = new CheckBox("Frozen");
+        gameOptionsSize.getChildren().addAll(headUniqueSize, sequenceSize, frozenSize);
         gameOptionsSize.setSpacing(6);
         options.add(gameOptionsSize, 0, 15);
         options.add(new Label("(Size)"), 3, 15);
@@ -731,9 +731,9 @@ public class Settings extends Pane {
         return sequence.isSelected();
     }
     
-    public boolean stationary()
+    public boolean frozen()
     {
-        return stationary.isSelected();
+        return frozen.isSelected();
     }
     
     public boolean headUniqueSize()
@@ -746,9 +746,9 @@ public class Settings extends Pane {
         return sequenceSize.isSelected();
     }
     
-    public boolean stationarySize()
+    public boolean frozenSize()
     {
-        return stationarySize.isSelected();
+        return frozenSize.isSelected();
     }
 
     public void handleKey(KeyEvent ke)

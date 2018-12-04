@@ -19,17 +19,17 @@ public class Snake
     private ArrayList<Double> tailSizes;
     
     
-    private int snakeColorPos = 0;
+    private int headColorPos = 0;
     private int tailColorPos = 0;
-    private int snakeSizePos = 0;
+    private int headSizePos = 0;
     private int tailSizePos = 0;
     
     private boolean headUnique;
     private boolean sequence;
-    private boolean stationary;
+    private boolean frozen;
     private boolean headUniqueSize;
     private boolean sequenceSize;
-    private boolean stationarySize;
+    private boolean frozenSize;
     
     
     public Snake()
@@ -70,10 +70,10 @@ public class Snake
         // get game options from settings
         headUnique = menu.getSettings().headUnique();
         sequence = menu.getSettings().sequence();
-        stationary = menu.getSettings().stationary();
+        frozen = menu.getSettings().frozen();
         headUniqueSize = menu.getSettings().headUniqueSize();
         sequenceSize = menu.getSettings().sequenceSize();
-        stationarySize = menu.getSettings().stationarySize();
+        frozenSize = menu.getSettings().frozenSize();
         
         tail = new ArrayList<>();
         currentMove = new Move(x, y, direction);
@@ -81,7 +81,15 @@ public class Snake
         
         // add initial head piece to snake
         Tail head = new Tail(currentMove.copy(), headColors.get(0), headSizes.get(0));
+        
+        // fix so first TAIL piece doesn't start off with color/size gotten by HEAD piece
+        if(frozen && !headUnique)
+            headColorPos = (headColorPos + 1) % headColors.size();
+        if(frozenSize && !headUniqueSize)
+            headSizePos = (headSizePos + 1) % headSizes.size();
+        
         tail.add(head);
+        
         
     }
 
@@ -127,11 +135,9 @@ public class Snake
             currentMove.setY(currentMove.getY() + movement);
             currentMove.setX(currentMove.getX() + movement);
         }
-        
-        if(!stationary)
-            updateColors();
-        if(!stationarySize)
-            updateSizes();
+
+        updateColors();
+        updateSizes();
         
         // update head of snake
         getFirst().updateFrame(currentMove);
@@ -151,99 +157,105 @@ public class Snake
 
         if(headUnique) {
             
-            tail.get(0).setColor(headColors.get(snakeColorPos));
+            tail.get(0).setColor(headColors.get(headColorPos));
             
-            if(sequence) {
+            if(!frozen) {
                 
-                // i = snake pieces
-                for(int i = 1; i < tail.size(); i++) {
-                    
-                    // j = number of available colors
-                    for(int j = 0; j < tailColors.size(); j++) {
-                        
-                        if(i % tailColors.size() == j) {
-                            
-                            tail.get(i).setColor(tailColors.get((tailColorPos + j) % tailColors.size()));
-                            // stop looking through colors because snake piece won't match anymore
-                            break;
-                            
-                        }  
-                        
+                if(sequence) {
+
+                    // i = snake pieces
+                    for(int i = 1; i < tail.size(); i++) {
+
+                        // j = number of available colors
+                        for(int j = 0; j < tailColors.size(); j++) {
+
+                            if(i % tailColors.size() == j) {
+
+                                tail.get(i).setColor(tailColors.get((tailColorPos + j) % tailColors.size()));
+                                // stop looking through colors because snake piece won't match anymore
+                                break;
+
+                            }  
+
+                        }
+
                     }
-                    
-                }
-                
-            }
-            
-            else {
-                
-                for(int i = 1; i < tail.size(); i++) {
-                    tail.get(i).setColor(tailColors.get(tailColorPos));
+
                 }
 
+                else {
+
+                    for(int i = 1; i < tail.size(); i++) {
+                        tail.get(i).setColor(tailColors.get(tailColorPos));
+                    }
+
+                }
+                
             }
             
             // update position for snake and tail color
-            snakeColorPos = (snakeColorPos + 1) % headColors.size();
-            tailColorPos = (tailColorPos + 1) % tailColors.size();
+            headColorPos = (headColorPos + 1) % headColors.size();
+            if(!frozen)
+                tailColorPos = (tailColorPos + 1) % tailColors.size();
         }
            
         else {
             
-            if(sequence) {
-                
-                // i = snake pieces
-                for(int i = 0; i < tail.size(); i++) {
-                    
-                    // j = number of available colors
-                    for(int j = 0; j < headColors.size(); j++) {
-                        
-                        if(i % headColors.size() == j) {
-
-//                            tail.get(tail.size() - i - 1).setColor(headColors.get((snakeColorPos + j) % headColors.size()));
-                            tail.get(i).setColor(headColors.get((snakeColorPos + j) % headColors.size()));
-                            // stop looking through colors because snake piece won't match anymore
-                            break;
-                            
-                        }  
-                        
-                    }
-                    
-                }
-                
-            }
+            if(!frozen) {
             
-            else {
-                
-                for(int i = 0; i < tail.size(); i++) {
-                    tail.get(i).setColor(headColors.get(snakeColorPos));
+                if(sequence) {
+
+                    // i = snake pieces
+                    for(int i = 0; i < tail.size(); i++) {
+
+                        // j = number of available colors
+                        for(int j = 0; j < headColors.size(); j++) {
+
+                            if(i % headColors.size() == j) {
+
+    //                            tail.get(tail.size() - i - 1).setColor(headColors.get((snakeColorPos + j) % headColors.size()));
+                                tail.get(i).setColor(headColors.get((headColorPos + j) % headColors.size()));
+                                // stop looking through colors because snake piece won't match anymore
+                                break;
+
+                            }  
+
+                        }
+
+                    }
+
                 }
-                
+
+                else {
+
+                    for(int i = 0; i < tail.size(); i++) {
+                        tail.get(i).setColor(headColors.get(headColorPos));
+                    }
+
+                }
+            
             }
             
             // update position for snake color
-            snakeColorPos = (snakeColorPos + 1) % headColors.size();
+            if(!frozen)
+                headColorPos = (headColorPos + 1) % headColors.size();
         }
         
     }
     
+    // determine color of newly added tail piece
     public Color determineColor()
     {
         
-        if(stationary) {
-            snakeColorPos = (snakeColorPos + 1) % headColors.size();
+        Color color = headUnique ? tailColors.get(tailColorPos) : headColors.get(headColorPos);
+        
+        // if it isn't frozen, updateColors will change appropriate ColorPos
+        if(frozen && headUnique)
             tailColorPos = (tailColorPos + 1) % tailColors.size();
-        }
+        else if(frozen) 
+            headColorPos = (headColorPos + 1) % headColors.size();
         
-        // updateColors will update pos of colors
-        if(headUnique) {
-            return tailColors.get(tailColorPos);
-        }
-        else {
-            return headColors.get(snakeColorPos);
-        }
-        
-        
+        return color;
         
     }
     
@@ -257,92 +269,105 @@ public class Snake
 
         if(headUniqueSize) {
             
-            tail.get(0).setSize(headSizes.get(snakeSizePos));
+            tail.get(0).setSize(headSizes.get(headSizePos));
             
-            if(sequenceSize) {
-                
-                // i = snake pieces
-                for(int i = 1; i < tail.size(); i++) {
-                    
-                    // j = number of available colors
-                    for(int j = 0; j < tailSizes.size(); j++) {
-                        
-                        if(i % tailSizes.size() == j) {
-                            
-                            tail.get(i).setSize(tailSizes.get((tailSizePos + j) % tailSizes.size()));
-                            // stop looking through colors because snake piece won't match anymore
-                            break;
-                            
-                        }  
-                        
+            if(!frozenSize) {
+            
+                if(sequenceSize) {
+
+                    // i = snake pieces
+                    for(int i = 1; i < tail.size(); i++) {
+
+                        // j = number of available colors
+                        for(int j = 0; j < tailSizes.size(); j++) {
+
+                            if(i % tailSizes.size() == j) {
+
+                                tail.get(i).setSize(tailSizes.get((tailSizePos + j) % tailSizes.size()));
+                                // stop looking through colors because snake piece won't match anymore
+                                break;
+
+                            }  
+
+                        }
+
                     }
-                    
-                }
-                
-            }
-            
-            else {
-                
-                for(int i = 1; i < tail.size(); i++) {
-                    tail.get(i).setSize(tailSizes.get(tailSizePos));
+
                 }
 
+                else {
+
+                    for(int i = 1; i < tail.size(); i++) {
+                        tail.get(i).setSize(tailSizes.get(tailSizePos));
+                    }
+
+                }
+            
             }
             
             // update position for snake and tail color
-            snakeSizePos = (snakeSizePos + 1) % headSizes.size();
-            tailSizePos = (tailSizePos + 1) % tailSizes.size();
+            headSizePos = (headSizePos + 1) % headSizes.size();
+            if(!frozenSize)
+                tailSizePos = (tailSizePos + 1) % tailSizes.size();
         }
            
         else {
             
-            if(sequenceSize) {
-                
-                // i = snake pieces
-                for(int i = 0; i < tail.size(); i++) {
-                    
-                    // j = number of available colors
-                    for(int j = 0; j < headSizes.size(); j++) {
-                        
-                        if(i % headSizes.size() == j) {
-
-//                            tail.get(tail.size() - i - 1).setSize(headSizes.get((snakeSizePos + j) % headSizes.size()));
-                            tail.get(i).setSize(headSizes.get((snakeSizePos + j) % headSizes.size()));
-                            // stop looking through colors because snake piece won't match anymore
-                            break;
-                            
-                        }  
-                        
-                    }
-                    
-                }
-                
-            }
+            if(!frozenSize) {
             
-            else {
-                
-                for(int i = 0; i < tail.size(); i++) {
-                    tail.get(i).setSize(headSizes.get(snakeSizePos));
+                if(sequenceSize) {
+
+                    // i = snake pieces
+                    for(int i = 0; i < tail.size(); i++) {
+
+                        // j = number of available colors
+                        for(int j = 0; j < headSizes.size(); j++) {
+
+                            if(i % headSizes.size() == j) {
+
+    //                            tail.get(tail.size() - i - 1).setSize(headSizes.get((snakeSizePos + j) % headSizes.size()));
+                                tail.get(i).setSize(headSizes.get((headSizePos + j) % headSizes.size()));
+                                // stop looking through colors because snake piece won't match anymore
+                                break;
+
+                            }  
+
+                        }
+
+                    }
+
                 }
-                
+
+                else {
+
+                    for(int i = 0; i < tail.size(); i++) {
+                        tail.get(i).setSize(headSizes.get(headSizePos));
+                    }
+
+                }
+            
             }
             
             // update position for snake color
-            snakeSizePos = (snakeSizePos + 1) % headSizes.size();
+            if(!frozenSize)
+                headSizePos = (headSizePos + 1) % headSizes.size();
         }
         
     }
     
+    // determine size of newly added tail piece
     public Double determineSize()
     {
+
+        Double size = headUniqueSize ? tailSizes.get(tailSizePos) : headSizes.get(headSizePos);
         
-        // updateColors will update pos of colors
-        if(headUniqueSize) {
-            return tailSizes.get(tailSizePos);
-        }
-        else {
-            return headSizes.get(snakeSizePos);
-        }
+        // if it isn't frozen, updateSizes will change appropriate SizePos
+        if(frozenSize && headUniqueSize)
+            tailSizePos = (tailSizePos + 1) % tailSizes.size();
+        else if(frozenSize)
+            headSizePos = (headSizePos + 1) % headSizes.size();
+        
+        return size;
         
     }
     
