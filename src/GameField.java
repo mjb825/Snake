@@ -92,7 +92,7 @@ public class GameField extends Pane
         getChildren().add(player.getFirst());
         
         // change background color
-        setBackground(new Background(new BackgroundFill(new Color(.95,.95,.95,1), new CornerRadii(0), new Insets(0))));
+        setBackground(new Background(new BackgroundFill(menu.getSettings().bg, new CornerRadii(0), new Insets(0))));
         
         // change title based on high score and current score
         stage.setTitle("Snake (" + record + ") (" + score + ")");
@@ -106,7 +106,7 @@ public class GameField extends Pane
     public void addPiece()
     {
         // create a copy of last piece
-        Tail piece = player.getLast().copy(player.determineColor(), player.determineSize());
+        Tail piece = player.getLast().copy(player.determineColor(), player.determineSize(), menu.getSettings().strColor, menu.getSettings().strWidth);
         Move move = piece.getCurrentMove();
         
         // set new piece position according to direction copied from last piece

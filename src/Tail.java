@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.StrokeType;
 
 /**
  * The pieces that make up the Snake
@@ -13,11 +14,13 @@ public class Tail extends Circle
     
     public Tail(){}
     
-    public Tail(Move currentMove, Color color, Double size)
+    public Tail(Move currentMove, Color color, Double size, Color strColor, int strWidth)
     {
         // circle properties
         super(size);
-        setStyle("-fx-stroke: black; -fx-stroke-width: 2;");
+        setStroke(strColor);
+        setStrokeWidth(strWidth);
+        setStrokeType(StrokeType.OUTSIDE);
         setFill(color);
         
         // piece properties
@@ -51,9 +54,9 @@ public class Tail extends Circle
     }
     
     // return copy of piece
-    public Tail copy(Color color, Double size)
+    public Tail copy(Color color, Double size, Color strColor, int strWidth)
     {   
-        return new Tail(currentMove.copy(), color, size);
+        return new Tail(currentMove.copy(), color, size, strColor, strWidth);
     }
     
     public Move getCurrentMove()

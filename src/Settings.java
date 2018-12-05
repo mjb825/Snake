@@ -113,8 +113,20 @@ public class Settings extends GridPane {
     private RadioButton colorRadio;
     private RadioButton sizeRadio;
     
+    public Color bg;
+    public Color strColor;
+    public int strWidth;
+    public Color foodStrColor;
+    public int foodStrWidth;
+    
     public Settings(Stage stage, MainMenu menu, Game gameApp) {
     
+        bg = Color.rgb(244, 244, 244, 1);
+        strColor = Color.rgb(0, 0, 0, 1);
+        strWidth = 2;
+        foodStrColor = Color.rgb(0, 0, 0, 1);
+        foodStrWidth = 2;
+        
         this.gameApp = gameApp;
         this.menu = menu;
         this.stage = stage;
@@ -982,6 +994,33 @@ public class Settings extends GridPane {
             stage.setTitle("Snake");
             gameApp.getScene().setRoot(menu);
             stage.setScene(gameApp.getScene());
+        }
+        
+        else if(ke.getCode() == KeyCode.B) {
+            if(ke.isControlDown())
+                bg = Color.rgb(244, 244, 244, a);
+            else
+                bg = Color.rgb(r, g, b, a);
+        }
+        else if(ke.getCode() == KeyCode.C) {
+            if(ke.isControlDown() && ke.isShiftDown())
+                foodStrColor = Color.rgb(0, 0, 0, 1);
+            else if(ke.isShiftDown())
+                foodStrColor = Color.rgb(r, g, b, a);
+            if(ke.isControlDown())
+                strColor = Color.rgb(0, 0, 0, 1);
+            else
+                strColor = Color.rgb(r, g, b, a);
+        }
+        else if(ke.getCode() == KeyCode.S) {
+            if(ke.isControlDown() && ke.isShiftDown())
+                foodStrWidth = 2; 
+            else if(ke.isShiftDown())
+                foodStrWidth = (int)size;
+            else if(ke.isControlDown())
+                strWidth = 2;
+            else
+                strWidth = (int)size;
         }
     }
     

@@ -80,7 +80,7 @@ public class Snake
         previousMove = currentMove.copy();
         
         // add initial head piece to snake
-        Tail head = new Tail(currentMove.copy(), headColors.get(0), headSizes.get(0));
+        Tail head = new Tail(currentMove.copy(), headColors.get(0), headSizes.get(0), menu.getSettings().strColor, menu.getSettings().strWidth);
         
         // fix so first TAIL piece doesn't start off with color/size gotten by HEAD piece
         if(frozen && !headUnique)
