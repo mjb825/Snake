@@ -640,11 +640,6 @@ public class Settings extends GridPane {
             colorPreview[colorPosition % amount].setStrokeWidth(2);
         }
         
-        public void updateColorPreviews(ArrayList list)
-        {
-            colorsList = list;
-        }
-        
         // update size previews according to list
         public void updateSizePreviews()
         {
@@ -658,12 +653,6 @@ public class Settings extends GridPane {
             
             // add focus to current position
             sizePreview[sizePosition % amount].setUnderline(true);
-        }
-        
-        public void updateSizePreviews(ArrayList list)
-        {
-            sizesList = list;
-            
         }
         
         public void previewColor()
@@ -869,26 +858,6 @@ public class Settings extends GridPane {
             }
         }
         
-        public ArrayList getColorsList()
-        {
-            return colorsList;
-        }
-        
-        public void setColorsList(ArrayList list)
-        {
-            colorsList = list;
-        }
-        
-        public ArrayList getSizesList()
-        {
-            return sizesList;
-        }
-        
-        public void setSizesList(ArrayList list)
-        {
-            sizesList = list;
-        }
-        
     }
     
     /****************************************
@@ -961,12 +930,12 @@ public class Settings extends GridPane {
         // assign previous lists to current lists and go to main menu
         if(ke.getCode() == KeyCode.Q) {
             
-            headColors = new ArrayList<Color>();
-            tailColors = new ArrayList<Color>();
-            foodColors = new ArrayList<Color>();
-            headSizes = new ArrayList<Double>();
-            tailSizes = new ArrayList<Double>();
-            foodSizes = new ArrayList<Double>();
+            headColors.clear();
+            tailColors.clear();
+            foodColors.clear();
+            headSizes.clear();
+            tailSizes.clear();
+            foodSizes.clear();
             
             for(Color headColor: prevHeadColors)
                 headColors.add(headColor);
@@ -990,15 +959,12 @@ public class Settings extends GridPane {
         // assign current lists to previous lists and go to main menu
         else if(ke.getCode() == KeyCode.ESCAPE) {
             
-            prevHeadColors = new ArrayList<Color>();
-            prevTailColors = new ArrayList<Color>();
-            prevFoodColors = new ArrayList<Color>();
-            prevHeadSizes = new ArrayList<Double>();
-            prevTailSizes = new ArrayList<Double>();
-            prevFoodSizes = new ArrayList<Double>();
-            
-            System.out.println(prevHeadColors.size());
-            System.out.println(headColors.size());
+            prevHeadColors.clear();
+            prevTailColors.clear();
+            prevFoodColors.clear();
+            prevHeadSizes.clear();
+            prevTailSizes.clear();
+            prevFoodSizes.clear();
             
             for(Color headColor: headColors)
                 prevHeadColors.add(headColor);
@@ -1027,14 +993,6 @@ public class Settings extends GridPane {
         head.clearSizes();
         tail.clearSizes();
         food.clearSizes();
-        
-        // set lists belonging to objects
-        head.setColorsList(headColors);
-        tail.setColorsList(tailColors);
-        food.setColorsList(foodColors);
-        head.setSizesList(headSizes);
-        tail.setSizesList(tailSizes);
-        food.setSizesList(foodSizes);
         
         // update previews
         head.updateColorPreviews();
