@@ -494,16 +494,13 @@ public class Settings extends GridPane {
             
             // variables to calculate gradient
             boolean gradientSet = false;
-            boolean prevRLarger = false;
-            boolean prevGLarger = false;
-            boolean prevBLarger = false;
-            boolean prevALarger = false;
             double gradR = 0;
             double gradG = 0;
             double gradB = 0;
             double gradA = 0;
             
-            // store colors to restore last color of gradient
+            // store colors to compare to previous when calculating gradient, and
+            // to restore original color to be set as the last color of gradient
             int tempR = r;
             int tempG = g;
             int tempB = b;
@@ -532,21 +529,21 @@ public class Settings extends GridPane {
                 // calculate gradient value to either add or subtract from previous value
                 if(!gradientSet) {
                     gradR = Math.abs(r - prevR) / howMany;
-                    prevRLarger = Math.max(r, prevR) == prevR ? true : false;
                     gradG = Math.abs(g - prevG) / howMany;
-                    prevGLarger = Math.max(g, prevG) == prevG ? true : false;
                     gradB = Math.abs(b - prevB) / howMany;
-                    prevBLarger = Math.max(b, prevB) == prevB ? true : false;
                     gradA = Math.abs(a - prevA) / howMany;
-                    prevALarger = Math.max(a, prevA) == prevA ? true : false;
                     gradientSet = true;
                 }
                 
-                r = r == prevR ? r : prevRLarger ? (int)(prevR - gradR * i) : (int)(prevR + gradR * i);
-                g = g == prevG ? g : prevGLarger ? (int)(prevG - gradG * i) : (int)(prevG + gradG * i);
-                b = b == prevB ? b : prevBLarger ? (int)(prevB - gradB * i) : (int)(prevB + gradB * i);
-                a = a == prevA ? a : prevALarger ? (prevA - gradA * i) : (prevA + gradA * i);
+                // if value is same as previous value, set to value, else
+                // subtract [gradient value * i] from previous value (if previous is larger)
+                // add [gradient value * i] to previous value (if previous is smaller)
+                r = tempR == prevR ? tempR : Math.max(tempR, prevR) == prevR ? (int)(prevR - gradR * i) : (int)(prevR + gradR * i);
+                g = tempG == prevG ? tempG : Math.max(tempG, prevG) == prevG ? (int)(prevG - gradG * i) : (int)(prevG + gradG * i);
+                b = tempB == prevB ? tempB : Math.max(tempB, prevB) == prevB ? (int)(prevB - gradB * i) : (int)(prevB + gradB * i);
+                a = tempA == prevA ? tempA : Math.max(tempA, prevA) == prevA ? (prevA - gradA * i) : (prevA + gradA * i);
 
+                // update preview
                 previewColor();
                 colorPreview[colorPosition % amount].setStrokeWidth(1);
                 colorPosition++;
@@ -608,7 +605,6 @@ public class Settings extends GridPane {
             
             // variables to calculate gradient
             boolean gradientSet = false;
-            boolean prevLarger = false;
             double gradSize = 0;
             
             // store size to restore last size of gradient
@@ -630,16 +626,14 @@ public class Settings extends GridPane {
                 // calculate gradient value to either add or subtract from previous value
                 if(!gradientSet) {
                     gradSize = Math.abs(size - prevSize) / howMany;
-                    prevLarger = Math.max(size, prevSize) == prevSize ? true : false;
                     gradientSet = true;
                 }
                 
-                if(prevLarger) 
-                    size = size == prevSize ? size : prevSize - gradSize * i;
-                else
-                    size = size == prevSize ? size : prevSize + gradSize * i;
+                // if value is same as previous value, set to value, else
+                // subtract [gradient value * i] from previous value (if previous is larger)
+                // add [gradient value * i] to previous value (if previous is smaller)
+                size = tempSize == prevSize ? tempSize : Math.max(tempSize, prevSize) == prevSize ? prevSize - gradSize * i : prevSize + gradSize * i;
                 
-
                 previewSize();
                 sizePreview[sizePosition % amount].setUnderline(false);
                 sizePosition++;
