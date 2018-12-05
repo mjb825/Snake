@@ -348,6 +348,24 @@ public class Settings extends GridPane {
          * ACTIONS AND LISTENERS *
          *************************/
         
+        clear.setOnAction(e -> {
+            if(headRadio.isSelected())
+                head.clear();
+            else if(tailRadio.isSelected())
+                tail.clear();
+            else
+                food.clear();
+        });
+        
+        mirror.setOnAction(e -> {
+            if(headRadio.isSelected())
+                head.mirror();
+            else if(tailRadio.isSelected())
+                tail.mirror();
+            else
+                food.mirror();
+        });
+        
         // add color to list
         colorAdd.setOnAction(e -> {
             if(headRadio.isSelected())
@@ -510,6 +528,43 @@ public class Settings extends GridPane {
             // current color and size
             colorPosition = 0;
             sizePosition = 0;
+        }
+        
+        // clears all values from either colorsList or sizesList
+        public void clear()
+        {
+            
+            if(colorRadio.isSelected()) {
+                colorsList.clear();
+                for(int i = 0; i < amount; i++)
+                    colorPreview[i].setFill(Color.rgb(0, 0, 0, 0));
+                colorPreview[colorPosition % amount].setStrokeWidth(1);
+                colorPreview[0].setStrokeWidth(2);
+                colorPosition = 0;
+            }
+            
+            else {
+                sizesList.clear();
+                for(int i = 0; i < amount; i++)
+                    sizePreview[i].setText("?");
+                sizePreview[sizePosition % amount].setUnderline(false);
+                sizePreview[0].setUnderline(false);
+                sizePosition = 0;
+            }
+            
+        }
+        
+        // mirrors all values from either colorsList or sizesList
+        public void mirror()
+        {
+            if(colorRadio.isSelected()) {
+            
+            }
+            
+            else {
+            
+            }
+            
         }
         
         public void previewColor()
@@ -698,7 +753,8 @@ public class Settings extends GridPane {
             
             for(int i = 0; i < howMany; i++) {
                 // reset size preview
-                // in case there are more sizes added then there are previews (use modulus)
+                // in case there are more sizes than amount of previews
+                // reset to the preview of the previous set (i.e., sizePosition - amount)
                 if(sizePosition >= amount) {
                     sizePreview[sizePosition % amount].setText("" + ((int)sizesList.get(sizePosition - amount).doubleValue()));
                 }
