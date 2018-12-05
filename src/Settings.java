@@ -98,6 +98,10 @@ public class Settings extends GridPane {
     private SettingsPreview tail;
     private SettingsPreview food;
             
+    // preview radio buttons
+    private RadioButton colorRadio;
+    private RadioButton sizeRadio;
+    
     public Settings(Stage stage, MainMenu menu, Game gameApp) {
     
         this.gameApp = gameApp;
@@ -304,9 +308,41 @@ public class Settings extends GridPane {
         tail = new SettingsPreview("TAIL", tailColors, tailSizes);
         food = new SettingsPreview("FOOD", foodColors, foodSizes);
         // add previews to options
-        add(head, 3, 0, 1, 30);
-        add(tail, 4, 0, 1, 30);
-        add(food, 5, 0, 1, 30);
+        add(head, 3, 2, 1, 100);
+        add(tail, 4, 2, 1, 100);
+        add(food, 5, 2, 1, 100);
+        
+        /*************************************
+         * PREVIEW FUNCTIONS (CLEAR, MIRROR) *
+         *************************************/
+        
+        // hbox to hold buttons for preview functions
+        HBox previewButtons = new HBox();
+        previewButtons.setAlignment(Pos.CENTER);
+        previewButtons.setSpacing(6);
+        
+        // buttons for functions
+        Button clear = new Button("Clear");
+        Button mirror = new Button("Mirror");
+        
+        previewButtons.getChildren().addAll(clear, mirror);
+        add(previewButtons, 3, 0, 3, 1);
+        
+        // hbox to hold radio buttons for preview functions
+        HBox previewCategories = new HBox();
+        previewCategories.setAlignment(Pos.CENTER);
+        previewCategories.setSpacing(6);
+        
+        // radio buttons for functions
+        ToggleGroup preview = new ToggleGroup();
+        colorRadio = new RadioButton("Color");
+            colorRadio.fire();
+        colorRadio.setToggleGroup(preview);
+        sizeRadio = new RadioButton("Size");
+        sizeRadio.setToggleGroup(preview);
+        
+        previewCategories.getChildren().addAll(colorRadio, sizeRadio);
+        add(previewCategories, 3, 1, 3, 1);
         
         /*************************
          * ACTIONS AND LISTENERS *
@@ -430,7 +466,7 @@ public class Settings extends GridPane {
             add(placeHolder, 0, 0);
             
             // set amount of previews
-            amount = 24;
+            amount = 21;
             
             // assign array lists
             this.colorsList = colorsList;
