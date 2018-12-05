@@ -166,7 +166,7 @@ public class Settings extends GridPane {
         colorGradient.getChildren().addAll(colorGrad, colorStepSlider);
         colorGradient.setSpacing(6);
         add(colorGradient, 0, 3);
-        add(colorSliderField, 3, 3);
+        add(colorSliderField, 2, 3);
         
         // color buttons (add, remove)
         HBox colorButtons = new HBox();
@@ -207,14 +207,14 @@ public class Settings extends GridPane {
         aField.setEditable(false);
         
         // add labels and textfields
-        add(new Label("R: "), 2, 5);
-        add(rField, 3, 5);
-        add(new Label("G: "), 2, 6);
-        add(gField, 3, 6);
-        add(new Label("B: "), 2, 7);
-        add(bField, 3, 7);
-        add(new Label("A: "), 2, 8);
-        add(aField, 3, 8);
+        add(new Label("R: "), 1, 5);
+        add(rField, 2, 5);
+        add(new Label("G: "), 1, 6);
+        add(gField, 2, 6);
+        add(new Label("B: "), 1, 7);
+        add(bField, 2, 7);
+        add(new Label("A: "), 1, 8);
+        add(aField, 2, 8);
         
         /****************
          * SIZE OPTIONS *
@@ -240,7 +240,7 @@ public class Settings extends GridPane {
         sizeGradient.getChildren().addAll(sizeGrad, sizeStepSlider);
         sizeGradient.setSpacing(6);
         add(sizeGradient, 0, 10);
-        add(sizeSliderField, 3, 10);
+        add(sizeSliderField, 2, 10);
         
         // size buttons (add, remove)
         HBox sizeButtons = new HBox();
@@ -263,8 +263,8 @@ public class Settings extends GridPane {
         sizeField.setEditable(false);
         
         // add labels and textfields
-        add(new Label("#: "), 2, 12);
-        add(sizeField, 3, 12);
+        add(new Label("#: "), 1, 12);
+        add(sizeField, 2, 12);
         
         /****************
          * GAME OPTIONS *
@@ -283,7 +283,7 @@ public class Settings extends GridPane {
         gameOptions.getChildren().addAll(headUnique, sequence, frozen);
         gameOptions.setSpacing(6);
         add(gameOptions, 0, 14);
-        add(new Label("(Color)"), 3, 14);
+        add(new Label("(Color)"), 2, 14);
         
         // game options checkboxes (size)
         HBox gameOptionsSize = new HBox();
@@ -294,7 +294,7 @@ public class Settings extends GridPane {
         gameOptionsSize.getChildren().addAll(headUniqueSize, sequenceSize, frozenSize);
         gameOptionsSize.setSpacing(6);
         add(gameOptionsSize, 0, 15);
-        add(new Label("(Size)"), 3, 15);
+        add(new Label("(Size)"), 2, 15);
         
         /*********************
          * CATEGORY PREVIEWS *
@@ -304,9 +304,9 @@ public class Settings extends GridPane {
         tail = new SettingsPreview("TAIL", tailColors, tailSizes);
         food = new SettingsPreview("FOOD", foodColors, foodSizes);
         // add previews to options
-        add(head, 4, 0, 1, 30);
-        add(tail, 5, 0, 1, 30);
-        add(food, 6, 0, 1, 30);
+        add(head, 3, 0, 1, 30);
+        add(tail, 4, 0, 1, 30);
+        add(food, 5, 0, 1, 30);
         
         /*************************
          * ACTIONS AND LISTENERS *
