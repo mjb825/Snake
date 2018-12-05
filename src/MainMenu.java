@@ -123,6 +123,7 @@ public class MainMenu extends VBox {
             game.play();
         }
         else if(ke.getCode() == KeyCode.SHIFT) {
+            settings.updatePreviews();
             gameApp.getScene().setRoot(settings);
             gameApp.getScene().setOnKeyPressed(kke->settings.handleKey(kke));
             stage.setScene(gameApp.getScene());

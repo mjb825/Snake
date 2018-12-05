@@ -56,6 +56,17 @@ public class Settings extends GridPane {
     private ArrayList<Double> tailSizes;
     private ArrayList<Double> foodSizes;
     
+    
+    // color lists
+    private ArrayList<Color> prevHeadColors;
+    private ArrayList<Color> prevTailColors;
+    private ArrayList<Color> prevFoodColors;
+    
+    // size lists
+    private ArrayList<Double> prevHeadSizes;
+    private ArrayList<Double> prevTailSizes;
+    private ArrayList<Double> prevFoodSizes;
+    
     // color options
     private CheckBox colorGrad;
     private Slider colorStepSlider;
@@ -114,6 +125,12 @@ public class Settings extends GridPane {
         headSizes = new ArrayList<Double>();
         tailSizes = new ArrayList<Double>();
         foodSizes = new ArrayList<Double>();
+        prevHeadColors = new ArrayList<Color>();
+        prevTailColors = new ArrayList<Color>();
+        prevFoodColors = new ArrayList<Color>();
+        prevHeadSizes = new ArrayList<Double>();
+        prevTailSizes = new ArrayList<Double>();
+        prevFoodSizes = new ArrayList<Double>();
         
         // set initial colors and size
         r = 255;
@@ -536,22 +553,33 @@ public class Settings extends GridPane {
             
             if(colorRadio.isSelected()) {
                 colorsList.clear();
+                clearColors();
+            }
+            else {
+                sizesList.clear();
+                clearSizes();
+            }
+            
+        }
+        
+        // reset color previews
+        public void clearColors()
+        {
                 for(int i = 0; i < amount; i++)
                     colorPreview[i].setFill(Color.rgb(0, 0, 0, 0));
                 colorPreview[colorPosition % amount].setStrokeWidth(1);
                 colorPreview[0].setStrokeWidth(2);
                 colorPosition = 0;
-            }
-            
-            else {
-                sizesList.clear();
+        }
+        
+        // reset size previews
+        public void clearSizes()
+        {
                 for(int i = 0; i < amount; i++)
                     sizePreview[i].setText("?");
                 sizePreview[sizePosition % amount].setUnderline(false);
                 sizePreview[0].setUnderline(false);
                 sizePosition = 0;
-            }
-            
         }
         
         // mirrors all values from either colorsList or sizesList
@@ -612,6 +640,11 @@ public class Settings extends GridPane {
             colorPreview[colorPosition % amount].setStrokeWidth(2);
         }
         
+        public void updateColorPreviews(ArrayList list)
+        {
+            colorsList = list;
+        }
+        
         // update size previews according to list
         public void updateSizePreviews()
         {
@@ -625,6 +658,12 @@ public class Settings extends GridPane {
             
             // add focus to current position
             sizePreview[sizePosition % amount].setUnderline(true);
+        }
+        
+        public void updateSizePreviews(ArrayList list)
+        {
+            sizesList = list;
+            
         }
         
         public void previewColor()
@@ -830,6 +869,26 @@ public class Settings extends GridPane {
             }
         }
         
+        public ArrayList getColorsList()
+        {
+            return colorsList;
+        }
+        
+        public void setColorsList(ArrayList list)
+        {
+            colorsList = list;
+        }
+        
+        public ArrayList getSizesList()
+        {
+            return sizesList;
+        }
+        
+        public void setSizesList(ArrayList list)
+        {
+            sizesList = list;
+        }
+        
     }
     
     /****************************************
@@ -899,9 +958,90 @@ public class Settings extends GridPane {
     // return to main menu
     public void handleKey(KeyEvent ke)
     {
-        if(ke.getCode() == KeyCode.ESCAPE) {
+        // assign previous lists to current lists and go to main menu
+        if(ke.getCode() == KeyCode.Q) {
+            
+            headColors = new ArrayList<Color>();
+            tailColors = new ArrayList<Color>();
+            foodColors = new ArrayList<Color>();
+            headSizes = new ArrayList<Double>();
+            tailSizes = new ArrayList<Double>();
+            foodSizes = new ArrayList<Double>();
+            
+            for(Color headColor: prevHeadColors)
+                headColors.add(headColor);
+            for(Color tailColor: prevTailColors)
+                tailColors.add(tailColor);
+            for(Color foodColor: prevFoodColors)
+                foodColors.add(foodColor);
+            // use doubleValue so it doesn't just add a pointer in for loop. add(prevHeadSizes.get(i).doubleValue()) (necessary?)
+            // do foreach loops create a new object, in which case doubleValue is REALLY not needed now
+            for(Double headSize: prevHeadSizes)
+                headSizes.add(headSize.doubleValue());
+            for(Double tailSize: prevTailSizes)
+                tailSizes.add(tailSize.doubleValue());
+            for(Double foodSize: prevFoodSizes)
+                foodSizes.add(foodSize.doubleValue());
+            
+            
             gameApp.getScene().setRoot(menu);
             stage.setScene(gameApp.getScene());
         }
+        // assign current lists to previous lists and go to main menu
+        else if(ke.getCode() == KeyCode.ESCAPE) {
+            
+            prevHeadColors = new ArrayList<Color>();
+            prevTailColors = new ArrayList<Color>();
+            prevFoodColors = new ArrayList<Color>();
+            prevHeadSizes = new ArrayList<Double>();
+            prevTailSizes = new ArrayList<Double>();
+            prevFoodSizes = new ArrayList<Double>();
+            
+            System.out.println(prevHeadColors.size());
+            System.out.println(headColors.size());
+            
+            for(Color headColor: headColors)
+                prevHeadColors.add(headColor);
+            for(Color tailColor: tailColors)
+                prevTailColors.add(tailColor);
+            for(Color foodColor: foodColors)
+                prevFoodColors.add(foodColor);
+            for(Double headSize: headSizes)
+                prevHeadSizes.add(headSize.doubleValue());
+            for(Double tailSize: tailSizes)
+                prevTailSizes.add(tailSize.doubleValue());
+            for(Double foodSize: foodSizes)
+                prevFoodSizes.add(foodSize.doubleValue());
+            
+            gameApp.getScene().setRoot(menu);
+            stage.setScene(gameApp.getScene());
+        }
+    }
+    
+    public void updatePreviews()
+    {
+        // reset previews
+        head.clearColors();
+        tail.clearColors();
+        food.clearColors();
+        head.clearSizes();
+        tail.clearSizes();
+        food.clearSizes();
+        
+        // set lists belonging to objects
+        head.setColorsList(headColors);
+        tail.setColorsList(tailColors);
+        food.setColorsList(foodColors);
+        head.setSizesList(headSizes);
+        tail.setSizesList(tailSizes);
+        food.setSizesList(foodSizes);
+        
+        // update previews
+        head.updateColorPreviews();
+        tail.updateColorPreviews();
+        food.updateColorPreviews();
+        head.updateSizePreviews();
+        tail.updateSizePreviews();
+        food.updateSizePreviews();
     }
 }
