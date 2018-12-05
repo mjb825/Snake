@@ -558,13 +558,73 @@ public class Settings extends GridPane {
         public void mirror()
         {
             if(colorRadio.isSelected()) {
-            
+                
+                // exit if no colors in list
+                if(colorsList.isEmpty())
+                    return;
+                
+                // add colors to list from list in reverse order
+                // {- 2} instead of {-1} so last value isn't mirrored (example list: [R, G, B])
+                // [R, G, B, G, R] instead of [R, G, B, B, G, R]
+                // {> 0} instead of {>= 0} so user can mirror if only one value
+                for(int i = colorsList.size() - 2; i > 0; i--) {
+                    colorsList.add(colorsList.get(i));
+                }
+                
+                // add value outside of loop in case of only one value
+                colorsList.add(colorsList.get(0));
+                
+                // update the previews with new list
+                updateColorPreviews();
+                
             }
             
             else {
             
+                // refer to comments from {if(colorRadio.isSelected())}
+                
+                if(sizesList.isEmpty())
+                    return;
+                
+                for(int i = sizesList.size() - 2; i > 0; i--)
+                    sizesList.add(sizesList.get(i));
+                
+                sizesList.add(sizesList.get(0));
+                
+                updateSizePreviews();
+                
             }
             
+        }
+        
+        // update color previews according to list
+        public void updateColorPreviews()
+        {
+            colorPosition = colorsList.size();
+            for(int i = 0; i < colorsList.size(); i++) {
+                // set preview value from list
+                colorPreview[i % amount].setFill(colorsList.get(i));
+                // remove focus from preview
+                colorPreview[i % amount].setStrokeWidth(1);
+            }
+            
+            // add focus to current position
+            colorPreview[colorPosition % amount].setStrokeWidth(2);
+        }
+        
+        // update size previews according to list
+        public void updateSizePreviews()
+        {
+            sizePosition = sizesList.size();
+            for(int i = 0; i < sizesList.size(); i++) {
+                // set preview value from list
+                sizePreview[i % amount].setText("" + ((int)sizesList.get(i).doubleValue()));
+                // remove focus from preview
+                sizePreview[i % amount].setUnderline(false);
+            }
+            
+            // add focus to current position
+            sizePreview[sizePosition % amount].setUnderline(true);
         }
         
         public void previewColor()
