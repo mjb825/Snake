@@ -407,10 +407,6 @@ public class Settings extends GridPane {
         private ArrayList<Color> colorsList;
         private ArrayList<Double> sizesList;
         
-        // test whether previous values have been assigned or not
-        private boolean prevColorsSet;
-        private boolean prevSizeSet;
-        
         // previous values used to calculate gradient
         // double for colors for better accuracy despite color still being assigned as int
         private double prevR;
@@ -517,18 +513,23 @@ public class Settings extends GridPane {
             if(colorGrad.isSelected())
                 howMany = (int)colorStepSlider.getValue();
             
+            // set previous values to last color in list, else set them to current r, g, b, a values
+            if(!colorsList.isEmpty()) {
+                prevR = colorsList.get(colorsList.size() - 1).getRed() * 255;
+                prevG = colorsList.get(colorsList.size() - 1).getGreen() * 255;
+                prevB = colorsList.get(colorsList.size() - 1).getBlue() * 255;
+                prevA = colorsList.get(colorsList.size() - 1).getOpacity();
+            }
+            else {
+                prevR = r;
+                prevG = g;
+                prevB = b;
+                prevA = a;
+            }
+            
             for(int i = 1; i < howMany; i++) {
                 
-                // if previous values haven't been set, set them to current colors before use
-                if(!prevColorsSet) {
-                    prevR = r;
-                    prevG = g;
-                    prevB = b;
-                    prevA = a;
-                    prevColorsSet = true;
-                }
-                
-                // calculate value used for gradient
+                // calculate gradient value to either add or subtract from previous value
                 if(!gradientSet) {
                     gradR = Math.abs(r - prevR) / howMany;
                     prevRLarger = Math.max(r, prevR) == prevR ? true : false;
@@ -568,14 +569,6 @@ public class Settings extends GridPane {
 
             // add to list
             colorsList.add(Color.rgb(r, g, b, a));
-            
-            
-            // set previous values to current values
-            prevR = r;
-            prevG = g;
-            prevB = b;
-            prevA = a;
-            prevColorsSet = true;
             
         }
         
@@ -624,14 +617,17 @@ public class Settings extends GridPane {
             if(sizeGrad.isSelected())
                 howMany = (int)sizeStepSlider.getValue();
             
+            // set previous value to last size in list, else set them to current size value
+            if(!sizesList.isEmpty()) {
+                prevSize = sizesList.get(sizesList.size() - 1);
+            }
+            else {
+                prevSize = size;
+            }
+            
             for(int i = 1; i < howMany; i++) {
                 
-                if(!prevSizeSet) {
-                    prevSize = size;
-                    prevSizeSet = true;
-                }
-                
-                
+                // calculate gradient value to either add or subtract from previous value
                 if(!gradientSet) {
                     gradSize = Math.abs(size - prevSize) / howMany;
                     prevLarger = Math.max(size, prevSize) == prevSize ? true : false;
@@ -659,8 +655,6 @@ public class Settings extends GridPane {
             sizePreview[sizePosition % amount].setUnderline(true);
             sizesList.add(size);
             
-            prevSize = size;
-            prevSizeSet = true;
         }
         
         public void removeSize()
