@@ -952,7 +952,7 @@ public class Settings extends GridPane {
             for(Double foodSize: prevFoodSizes)
                 foodSizes.add(foodSize.doubleValue());
             
-            
+            stage.setTitle("Snake");
             gameApp.getScene().setRoot(menu);
             stage.setScene(gameApp.getScene());
         }
@@ -979,6 +979,7 @@ public class Settings extends GridPane {
             for(Double foodSize: foodSizes)
                 prevFoodSizes.add(foodSize.doubleValue());
             
+            stage.setTitle("Snake");
             gameApp.getScene().setRoot(menu);
             stage.setScene(gameApp.getScene());
         }
