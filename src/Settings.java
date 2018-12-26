@@ -1004,9 +1004,19 @@ public class Settings extends GridPane {
             colorPreview[colorPosition % amount].setFill(Color.rgb(r, g, b, a));
         }
         
+        public void previewColor(int r, int g, int b, double a)
+        {
+            colorPreview[colorPosition % amount].setFill(Color.rgb(r, g, b, a));
+        }
+        
         public void previewSize()
         {            
             // in case there are more sizes added then there are previews (use modulus)
+            sizePreview[sizePosition % amount].setText("" + (int)size);
+        }
+        
+        public void previewSize(double size)
+        {
             sizePreview[sizePosition % amount].setText("" + (int)size);
         }
         
@@ -1014,19 +1024,12 @@ public class Settings extends GridPane {
         {
             int howMany = gradient ? n : 1;
             
-            // variables to calculate gradient
-            boolean gradientSet = false;
-            double gradR = 0;
-            double gradG = 0;
-            double gradB = 0;
-            double gradA = 0;
-            
-            // store colors to compare to previous when calculating gradient, and
-            // to restore original color to be set as the last color of gradient
-            int tempR = r;
-            int tempG = g;
-            int tempB = b;
-            double tempA = a;
+            // variables for gradient
+            int gradR;
+            int gradG;
+            int gradB;
+            double gradA;
+           
             
             // set previous values to last color in list, else set them to current r, g, b, a values
             if(!colorsList.isEmpty()) {
@@ -1044,38 +1047,21 @@ public class Settings extends GridPane {
             
             for(int i = 1; i < howMany; i++) {
                 
-                // calculate gradient value to either add or subtract from previous value
-                if(!gradientSet) {
-                    gradR = Math.abs(r - prevR) / howMany;
-                    gradG = Math.abs(g - prevG) / howMany;
-                    gradB = Math.abs(b - prevB) / howMany;
-                    gradA = Math.abs(a - prevA) / howMany;
-                    gradientSet = true;
-                }
+                // calculate gradient color with linear interpolation
+                gradR = r == prevR ? r : (int) (r*((double)i/n) + prevR*((double)(n-i)/n));
+                gradG = g == prevG ? g : (int) (g*((double)i/n) + prevG*((double)(n-i)/n));
+                gradB = b == prevB ? b : (int) (b*((double)i/n) + prevB*((double)(n-i)/n));
+                gradA = a == prevA ? a : (int) (a*((double)i/n) + prevA*((double)(n-i)/n));
                 
-                // if value is same as previous value, set to value, else
-                // subtract [gradient value * i] from previous value (if previous is larger)
-                // add [gradient value * i] to previous value (if previous is smaller)
-                r = tempR == prevR ? tempR : Math.max(tempR, prevR) == prevR ? (int)(prevR - gradR * i) : (int)(prevR + gradR * i);
-                g = tempG == prevG ? tempG : Math.max(tempG, prevG) == prevG ? (int)(prevG - gradG * i) : (int)(prevG + gradG * i);
-                b = tempB == prevB ? tempB : Math.max(tempB, prevB) == prevB ? (int)(prevB - gradB * i) : (int)(prevB + gradB * i);
-                a = tempA == prevA ? tempA : Math.max(tempA, prevA) == prevA ? (prevA - gradA * i) : (prevA + gradA * i);
-
                 // update preview
-                previewColor();
+                previewColor(gradR, gradG, gradB, gradA);
                 colorPreview[colorPosition % amount].setStrokeWidth(1);
                 colorPosition++;
                 colorPreview[colorPosition % amount].setStrokeWidth(2);
 
                 // add to list
-                colorsList.add(Color.rgb(r, g, b, a));
+                colorsList.add(Color.rgb(gradR, gradG, gradB, gradA));
             }
-            
-            // restore colors
-            r = tempR;
-            g = tempG;
-            b = tempB;
-            a = tempA;
             
             previewColor();
             colorPreview[colorPosition % amount].setStrokeWidth(1);
@@ -1116,12 +1102,8 @@ public class Settings extends GridPane {
         {
             int howMany = gradient ? n : 1;
             
-            // variables to calculate gradient
-            boolean gradientSet = false;
-            double gradSize = 0;
-            
-            // store size to restore last size of gradient
-            double tempSize = size;
+            // variable to calculate gradient
+            double gradSize;
             
             // set previous value to last size in list, else set them to current size value
             if(!sizesList.isEmpty()) {
@@ -1133,25 +1115,15 @@ public class Settings extends GridPane {
             
             for(int i = 1; i < howMany; i++) {
                 
-                // calculate gradient value to either add or subtract from previous value
-                if(!gradientSet) {
-                    gradSize = Math.abs(size - prevSize) / howMany;
-                    gradientSet = true;
-                }
+                // calculate gradient size using linear interpolation
+                gradSize = size == prevSize ? size : size*((double)i/n) + prevSize*((double)(n-i)/n);
                 
-                // if value is same as previous value, set to value, else
-                // subtract [gradient value * i] from previous value (if previous is larger)
-                // add [gradient value * i] to previous value (if previous is smaller)
-                size = tempSize == prevSize ? tempSize : Math.max(tempSize, prevSize) == prevSize ? prevSize - gradSize * i : prevSize + gradSize * i;
-                
-                previewSize();
+                previewSize(gradSize);
                 sizePreview[sizePosition % amount].setUnderline(false);
                 sizePosition++;
                 sizePreview[sizePosition % amount].setUnderline(true);
-                sizesList.add(size);
+                sizesList.add(gradSize);
             }
-            
-            size = tempSize;
             
             previewSize();
             sizePreview[sizePosition % amount].setUnderline(false);
