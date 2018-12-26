@@ -83,10 +83,17 @@ public class Snake
         Tail head = new Tail(currentMove.copy(), headColors.get(0), headSizes.get(0), menu.getSettings().strColor, menu.getSettings().strWidth);
         
         // fix so first TAIL piece doesn't start off with color/size gotten by HEAD piece
-        if(frozen && !headUnique)
+        // if it's not a sequence, we don't want to update pos because head will change immediately
+        if(frozen && !headUnique && sequence)
             headColorPos = (headColorPos + 1) % headColors.size();
-        if(frozenSize && !headUniqueSize)
+        // fix so tail gets first color and not second
+        // although determineColor gets the first color, updateColors will update all pieces to next color
+        if(frozen && headUnique && !sequence)
+            tailColorPos = tailColors.size() - 1;
+        if(frozenSize && !headUniqueSize && sequenceSize)
             headSizePos = (headSizePos + 1) % headSizes.size();
+        if(frozenSize && headUniqueSize && !sequenceSize)
+            tailSizePos = tailSizes.size() - 1;
         
         tail.add(head);
         
@@ -193,6 +200,15 @@ public class Snake
                 tailColorPos = (tailColorPos + 1) % tailColors.size();
             }
             
+            else if(!sequence) {
+                
+                for(int i = 1; i < tail.size(); i++) {
+                    //tail.get(tail.size() - i - 1).setColor(tailColors.get(tailColorPos));
+                    tail.get(i).setColor(tailColors.get(tailColorPos));
+                }
+                
+            }
+            
             // update position for head color
             headColorPos = (headColorPos + 1) % headColors.size();
         }
@@ -236,6 +252,15 @@ public class Snake
                 headColorPos = (headColorPos + 1) % headColors.size();
             }
             
+            else if(!sequence) {
+                
+                for(int i = 0; i < tail.size(); i++) {
+                    //tail.get(tail.size() - i - 1).setColor(headColors.get(headColorPos));
+                    tail.get(i).setColor(headColors.get(headColorPos));
+                }
+                
+            }
+            
         }
         
     }
@@ -243,7 +268,6 @@ public class Snake
     // determine color of newly added tail piece
     public Color determineColor()
     {
-        
         Color color = headUnique ? tailColors.get(tailColorPos) : headColors.get(headColorPos);
         
         // if it isn't frozen, updateColors will change appropriate ColorPos
@@ -302,6 +326,15 @@ public class Snake
                 tailSizePos = (tailSizePos + 1) % tailSizes.size();
             }
             
+            else if(!sequenceSize) {
+                
+                for(int i = 1; i < tail.size(); i++) {
+                    //tail.get(tail.size() - i - 1).setSize(tailSizes.get(tailSizePos));
+                    tail.get(i).setSize(tailSizes.get(tailSizePos));
+                }
+                
+            }
+            
             // update position for head size
             headSizePos = (headSizePos + 1) % headSizes.size();
         }
@@ -344,6 +377,15 @@ public class Snake
             
                 // update position for head size if isn't frozen, in which case determineSize will update
                 headSizePos = (headSizePos + 1) % headSizes.size();
+            }
+            
+            else if(!sequenceSize) {
+                
+                for(int i = 0; i < tail.size(); i++) {
+                    //tail.get(tail.size() - i - 1).setSize(headSizes.get(headSizePos));
+                    tail.get(i).setSize(headSizes.get(headSizePos));
+                }
+                
             }
             
         }

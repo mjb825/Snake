@@ -77,9 +77,9 @@ public class GameField extends Pane
         
         // start player in center of field
         if(diagonal)
-            player = new Snake(12, 9, Direction.NW, menu);
+            player = new Snake(Game.WIDTH / 2, Game.HEIGHT / 2, Direction.NW, menu);
         else
-            player = new Snake(12, 9, Direction.N, menu);
+            player = new Snake(Game.WIDTH / 2, Game.HEIGHT / 2, Direction.N, menu);
 
         
         
