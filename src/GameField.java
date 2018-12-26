@@ -149,8 +149,8 @@ public class GameField extends Pane
         boolean found = true;
         
         // coordinates for food (upper limit = 24, 18) (n * 20 + 10) (500x380)
-        int x = 25;
-        int y = 19;
+        int x = Game.WIDTH;
+        int y = Game.HEIGHT;
         
         // food generation restrictions based off of snake pieces coordinates
         ArrayList<Tail> tail = player.getTail();
@@ -160,19 +160,21 @@ public class GameField extends Pane
         {
             
             // generate random coordinates for food
-            x = (int)(Math.random() * 25);
-            y = (int)(Math.random() * 19);
+            x = (int)(Math.random() * Game.WIDTH);
+            y = (int)(Math.random() * Game.HEIGHT);
+            
+            // don't think it's possible, but just in case
+            if(x >= Game.WIDTH || y >= Game.HEIGHT) {
+                // not continue because I want this to be noticeable if it ever happens
+                break;
+            }
             
             if(diagonal) {
                 //prevent food from generating in corners if snake is moving diagonally
-                if((x == 0 && y == 0) || (x == 24 && y == 0) || (x == 0 && y == 18) || (x == 24 && y == 18))
+                if((x == 0 && y == 0) || (x == Game.WIDTH-1 && y == 0) || (x == 0 && y == Game.HEIGHT-1) || (x == Game.WIDTH-1 && y == Game.HEIGHT-1))
                     continue;
             }
             
-            // don't think it's possible, but just in case
-            if(x >= 25 || y >= 19) {
-                break;
-            }
             
             // prevent generating food in space occupied by snake
             for (Tail piece : tail) {
@@ -236,7 +238,7 @@ public class GameField extends Pane
         ArrayList<Tail> tail = player.getTail();
         
         // return true when running into edges
-        if(head.getCurrentMove().getX() < 0 || head.getCurrentMove().getX() > 24 || head.getCurrentMove().getY() < 0 || head.getCurrentMove().getY() > 18) {
+        if(head.getCurrentMove().getX() < 0 || head.getCurrentMove().getX() > Game.WIDTH-1 || head.getCurrentMove().getY() < 0 || head.getCurrentMove().getY() > Game.HEIGHT-1) {
             return true;
         }
         
