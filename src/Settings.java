@@ -83,6 +83,11 @@ public class Settings extends GridPane {
     private CheckBox sizeGrad;
     private Slider sizeStepSlider;
     
+    // gradient (n) options
+    private Slider nSlider;
+    private TextField nField;
+    private int n;
+    
     // game options
     private CheckBox headUnique;
     private CheckBox sequence;
@@ -197,6 +202,13 @@ public class Settings extends GridPane {
         headRadio.fire();
         categories.setSpacing(6);
 
+        /************************
+         * GRADIENT (N) OPTIONS *
+         ************************/
+        nSlider = new Slider(2, 40, 2);
+        nField = new TextField("2");
+        nField.setMaxWidth(40);
+        nField.setEditable(false);
         
         /*****************
          * COLOR OPTIONS *
@@ -210,7 +222,6 @@ public class Settings extends GridPane {
         HBox colorGradient = new HBox();
         colorGrad = new CheckBox("Gradient");
         colorStepSlider = new Slider(2, 20, 2);
-        colorStepSlider.setMinWidth(250);
         TextField colorSliderField = new TextField("2");
         colorSliderField.setMaxWidth(40);
         colorSliderField.setEditable(false);
@@ -228,7 +239,9 @@ public class Settings extends GridPane {
         HBox colorButtons = new HBox();
         Button colorAdd = new Button("Add");
         Button colorRemove = new Button("Remove");
-        colorButtons.getChildren().addAll(colorAdd, colorRemove);
+        Button colorAddN = new Button("Add (n)");
+        Button colorRemoveN = new Button("Remove (n)");
+        colorButtons.getChildren().addAll(colorAdd, colorRemove, colorAddN, colorRemoveN);
         colorButtons.setSpacing(6);
         
         
@@ -284,7 +297,6 @@ public class Settings extends GridPane {
         HBox sizeGradient = new HBox();
         sizeGrad = new CheckBox("Gradient");
         sizeStepSlider = new Slider(2, 20, 2);
-        sizeStepSlider.setMinWidth(250);
         TextField sizeSliderField = new TextField("2");
         sizeSliderField.setMaxWidth(40);
         sizeSliderField.setEditable(false);
@@ -302,7 +314,9 @@ public class Settings extends GridPane {
         HBox sizeButtons = new HBox();
         Button sizeAdd = new Button("Add");
         Button sizeRemove = new Button("Remove");
-        sizeButtons.getChildren().addAll(sizeAdd, sizeRemove);
+        Button sizeAddN = new Button("Add (n)");
+        Button sizeRemoveN = new Button("Remove (n)");
+        sizeButtons.getChildren().addAll(sizeAdd, sizeRemove, sizeAddN, sizeRemoveN);
         sizeButtons.setSpacing(6);
         
         
@@ -395,116 +409,80 @@ public class Settings extends GridPane {
          *              ADD EVERYTHING               *
          *********************************************/
 
-                /************
-                 * CATEGORY *
-                 ************/
-                add(categoryLabel, 0, 0, 6, 1);
+        add(categoryLabel, 0, 0);
+        add(categories, 0, 1);
 
-                // head, tail, food
-                add(categories, 0, 1, 6, 1);
+        add(nSlider, 0, 2);
+        add(new Label("n: "), 1, 2);
+        add(nField, 2, 2);
 
-                /*****************
-                 * COLOR OPTIONS *
-                 *****************/
-                add(colorLabel, 0, 2, 6, 1);
+        add(colorLabel, 0, 3);
 
-                // gradient
-                add(colorGradient, 0, 3, 6, 1);
-                add(colorSliderField, 5, 3);
+//        add(colorGradient, 0, 3);
+//        add(new Label("n: "), 1, 3);
+//        add(colorSliderField, 2, 3);
 
-                // add, remove
-                add(colorButtons, 0, 4, 6, 1);
+        add(colorButtons, 0, 4);
 
-                Label holder1 = new Label("    ");
-                Label holder2 = new Label("    ");
-                Label holder3 = new Label("    ");
+        add(rSlider, 0, 5);
+        add(new Label("R: "), 1, 5);
+        add(rField, 2, 5);
 
-                holder1.setEllipsisString("");
-                holder2.setEllipsisString("");
-                holder3.setEllipsisString("");
+        add(gSlider, 0, 6);
+        add(new Label("G: "), 1, 6);
+        add(gField, 2, 6);
 
+        add(bSlider, 0, 7);
+        add(new Label("B: "), 1, 7);
+        add(bField, 2, 7);
 
+        add(hSlider, 0, 8);
+        add(new Label("H: "), 1, 8);
+        add(hField, 2, 8);
 
-                // r
-                add(rSlider, 0, 5);
-                add(holder1, 1, 5);
-                add(new Label("R"), 1, 5);
-                add(rField, 2, 5);
-                // h
-                add(hSlider, 3, 5);
-                add(holder2, 4, 5);
-                add(new Label("H"), 4, 5);
-                add(hField, 5, 5);
+        add(sSlider, 0, 9);
+        add(new Label("S: "), 1, 9);
+        add(sField, 2, 9);
 
-                // g
-                add(gSlider, 0, 6);
-                add(new Label("G"), 1, 6);
-                add(gField, 2, 6);
-                // s
-                add(sSlider, 3, 6);
-                add(new Label("S"), 4, 6);
-                add(sField, 5, 6);
-
-                // b
-                add(bSlider, 0, 7);
-                add(new Label("B"), 1, 7);
-                add(bField, 2, 7);
-                // l
-                add(lSlider, 3, 7);
-                add(new Label("L"), 4, 7);
-                add(lField, 5, 7);
+        add(lSlider, 0, 10);
+        add(new Label("L: "), 1, 10);
+        add(lField, 2, 10);
 
 
-                // a
-                add(aSlider, 0, 8, 4, 1);
-                add(new Label("A"), 4, 8);
-                add(aField, 5, 8);
+        add(aSlider, 0, 11);
+        add(new Label("A: "), 1, 11);
+        add(aField, 2, 11);
 
 
 
-                /****************
-                 * SIZE OPTIONS *
-                 ****************/
-                add(sizeLabel, 0, 9, 6, 1);
+        add(sizeLabel, 0, 12);
 
-                // gradient
-                add(sizeGradient, 0, 10, 6, 1);
-                add(sizeSliderField, 5, 10);
+//        add(sizeStepSlider, 0, 13);
+//        add(new Label("N: "), 1, 13);
+//        add(sizeSliderField, 2, 13);
 
-                // buttons
-                add(sizeButtons, 0, 11, 6, 1);
+        add(sizeButtons, 0, 13);
 
-                // slider
-                add(sizeSlider, 0, 12, 4, 1);
-                add(new Label("#"), 4, 12);
-                add(sizeField, 5, 12);
+        add(sizeSlider, 0, 14);
+        add(new Label("#: "), 1, 14);
+        add(sizeField, 2, 14);
 
-                /****************
-                 * GAME OPTIONS *
-                 ****************/
-                add(gameLabel, 0, 13, 6, 1);
+        add(gameLabel, 0, 15);
 
-                // color
-                add(gameOptions, 0, 14, 6, 1);
-                add(new Label("(Color)"), 5, 14);
+        add(gameOptions, 0, 16);
+        add(new Label("(Color)"), 2, 16);
 
-                // size
-                add(gameOptionsSize, 0, 15, 6, 1);
-                add(new Label("(Size)"), 5, 15);
+        add(gameOptionsSize, 0, 17);
+        add(new Label("(Size)"), 2, 17);
 
-                /************
-                 * PREVIEWS *
-                 ************/
 
-                // clear, mirror
-                add(previewButtons, 6, 0, 3, 1);
-                // color, size
-                add(previewCategories, 6, 1, 3, 1);
 
-                // table
-                add(head, 6, 2, 1, 100);
-                add(tail, 7, 2, 1, 100);
-                add(food, 8, 2, 1, 100);
+
+        add(head, 3, 2, 1, 100);
+        add(tail, 4, 2, 1, 100);
+        add(food, 5, 2, 1, 100);
+        add(previewButtons, 3, 0, 3, 1);
+        add(previewCategories, 3, 1, 3, 1);
         
         /*************************
          * ACTIONS AND LISTENERS *
@@ -538,8 +516,27 @@ public class Settings extends GridPane {
                 food.addColor();
         });
         
+        colorAddN.setOnAction(e -> {
+            if(headRadio.isSelected())
+                head.addColor();
+            else if(tailRadio.isSelected())
+                tail.addColor();
+            else
+                food.addColor();
+        });
+        
         // remove color from list
         colorRemove.setOnAction(e -> {
+            if(headRadio.isSelected())
+                head.removeColor();
+            else if(tailRadio.isSelected())
+                tail.removeColor();
+            else
+                food.removeColor();
+        });
+        
+        // remove color from list
+        colorRemoveN.setOnAction(e -> {
             if(headRadio.isSelected())
                 head.removeColor();
             else if(tailRadio.isSelected())
@@ -558,6 +555,16 @@ public class Settings extends GridPane {
                 food.addSize();
         });
         
+        // add size to list
+        sizeAddN.setOnAction(e -> {
+            if(headRadio.isSelected())
+                head.addSize();
+            else if(tailRadio.isSelected())
+                tail.addSize();
+            else
+                food.addSize();
+        });
+        
         // remove size from list
         sizeRemove.setOnAction(e -> {
             if(headRadio.isSelected())
@@ -568,17 +575,25 @@ public class Settings extends GridPane {
                 food.removeSize();
         });
         
-        /*
-        // adjust color textfields and color previews when color slider is moved
-        rSlider.valueProperty().addListener(new ColorListener());
-        gSlider.valueProperty().addListener(new ColorListener());
-        bSlider.valueProperty().addListener(new ColorListener());
-        aSlider.valueProperty().addListener(new ColorListener());
-        */
+        // remove size from list
+        sizeRemoveN.setOnAction(e -> {
+            if(headRadio.isSelected())
+                head.removeSize();
+            else if(tailRadio.isSelected())
+                tail.removeSize();
+            else
+                food.removeSize();
+        });
+        
+        // adjust n textfield when n slider is moved
+        nSlider.valueProperty().addListener((observable, oldValue, newValue) ->
+        {
+            n = newValue.intValue();
+            nField.setText(String.valueOf(n));
+        });
         
         // adjust size textfield and size preview when size slider is moved
         sizeSlider.valueProperty().addListener(ov -> {
-//            System.out.println(ov);
             size = sizeSlider.getValue();
             sizeField.setText("" + (int)size);
             if(headRadio.isSelected())
@@ -588,6 +603,14 @@ public class Settings extends GridPane {
             else
                 food.previewSize();
         });
+        
+        // adjust color textfields and color previews when color slider is moved
+        /*
+        rSlider.valueProperty().addListener(new ColorListener());
+        gSlider.valueProperty().addListener(new ColorListener());
+        bSlider.valueProperty().addListener(new ColorListener());
+        aSlider.valueProperty().addListener(new ColorListener());
+        */
         
         aSlider.valueProperty().addListener((observable, oldValue, newValue) ->
         {
