@@ -173,6 +173,8 @@ public class Settings extends GridPane {
         a = 1;
         size = 6;
         
+        n = 2;
+       
         currentColor = Color.rgb(r, g, b, a);
         
         h = (int) currentColor.getHue();
@@ -509,80 +511,80 @@ public class Settings extends GridPane {
         // add color to list
         colorAdd.setOnAction(e -> {
             if(headRadio.isSelected())
-                head.addColor();
+                head.addColor(false);
             else if(tailRadio.isSelected())
-                tail.addColor();
+                tail.addColor(false);
             else
-                food.addColor();
+                food.addColor(false);
         });
         
         colorAddN.setOnAction(e -> {
             if(headRadio.isSelected())
-                head.addColor();
+                head.addColor(true);
             else if(tailRadio.isSelected())
-                tail.addColor();
+                tail.addColor(true);
             else
-                food.addColor();
+                food.addColor(true);
         });
         
         // remove color from list
         colorRemove.setOnAction(e -> {
             if(headRadio.isSelected())
-                head.removeColor();
+                head.removeColor(false);
             else if(tailRadio.isSelected())
-                tail.removeColor();
+                tail.removeColor(false);
             else
-                food.removeColor();
+                food.removeColor(false);
         });
         
         // remove color from list
         colorRemoveN.setOnAction(e -> {
             if(headRadio.isSelected())
-                head.removeColor();
+                head.removeColor(true);
             else if(tailRadio.isSelected())
-                tail.removeColor();
+                tail.removeColor(true);
             else
-                food.removeColor();
+                food.removeColor(true);
         });
         
         // add size to list
         sizeAdd.setOnAction(e -> {
             if(headRadio.isSelected())
-                head.addSize();
+                head.addSize(false);
             else if(tailRadio.isSelected())
-                tail.addSize();
+                tail.addSize(false);
             else
-                food.addSize();
+                food.addSize(false);
         });
         
         // add size to list
         sizeAddN.setOnAction(e -> {
             if(headRadio.isSelected())
-                head.addSize();
+                head.addSize(true);
             else if(tailRadio.isSelected())
-                tail.addSize();
+                tail.addSize(true);
             else
-                food.addSize();
+                food.addSize(true);
         });
         
         // remove size from list
         sizeRemove.setOnAction(e -> {
             if(headRadio.isSelected())
-                head.removeSize();
+                head.removeSize(false);
             else if(tailRadio.isSelected())
-                tail.removeSize();
+                tail.removeSize(false);
             else
-                food.removeSize();
+                food.removeSize(false);
         });
         
         // remove size from list
         sizeRemoveN.setOnAction(e -> {
             if(headRadio.isSelected())
-                head.removeSize();
+                head.removeSize(true);
             else if(tailRadio.isSelected())
-                tail.removeSize();
+                tail.removeSize(true);
             else
-                food.removeSize();
+                food.removeSize(true);
         });
         
         // adjust n textfield when n slider is moved
@@ -1008,9 +1010,9 @@ public class Settings extends GridPane {
             sizePreview[sizePosition % amount].setText("" + (int)size);
         }
         
-        public void addColor()
+        public void addColor(boolean gradient)
         {
-            int howMany = 1;
+            int howMany = gradient ? n : 1;
             
             // variables to calculate gradient
             boolean gradientSet = false;
@@ -1025,10 +1027,6 @@ public class Settings extends GridPane {
             int tempG = g;
             int tempB = b;
             double tempA = a;
-            
-            // adjust how many according to colorStepSlider
-            if(colorGrad.isSelected())
-                howMany = (int)colorStepSlider.getValue();
             
             // set previous values to last color in list, else set them to current r, g, b, a values
             if(!colorsList.isEmpty()) {
@@ -1089,15 +1087,10 @@ public class Settings extends GridPane {
             
         }
         
-        public void removeColor()
+        public void removeColor(boolean gradient)
         {
             // how many colors to remove from list and how many previews to reset
-            int howMany = 1;
-            
-            // adjust how many according to colorStepSlider
-            if(colorGrad.isSelected())
-                howMany = (int)colorStepSlider.getValue();
-            
+            int howMany = gradient ? n : 1;
             
             for(int i = 0; i < howMany; i++) {
                 // reset color preview
@@ -1119,9 +1112,9 @@ public class Settings extends GridPane {
             }
         }
         
-        public void addSize()
+        public void addSize(boolean gradient)
         {
-            int howMany = 1;
+            int howMany = gradient ? n : 1;
             
             // variables to calculate gradient
             boolean gradientSet = false;
@@ -1129,9 +1122,6 @@ public class Settings extends GridPane {
             
             // store size to restore last size of gradient
             double tempSize = size;
-            
-            if(sizeGrad.isSelected())
-                howMany = (int)sizeStepSlider.getValue();
             
             // set previous value to last size in list, else set them to current size value
             if(!sizesList.isEmpty()) {
@@ -1171,14 +1161,10 @@ public class Settings extends GridPane {
             
         }
         
-        public void removeSize()
+        public void removeSize(boolean gradient)
         {
             // how many to remove from list and how many previews to reset
-            int howMany = 1;
-            
-            // adjust how many according to StepSlider
-            if(sizeGrad.isSelected())
-                howMany = (int)sizeStepSlider.getValue();
+            int howMany = gradient ? n : 1;
             
             for(int i = 0; i < howMany; i++) {
                 // reset size preview
