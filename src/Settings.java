@@ -133,7 +133,7 @@ public class Settings extends GridPane {
     public Color foodStrColor;
     public int foodStrWidth;
     
-    private Color currentColor = Color.rgb(255, 0, 0);
+    private Color currentColor;
     private boolean freezeSliders = false;
     
     public Settings(Stage stage, MainMenu menu, Game gameApp) {
@@ -167,6 +167,12 @@ public class Settings extends GridPane {
         b = 0;
         a = 1;
         size = 6;
+        
+        currentColor = Color.rgb(r, g, b, a);
+        
+        h = (int) currentColor.getHue();
+        s = (int)(currentColor.getSaturation() * 100) / 100.0;
+        l = (int)(currentColor.getBrightness() * 100) / 100.0;
         
         /**************************
          * CATEGORY RADIO BUTTONS *
@@ -231,10 +237,10 @@ public class Settings extends GridPane {
          ****************/
         
         // color select sliders
-        rSlider = new Slider(0, 255, 255);
-        gSlider = new Slider(0, 255, 0);
-        bSlider = new Slider(0, 255, 0);
-        aSlider = new Slider(0, 1, 1);
+        rSlider = new Slider(0, 255, r);
+        gSlider = new Slider(0, 255, g);
+        bSlider = new Slider(0, 255, b);
+        aSlider = new Slider(0, 100, a * 100);
         
         hSlider = new Slider(0, 360, 0);
         sSlider = new Slider(0, 100, 100);
@@ -583,6 +589,18 @@ public class Settings extends GridPane {
                 food.previewSize();
         });
         
+        aSlider.valueProperty().addListener((observable, oldValue, newValue) ->
+        {
+            aField.setText(String.valueOf(newValue.intValue()));
+            a = newValue.intValue() / 100.0;
+            if(headRadio.isSelected())
+                head.previewColor();
+            else if(tailRadio.isSelected())
+                tail.previewColor();
+            else
+                food.previewColor();
+        });
+        
         rSlider.valueProperty().addListener((observable, oldValue, newValue) -> 
         {
             rField.setText(String.valueOf(newValue.intValue()));
@@ -663,9 +681,10 @@ public class Settings extends GridPane {
             hField.setText(String.valueOf(newValue.intValue()));
             if(!freezeSliders) {
                 freezeSliders = true;
+                
                 h = newValue.intValue();
                 currentColor = Color.hsb(h, s, l);
-                
+                        
                 r = (int)(currentColor.getRed() * 255);
                 g = (int)(currentColor.getGreen() * 255);
                 b = (int)(currentColor.getBlue() * 255);
@@ -690,9 +709,9 @@ public class Settings extends GridPane {
             
             if(!freezeSliders) {
                 freezeSliders = true;
+                
                 s = newValue.intValue() / 100.0;
                 currentColor = Color.hsb(h, s, l);
-                
                 
                 r = (int)(currentColor.getRed() * 255);
                 g = (int)(currentColor.getGreen() * 255);
@@ -717,6 +736,7 @@ public class Settings extends GridPane {
             lField.setText(String.valueOf(newValue.intValue()));
             if(!freezeSliders) {
                 freezeSliders = true;
+                
                 l = newValue.intValue() / 100.0;
                 currentColor = Color.hsb(h, s, l);
                 
