@@ -823,9 +823,9 @@ public class Settings extends GridPane {
         
         // previous values used to calculate gradient
         // double for colors for better accuracy despite color still being assigned as int
-        private double prevR;
-        private double prevG;
-        private double prevB;
+        private int prevR;
+        private int prevG;
+        private int prevB;
         private double prevA;
         private double prevSize;
         
@@ -1009,6 +1009,11 @@ public class Settings extends GridPane {
             colorPreview[colorPosition % amount].setFill(Color.rgb(r, g, b, a));
         }
         
+        public void previewColor(Color color)
+        {
+            colorPreview[colorPosition % amount].setFill(color);
+        }
+        
         public void previewSize()
         {            
             // in case there are more sizes added then there are previews (use modulus)
@@ -1033,9 +1038,9 @@ public class Settings extends GridPane {
             
             // set previous values to last color in list, else set them to current r, g, b, a values
             if(!colorsList.isEmpty()) {
-                prevR = colorsList.get(colorsList.size() - 1).getRed() * 255;
-                prevG = colorsList.get(colorsList.size() - 1).getGreen() * 255;
-                prevB = colorsList.get(colorsList.size() - 1).getBlue() * 255;
+                prevR = (int)(colorsList.get(colorsList.size() - 1).getRed() * 255);
+                prevG = (int)(colorsList.get(colorsList.size() - 1).getGreen() * 255);
+                prevB = (int)(colorsList.get(colorsList.size() - 1).getBlue() * 255);
                 prevA = colorsList.get(colorsList.size() - 1).getOpacity();
             }
             else {
@@ -1044,23 +1049,22 @@ public class Settings extends GridPane {
                 prevB = b;
                 prevA = a;
             }
-            
+
+            Color newColor;
+
             for(int i = 1; i < howMany; i++) {
-                
-                // calculate gradient color with linear interpolation
-                gradR = r == prevR ? r : (int) (r*((double)i/n) + prevR*((double)(n-i)/n));
-                gradG = g == prevG ? g : (int) (g*((double)i/n) + prevG*((double)(n-i)/n));
-                gradB = b == prevB ? b : (int) (b*((double)i/n) + prevB*((double)(n-i)/n));
-                gradA = a == prevA ? a : (int) (a*((double)i/n) + prevA*((double)(n-i)/n));
-                
+
+                newColor = Color.rgb(prevR, prevG, prevB, prevA).interpolate(Color.rgb(r, g, b, a), (double)i / n );
+//                newColor = Color.rgb(r, g, b, a).interpolate(Color.rgb(prevR, prevG, prevB, prevA), ((double)(n - i)) / n );
+
                 // update preview
-                previewColor(gradR, gradG, gradB, gradA);
+                previewColor(newColor);
                 colorPreview[colorPosition % amount].setStrokeWidth(1);
                 colorPosition++;
                 colorPreview[colorPosition % amount].setStrokeWidth(2);
 
                 // add to list
-                colorsList.add(Color.rgb(gradR, gradG, gradB, gradA));
+                colorsList.add(newColor);
             }
             
             previewColor();
