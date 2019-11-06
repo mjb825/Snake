@@ -17,8 +17,8 @@ public class Game extends Application
     
     private Scene scene;
     //25,19
-    public final static int WIDTH = 34;
-    public final static int HEIGHT = 26;
+    public final static int WIDTH = 25;
+    public final static int HEIGHT = 21;
     
     @Override
     public void start(Stage stage) throws Exception
@@ -28,7 +28,7 @@ public class Game extends Application
         // main menu of game
         MainMenu menu = new MainMenu(this, stage, false, false);
         
-        scene = new Scene(menu, WIDTH*20, HEIGHT*20);
+        scene = new Scene(menu, (WIDTH)*20-10, (HEIGHT)*20-10);
         
         stage.setScene(scene);
         stage.setTitle("Snake");
