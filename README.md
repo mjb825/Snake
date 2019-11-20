@@ -1,5 +1,7 @@
 # Snake
 
+## Demo: https://www.youtube.com/watch?v=o-_Lqp8HO4c
+
 **Game Modes**
 * Normal `Arrow Keys`
 * Diagonal `1, 2, 4, 5 (numpad)`
