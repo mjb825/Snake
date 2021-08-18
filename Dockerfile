@@ -21,7 +21,7 @@ RUN $JAVA_HOME/bin/jlink \
          --output /javaruntime
 
 # Define your base image
-FROM debian:buster-slim as base
+FROM debian:bullseye-slim as base
 
 # Need this library for graphical application
 RUN apt update && apt -y install libgtk-3-0
