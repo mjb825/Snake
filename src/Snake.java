@@ -174,8 +174,8 @@ public class Snake
 
                             if(i % tailColors.size() == j) {
 
-                                //tail.get(tail.size() - i - 1).setColor(tailColors.get((tailColorPos + j) % tailColors.size()));
-                                tail.get(i).setColor(tailColors.get((tailColorPos + j) % tailColors.size()));
+                                tail.get(tail.size() - i - 1).setColor(tailColors.get((tailColorPos + j) % tailColors.size()));
+                                // tail.get(i).setColor(tailColors.get((tailColorPos + j) % tailColors.size()));
                                 // stop looking through colors because snake piece won't match anymore
                                 break;
 
@@ -190,8 +190,8 @@ public class Snake
                 else {
 
                     for(int i = 1; i < tail.size(); i++) {
-                        //tail.get(tail.size() - i - 1).setColor(tailColors.get(tailColorPos));
-                        tail.get(i).setColor(tailColors.get(tailColorPos));
+                        tail.get(tail.size() - i - 1).setColor(tailColors.get(tailColorPos));
+                        // tail.get(i).setColor(tailColors.get(tailColorPos));
                     }
 
                 }
@@ -203,8 +203,8 @@ public class Snake
             else if(!sequence) {
                 
                 for(int i = 1; i < tail.size(); i++) {
-                    //tail.get(tail.size() - i - 1).setColor(tailColors.get(tailColorPos));
-                    tail.get(i).setColor(tailColors.get(tailColorPos));
+                    tail.get(tail.size() - i - 1).setColor(tailColors.get(tailColorPos));
+                    // tail.get(i).setColor(tailColors.get(tailColorPos));
                 }
                 
             }
@@ -227,8 +227,8 @@ public class Snake
 
                             if(i % headColors.size() == j) {
 
-                                //tail.get(tail.size() - i - 1).setColor(headColors.get((snakeColorPos + j) % headColors.size()));
-                                tail.get(i).setColor(headColors.get((headColorPos + j) % headColors.size()));
+                                tail.get(tail.size() - i - 1).setColor(headColors.get((headColorPos + j) % headColors.size()));
+                                // tail.get(i).setColor(headColors.get((headColorPos + j) % headColors.size()));
                                 // stop looking through colors because snake piece won't match anymore
                                 break;
 
@@ -255,8 +255,8 @@ public class Snake
             else if(!sequence) {
                 
                 for(int i = 0; i < tail.size(); i++) {
-                    //tail.get(tail.size() - i - 1).setColor(headColors.get(headColorPos));
-                    tail.get(i).setColor(headColors.get(headColorPos));
+                    tail.get(tail.size() - i - 1).setColor(headColors.get(headColorPos));
+                    // tail.get(i).setColor(headColors.get(headColorPos));
                 }
                 
             }
@@ -300,8 +300,8 @@ public class Snake
 
                             if(i % tailSizes.size() == j) {
 
-                                //tail.get(tail.size() - i - 1).setSize(tailSizes.get((tailSizePos + j) % tailSizes.size()));
-                                tail.get(i).setSize(tailSizes.get((tailSizePos + j) % tailSizes.size()));
+                                tail.get(tail.size() - i - 1).setSize(tailSizes.get((tailSizePos + j) % tailSizes.size()));
+                                // tail.get(i).setSize(tailSizes.get((tailSizePos + j) % tailSizes.size()));
                                 // stop looking through sizes because snake piece won't match anymore
                                 break;
 
@@ -316,8 +316,8 @@ public class Snake
                 else {
 
                     for(int i = 1; i < tail.size(); i++) {
-                        //tail.get(tail.size() - i - 1).setSize(tailSizes.get(tailSizePos));
-                        tail.get(i).setSize(tailSizes.get(tailSizePos));
+                        tail.get(tail.size() - i - 1).setSize(tailSizes.get(tailSizePos));
+                        // tail.get(i).setSize(tailSizes.get(tailSizePos));
                     }
 
                 }
@@ -329,8 +329,8 @@ public class Snake
             else if(!sequenceSize) {
                 
                 for(int i = 1; i < tail.size(); i++) {
-                    //tail.get(tail.size() - i - 1).setSize(tailSizes.get(tailSizePos));
-                    tail.get(i).setSize(tailSizes.get(tailSizePos));
+                    tail.get(tail.size() - i - 1).setSize(tailSizes.get(tailSizePos));
+                    // tail.get(i).setSize(tailSizes.get(tailSizePos));
                 }
                 
             }
@@ -353,8 +353,8 @@ public class Snake
 
                             if(i % headSizes.size() == j) {
 
-                                //tail.get(tail.size() - i - 1).setSize(headSizes.get((snakeSizePos + j) % headSizes.size()));
-                                tail.get(i).setSize(headSizes.get((headSizePos + j) % headSizes.size()));
+                                tail.get(tail.size() - i - 1).setSize(headSizes.get((headSizePos + j) % headSizes.size()));
+                                // tail.get(i).setSize(headSizes.get((headSizePos + j) % headSizes.size()));
                                 // stop looking through sizes because snake piece won't match anymore
                                 break;
 
@@ -369,8 +369,8 @@ public class Snake
                 else {
 
                     for(int i = 0; i < tail.size(); i++) {
-                        //tail.get(tail.size() - i - 1).setSize(headSizes.get(headSizePos));
-                        tail.get(i).setSize(headSizes.get(headSizePos));
+                        tail.get(tail.size() - i - 1).setSize(headSizes.get(headSizePos));
+                        // tail.get(i).setSize(headSizes.get(headSizePos));
                     }
 
                 }
@@ -382,8 +382,8 @@ public class Snake
             else if(!sequenceSize) {
                 
                 for(int i = 0; i < tail.size(); i++) {
-                    //tail.get(tail.size() - i - 1).setSize(headSizes.get(headSizePos));
-                    tail.get(i).setSize(headSizes.get(headSizePos));
+                    tail.get(tail.size() - i - 1).setSize(headSizes.get(headSizePos));
+                    // tail.get(i).setSize(headSizes.get(headSizePos));
                 }
                 
             }
